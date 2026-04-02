@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { DatabaseAdapter } from '../types/adapter.js';
 
 const emailAndPasswordSchema = z.object({
    enabled: z.boolean(),
@@ -11,4 +12,6 @@ export const SwiftAuthConfigSchema = z.object({
    emailAndPassword: emailAndPasswordSchema,
 });
 
-export type ParsedSwiftAuthConfig = z.infer<typeof SwiftAuthConfigSchema>;
+export type ParsedSwiftAuthConfig = z.infer<typeof SwiftAuthConfigSchema> & {
+   database: DatabaseAdapter;
+};

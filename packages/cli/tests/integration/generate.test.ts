@@ -18,7 +18,7 @@ describe('drizzleGenerateSchema', () => {
       fs.writeFileSync(outputPath, schema);
 
       const file = fs.readFileSync(outputPath).toString();
-      expect(file).toContain('usersTable');
+      expect(file).toContain('userTable');
       expect(file).toContain('verificationTable');
       expect(file).toContain('sessionTable');
    });

@@ -1,3 +1,5 @@
+import type { DatabaseAdapter } from './adapter.js';
+
 interface EmailAndPasswordConfig {
    enabled: boolean;
    autoSignIn?: boolean;
@@ -7,4 +9,5 @@ interface EmailAndPasswordConfig {
 
 export interface SwiftAuthConfig {
    emailAndPassword: EmailAndPasswordConfig;
+   database: DatabaseAdapter;
 }

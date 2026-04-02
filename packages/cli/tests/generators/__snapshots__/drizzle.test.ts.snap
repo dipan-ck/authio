@@ -5,7 +5,7 @@ exports[`generate drizzle schema > generate schema with verify table when verify
   import { pgTable } from "drizzle-orm/pg-core";
   import * as t from "drizzle-orm/pg-core";
   
-  export const usersTable = pgTable("users", {
+  export const userTable = pgTable("user", {
  id: t.text("id").primaryKey(),
 	name: t.text("name").notNull(),
 	email: t.text().notNull().unique(),
@@ -18,7 +18,7 @@ exports[`generate drizzle schema > generate schema with verify table when verify
   
   export const accountTable = pgTable("account", {
 	id: t.text("id").primaryKey(),
-	userId: t.text("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+	userId: t.text("user_id").notNull().references(() => userTable.id, { onDelete: "cascade" }),
 	accountId: t.text("account_id").notNull(),
 	providerId: t.text("provider_id").notNull(),
 	accessToken: t.text("access_token"),
@@ -36,7 +36,7 @@ exports[`generate drizzle schema > generate schema with verify table when verify
 
   export const sessionTable = pgTable("session", {
 	id: t.text("id").primaryKey(),
-	userId: t.text("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+	userId: t.text("user_id").notNull().references(() => userTable.id, { onDelete: "cascade" }),
 	token: t.text().notNull().unique(),
 	expiresAt: t.timestamp("expires_at", { precision: 6, withTimezone: true }).notNull(),
 	ipAddress: t.text("ip_address"),
@@ -64,7 +64,7 @@ exports[`generate drizzle schema > generate schema without verify table when ver
   import { pgTable } from "drizzle-orm/pg-core";
   import * as t from "drizzle-orm/pg-core";
   
-  export const usersTable = pgTable("users", {
+  export const userTable = pgTable("user", {
  id: t.text("id").primaryKey(),
 	name: t.text("name").notNull(),
 	email: t.text().notNull().unique(),
@@ -77,7 +77,7 @@ exports[`generate drizzle schema > generate schema without verify table when ver
   
   export const accountTable = pgTable("account", {
 	id: t.text("id").primaryKey(),
-	userId: t.text("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+	userId: t.text("user_id").notNull().references(() => userTable.id, { onDelete: "cascade" }),
 	accountId: t.text("account_id").notNull(),
 	providerId: t.text("provider_id").notNull(),
 	accessToken: t.text("access_token"),
@@ -95,7 +95,7 @@ exports[`generate drizzle schema > generate schema without verify table when ver
 
   export const sessionTable = pgTable("session", {
 	id: t.text("id").primaryKey(),
-	userId: t.text("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+	userId: t.text("user_id").notNull().references(() => userTable.id, { onDelete: "cascade" }),
 	token: t.text().notNull().unique(),
 	expiresAt: t.timestamp("expires_at", { precision: 6, withTimezone: true }).notNull(),
 	ipAddress: t.text("ip_address"),

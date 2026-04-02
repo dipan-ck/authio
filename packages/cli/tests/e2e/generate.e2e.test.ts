@@ -34,7 +34,7 @@ describe('generate command e2e', () => {
       expect(fs.existsSync(generatedFile)).toBe(true);
 
       const content = fs.readFileSync(generatedFile, 'utf-8');
-      expect(content).toContain('usersTable');
+      expect(content).toContain('userTable');
       expect(content).toContain('sessionTable');
       expect(content).toContain('verificationTable');
    });
@@ -50,7 +50,7 @@ describe('generate command e2e', () => {
       expect(fs.existsSync(generatedFile)).toBe(true);
 
       const content = fs.readFileSync(generatedFile, 'utf-8');
-      expect(content).toContain('usersTable');
+      expect(content).toContain('userTable');
       expect(content).toContain('sessionTable');
       expect(content).toContain('verificationTable');
    });
@@ -66,7 +66,7 @@ describe('generate command e2e', () => {
       expect(fs.existsSync(generatedFile)).toBe(true);
 
       const content = fs.readFileSync(generatedFile, 'utf-8');
-      expect(content).toContain('usersTable');
+      expect(content).toContain('userTable');
       expect(content).toContain('sessionTable');
       expect(content).toContain('verificationTable');
    });
@@ -85,7 +85,7 @@ describe('generate command e2e', () => {
       expect(fs.existsSync(generatedFile)).toBe(true);
 
       const content = fs.readFileSync(generatedFile, 'utf-8');
-      expect(content).toContain('usersTable');
+      expect(content).toContain('userTable');
       expect(content).toContain('sessionTable');
       expect(content).toContain('verificationTable');
    });

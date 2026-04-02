@@ -1,7 +1,7 @@
 import { SwiftAuth } from 'swift-auth';
 
 const USER_TABLE = `
-  export const usersTable = pgTable("users", {
+  export const userTable = pgTable("user", {
  id: t.text("id").primaryKey(),
 	name: t.text("name").notNull(),
 	email: t.text().notNull().unique(),
@@ -15,7 +15,7 @@ const USER_TABLE = `
 const ACCOUNT_TABLE = `
   export const accountTable = pgTable("account", {
 	id: t.text("id").primaryKey(),
-	userId: t.text("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+	userId: t.text("user_id").notNull().references(() => userTable.id, { onDelete: "cascade" }),
 	accountId: t.text("account_id").notNull(),
 	providerId: t.text("provider_id").notNull(),
 	accessToken: t.text("access_token"),
@@ -44,7 +44,7 @@ const SESSION_TABLE = `
 
   export const sessionTable = pgTable("session", {
 	id: t.text("id").primaryKey(),
-	userId: t.text("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+	userId: t.text("user_id").notNull().references(() => userTable.id, { onDelete: "cascade" }),
 	token: t.text().notNull().unique(),
 	expiresAt: t.timestamp("expires_at", { precision: 6, withTimezone: true }).notNull(),
 	ipAddress: t.text("ip_address"),
