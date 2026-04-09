@@ -120,6 +120,7 @@ export function drizzleAdapter(
             .insert(tables.verification)
             .values({
                id: nanoid(),
+               value: nanoid(),
                ...data,
                createdAt: new Date(),
                updatedAt: new Date(),

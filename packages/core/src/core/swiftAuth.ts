@@ -1,3 +1,4 @@
+import { User } from '../types/auth.js';
 import { SwiftAuthConfig } from '../types/config.js';
 import { ParsedSwiftAuthConfig, SwiftAuthConfigSchema } from '../validator/config.validator.js';
 
@@ -28,5 +29,29 @@ export class SwiftAuth {
          ...result.data,
          socialProviders,
       };
+   }
+
+   async signup(
+      user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>,
+      provider: 'credential' | 'google' | 'github',
+   ) {
+      if (
+         this.config.emailAndPassword &&
+         this.config.emailAndPassword.verifyEmail &&
+         provider == 'credential'
+      ) {
+         const savedUser = await this.config.database.createUser({
+            name: user.name,
+            email: user.email,
+            emailVerified: false,
+            image: user.image,
+         });
+
+         const verification = await this.config.database.createVerification({
+            identifier: user.email,
+            expiresAt: new Date(Date.now() + this.config.session.expiry),
+         });
+      } else {
+      }
    }
 }

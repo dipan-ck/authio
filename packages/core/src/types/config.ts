@@ -13,8 +13,13 @@ export interface SocialProvidersConfig {
    github?: OAuthProvider;
 }
 
+export interface SessionConfig {
+   expiry?: number;
+}
+
 export interface SwiftAuthConfig {
    baseUrl: string;
+   session?: SessionConfig;
    emailAndPassword?: EmailAndPasswordConfig;
    database: DatabaseAdapter;
    socialProviders?: SocialProvidersConfig;

@@ -19,7 +19,7 @@ export interface DatabaseAdapter {
 
    //verification operations interfaces
    createVerification: (
-      verification: Omit<Verification, 'id' | 'createdAt' | 'updatedAt'>,
+      verification: Omit<Verification, 'id' | 'createdAt' | 'updatedAt' | 'value'>,
    ) => Promise<Verification>;
    findVerificationByToken: (token: string) => Promise<Verification | null>;
    deleteVerification: (id: string) => Promise<void>;

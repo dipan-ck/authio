@@ -11,6 +11,13 @@ const emailAndPasswordSchema = z.object({
 });
 
 export const SwiftAuthConfigSchema = z.object({
+   session: z
+      .object({
+         expiry: z.number().positive(),
+      })
+      .default({
+         expiry: 1000 * 60 * 60 * 24,
+      }),
    baseUrl: z.url(),
    emailAndPassword: emailAndPasswordSchema.optional(),
 });
