@@ -31,6 +31,7 @@ export class SwiftAuth {
       };
    }
 
+   // needs to be refactored and re implemented
    async signup(
       user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>,
       provider: 'credential' | 'google' | 'github',
@@ -45,11 +46,6 @@ export class SwiftAuth {
             email: user.email,
             emailVerified: false,
             image: user.image,
-         });
-
-         const verification = await this.config.database.createVerification({
-            identifier: user.email,
-            expiresAt: new Date(Date.now() + this.config.session.expiry),
          });
       } else {
       }
