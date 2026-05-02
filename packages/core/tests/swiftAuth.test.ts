@@ -16,11 +16,12 @@ describe('SwiftAuth Instance creation test', () => {
             autoSignIn: true,
             verifyEmail: false,
             minPasswordLength: 8,
+            verificationTokenExpiry: 1000 * 60 * 60,
          },
          cookies: {
             name: 'swift_auth_session_token',
             secure: true,
-            domain: 'localhost', // extracted from baseUrl
+            domain: 'localhost',
             sameSite: 'lax',
          },
       };
@@ -48,6 +49,7 @@ describe('SwiftAuth Instance creation test', () => {
             autoSignIn: false,
             verifyEmail: true,
             minPasswordLength: 20,
+            verificationTokenExpiry: 1000 * 60 * 60,
          },
          cookies: {
             name: 'swift_auth_session_token',
@@ -65,6 +67,7 @@ describe('SwiftAuth Instance creation test', () => {
             autoSignIn: false,
             verifyEmail: true,
             minPasswordLength: 20,
+            verificationCallback: async () => {},
          },
       });
 
@@ -81,7 +84,7 @@ describe('SwiftAuth Instance creation test', () => {
          cookies: {
             name: 'my_app_session',
             secure: false,
-            domain: '.example.com', // user provided, used as-is
+            domain: '.example.com',
             sameSite: 'strict',
          },
       };
@@ -106,7 +109,7 @@ describe('SwiftAuth Instance creation test', () => {
          database: mockAdapter,
       });
 
-      expect(auth.config.cookies.domain).toBe('api.example.com');
+      expect(auth.config?.cookies?.domain).toBe('api.example.com');
    });
 
    it('should use custom session expiry when provided', () => {
@@ -119,6 +122,33 @@ describe('SwiftAuth Instance creation test', () => {
       });
 
       expect(auth.config.session.expiry).toBe(1000 * 60 * 60);
+   });
+
+   it('should use custom verificationTokenExpiry when provided', () => {
+      const auth = new SwiftAuth({
+         baseUrl: 'http://localhost:3000',
+         database: mockAdapter,
+         emailAndPassword: {
+            enabled: true,
+            verificationTokenExpiry: 1000 * 60 * 30, // 30 mins
+         },
+      });
+
+      expect(auth.config.emailAndPassword?.verificationTokenExpiry).toBe(1000 * 60 * 30);
+   });
+
+   it('should throw error when verifyEmail is true but verificationCallback is not provided', () => {
+      expect(() => {
+         new SwiftAuth({
+            baseUrl: 'http://localhost:3000',
+            database: mockAdapter,
+            emailAndPassword: {
+               enabled: true,
+               verifyEmail: true,
+               // no verificationCallback
+            },
+         });
+      }).toThrow('verificationCallback');
    });
 
    it('should throw error when emailAndPassword.enabled is not a boolean', () => {

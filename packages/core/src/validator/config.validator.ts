@@ -8,6 +8,7 @@ const emailAndPasswordSchema = z.object({
    autoSignIn: z.boolean().default(true),
    verifyEmail: z.boolean().default(false),
    minPasswordLength: z.number().default(8),
+   verificationTokenExpiry: z.number().default(1000 * 60 * 60), //1hour
 });
 
 const cookieSchema = z.object({
@@ -33,4 +34,16 @@ export const SwiftAuthConfigSchema = z.object({
 export type ParsedSwiftAuthConfig = z.infer<typeof SwiftAuthConfigSchema> & {
    database: DatabaseAdapter;
    socialProviders?: SocialProvidersConfig;
+   emailAndPassword?: z.infer<typeof emailAndPasswordSchema> & {
+      verificationCallback?: (user: {
+         name: string;
+         email: string;
+         verificationToken: string;
+      }) => Promise<void>;
+      forgotPasswordCallback?: (user: {
+         name: string;
+         email: string;
+         resetToken: string;
+      }) => Promise<void>;
+   };
 };

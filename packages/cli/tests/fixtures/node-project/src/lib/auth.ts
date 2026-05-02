@@ -7,5 +7,6 @@ export default new SwiftAuth({
    emailAndPassword: {
       enabled: true,
       verifyEmail: true,
+      verificationCallback: async () => {},
    },
 });

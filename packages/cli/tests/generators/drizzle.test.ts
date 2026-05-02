@@ -9,6 +9,7 @@ describe('generate drizzle schema', () => {
          database: mockAdapter,
          emailAndPassword: {
             enabled: true,
+            verificationCallback: async () => {},
          },
       });
       const drizzleSchema = generateDrizzleSchema(auth);
@@ -22,6 +23,8 @@ describe('generate drizzle schema', () => {
          emailAndPassword: {
             enabled: true,
             verifyEmail: true,
+
+            verificationCallback: async () => {},
          },
       });
       const drizzleSchema = generateDrizzleSchema(auth);

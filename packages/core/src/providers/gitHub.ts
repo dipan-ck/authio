@@ -1,6 +1,5 @@
 import { z } from 'zod';
-import type { OAuthProvider, OAuthTokens, OAuthUser } from './types.js';
-import { email } from 'zod/mini';
+import type { OAuthProvider, OAuthUser } from './types.js';
 
 const GITHUB_AUTHORIZE_ENDPOINT = 'https://github.com/login/oauth/authorize';
 const GITHUB_TOKEN_EXCHANGE_ENDPOINT = 'https://github.com/login/oauth/access_token';
@@ -21,14 +20,6 @@ interface GitHubConfig {
    scopes?: string[];
    allowSignup?: boolean;
    login?: string;
-}
-
-interface UserPayload {
-   id: number;
-   name: string | null;
-   login: string;
-   avatar_url: string;
-   email: string | null;
 }
 
 const GitHubUserPayloadSchema = z.object({
@@ -145,7 +136,7 @@ export function GitHubProvider(config: GitHubConfig): OAuthProvider {
          }
 
          let raw = await userRes.json();
-         let userDataResult = GitHubUserPayloadSchema.safeParse(raw);
+         const userDataResult = GitHubUserPayloadSchema.safeParse(raw);
 
          if (!userDataResult.success) {
             if (typeof raw == 'object' && raw !== null && 'error' in raw) {
@@ -172,7 +163,7 @@ export function GitHubProvider(config: GitHubConfig): OAuthProvider {
          }
 
          raw = await emailRes.json();
-         let result = GitHubEmailPayloadSchema.safeParse(raw);
+         const result = GitHubEmailPayloadSchema.safeParse(raw);
 
          if (!result.success) {
             if (typeof raw == 'object' && raw !== null && 'error' in raw) {
@@ -192,7 +183,7 @@ export function GitHubProvider(config: GitHubConfig): OAuthProvider {
             throw Error('No emails connected to users GitHub');
          }
 
-         let email = emails.find((email) => email.primary && email.verified);
+         const email = emails.find((email) => email.primary && email.verified);
 
          if (!email) {
             throw Error('No verified primary email added in GitHub');

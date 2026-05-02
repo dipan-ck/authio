@@ -28,18 +28,15 @@ export function drizzleAdapter(
 
    return {
       createUser: async (user) => {
-         const id = nanoid();
-
          const result = await db
             .insert(tables.user)
             .values({
-               id,
+               id: nanoid(),
                ...user,
                createdAt: new Date(),
                updatedAt: new Date(),
             })
             .returning();
-
          return result[0];
       },
 
@@ -47,31 +44,32 @@ export function drizzleAdapter(
          const result = await db.select().from(tables.user).where(eq(tables.user.id, id));
          return result[0] ?? null;
       },
+
       findUserByEmail: async (email) => {
          const result = await db.select().from(tables.user).where(eq(tables.user.email, email));
          return result[0] ?? null;
       },
+
       updateUser: async (id, data) => {
          const result = await db
             .update(tables.user)
-            .set(data)
+            .set({ ...data, updatedAt: new Date() })
             .where(eq(tables.user.id, id))
             .returning();
          return result[0];
       },
-      createSession: async (session) => {
-         const id = nanoid();
 
+      // session operations
+      createSession: async (session) => {
          const result = await db
             .insert(tables.session)
             .values({
-               id,
+               id: nanoid(),
                ...session,
                createdAt: new Date(),
                updatedAt: new Date(),
             })
             .returning();
-
          return result[0];
       },
 
@@ -84,24 +82,33 @@ export function drizzleAdapter(
       },
 
       deleteSession: async (token) => {
-         return await db.delete(tables.session).where(eq(tables.session.token, token));
-      },
-      deleteUserSessions: async (userId) => {
-         return await db.delete(tables.session).where(eq(tables.session.userId, userId));
+         await db.delete(tables.session).where(eq(tables.session.token, token));
       },
 
+      deleteUserSessions: async (userId) => {
+         await db.delete(tables.session).where(eq(tables.session.userId, userId));
+      },
+
+      // account operations
       createAccount: async (account) => {
-         const id = nanoid();
          const result = await db
             .insert(tables.account)
             .values({
-               id,
+               id: nanoid(),
                ...account,
                createdAt: new Date(),
                updatedAt: new Date(),
             })
             .returning();
+         return result[0];
+      },
 
+      updateAccount: async (id, data) => {
+         const result = await db
+            .update(tables.account)
+            .set({ ...data, updatedAt: new Date() })
+            .where(eq(tables.account.id, id))
+            .returning();
          return result[0];
       },
 
@@ -115,18 +122,18 @@ export function drizzleAdapter(
          return result[0] ?? null;
       },
 
-      createVerification: async (data) => {
+      // verification operations
+      createVerification: async (verification) => {
          const result = await db
             .insert(tables.verification)
             .values({
                id: nanoid(),
                value: nanoid(),
-               ...data,
+               ...verification,
                createdAt: new Date(),
                updatedAt: new Date(),
             })
             .returning();
-
          return result[0];
       },
 
@@ -135,12 +142,11 @@ export function drizzleAdapter(
             .select()
             .from(tables.verification)
             .where(eq(tables.verification.value, token));
-
          return result[0] ?? null;
       },
 
       deleteVerification: async (id) => {
-         return await db.delete(tables.verification).where(eq(tables.verification.id, id));
+         await db.delete(tables.verification).where(eq(tables.verification.id, id));
       },
    };
 }

@@ -29,12 +29,14 @@
       "dist"
    ],
    "devDependencies": {
+      "@types/bcryptjs": "^3.0.0",
       "@types/node": "^25.5.0",
       "tsup": "^8.5.1",
       "typescript": "^6.0.2",
       "vitest": "^4.1.2"
    },
    "dependencies": {
+      "bcryptjs": "^3.0.3",
       "zod": "^4.3.6"
    }
 }

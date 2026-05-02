@@ -16,7 +16,7 @@ export interface DatabaseAdapter {
    //account operations interfaces
    createAccount: (account: Omit<Account, 'id' | 'createdAt' | 'updatedAt'>) => Promise<Account>;
    findAccountByUserId: (userId: string, providerId: string) => Promise<Account | null>;
-
+   updateAccount: (id: string, data: Partial<Omit<Account, 'id'>>) => Promise<Account>;
    //verification operations interfaces
    createVerification: (
       verification: Omit<Verification, 'id' | 'createdAt' | 'updatedAt' | 'value'>,

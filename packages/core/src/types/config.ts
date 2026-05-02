@@ -6,6 +6,17 @@ interface EmailAndPasswordConfig {
    autoSignIn?: boolean;
    verifyEmail?: boolean;
    minPasswordLength?: number;
+   verificationCallback?: (user: {
+      name: string;
+      email: string;
+      verificationToken: string;
+   }) => Promise<void>;
+   forgotPasswordCallback?: (user: {
+      name: string;
+      email: string;
+      resetToken: string;
+   }) => Promise<void>;
+   verificationTokenExpiry?: number;
 }
 
 export interface SocialProvidersConfig {

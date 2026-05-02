@@ -62,7 +62,7 @@ export function generateDrizzleSchema(auth: SwiftAuth) {
   ${USER_TABLE}
   ${ACCOUNT_TABLE}
   ${SESSION_TABLE}
-  ${auth.config.emailAndPassword.verifyEmail ? VERIFY_TABLE : ''}
+  ${auth.config.emailAndPassword?.verifyEmail ? VERIFY_TABLE : ''}
 
   `;
 }
