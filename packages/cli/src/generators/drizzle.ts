@@ -1,5 +1,3 @@
-import { SwiftAuth } from 'swift-auth';
-
 const USER_TABLE = `
   export const userTable = pgTable("user", {
  id: t.text("id").primaryKey(),
@@ -55,14 +53,14 @@ const SESSION_TABLE = `
 
   `;
 
-export function generateDrizzleSchema(auth: SwiftAuth) {
+export function generateDrizzleSchema() {
    return `
   import { pgTable } from "drizzle-orm/pg-core";
   import * as t from "drizzle-orm/pg-core";
   ${USER_TABLE}
   ${ACCOUNT_TABLE}
   ${SESSION_TABLE}
-  ${auth.config.emailAndPassword?.verifyEmail ? VERIFY_TABLE : ''}
+  ${VERIFY_TABLE}
 
   `;
 }

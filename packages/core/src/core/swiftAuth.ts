@@ -398,6 +398,17 @@ export class SwiftAuth {
          message: 'Signed out successfully',
       };
    }
+
+   async getSocialAuthRedirectUrl(provider: 'google' | 'github') {
+      const OAuthProvider = this.config?.socialProviders?.[provider];
+
+      if (!OAuthProvider) {
+         throw new SwiftAuthError(
+            'PROVIDER_NOT_CONFIGURED',
+            'Please the configure the oauth provider to make it work',
+         );
+      }
+   }
 }
 /* 
 if user did not set any domain in the cookie options then we will take the baseUrl's hostname 

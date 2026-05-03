@@ -22,6 +22,9 @@ export const mockAdapter: DatabaseAdapter = {
    createVerification: async () => {
       throw new Error('not implemented');
    },
+   updateAccount() {
+      throw new Error('not implemented');
+   },
    findVerificationByToken: async () => null,
    deleteVerification: async () => {},
 };

@@ -1,5 +1,6 @@
 import type { OAuthProvider, OAuthTokens, OAuthUser } from './types.js';
 import * as z from 'zod';
+import { SwiftAuthError } from '../core/SwiftError.js';
 
 const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
@@ -39,10 +40,8 @@ interface GoogleIdTokenPayload {
 
 export function googleProvider(config: GoogleConfig): OAuthProvider {
    const parsed = googleConfigSchema.parse(config);
-
    return {
       id: 'google',
-
       getAuthUrl(state: string, redirectUri: string): string {
          const params = new URLSearchParams({
             client_id: parsed.clientId,
@@ -53,10 +52,8 @@ export function googleProvider(config: GoogleConfig): OAuthProvider {
             access_type: parsed.accessType,
             prompt: parsed.prompt,
          });
-
          return `${GOOGLE_AUTH_URL}?${params.toString()}`;
       },
-
       async exchangeCode(code: string, redirectUri: string): Promise<OAuthTokens> {
          const response = await fetch(GOOGLE_TOKEN_URL, {
             method: 'POST',
@@ -71,13 +68,13 @@ export function googleProvider(config: GoogleConfig): OAuthProvider {
                grant_type: 'authorization_code',
             }),
          });
-
          if (!response.ok) {
-            throw new Error(`Google token exchange failed: ${response.statusText}`);
+            throw new SwiftAuthError(
+               'TOKEN_EXCHANGE_FAILED',
+               `Google token exchange failed: ${response.statusText}`,
+            );
          }
-
          const data = (await response.json()) as GoogleTokenResponse;
-
          return {
             accessToken: data.access_token,
             refreshToken: data.refresh_token ?? null,
@@ -87,16 +84,13 @@ export function googleProvider(config: GoogleConfig): OAuthProvider {
             scope: data.scope,
          };
       },
-
       async getUserInfo(tokens: OAuthTokens): Promise<OAuthUser> {
          if (!tokens.idToken) {
-            throw new Error('Google id_token is missing');
+            throw new SwiftAuthError('INVALID_ID_TOKEN', 'Google id_token is missing');
          }
-
          const payload = JSON.parse(
             Buffer.from(tokens.idToken.split('.')[1], 'base64url').toString(),
          ) as GoogleIdTokenPayload;
-
          return {
             id: payload.sub,
             email: payload.email,

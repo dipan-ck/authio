@@ -1,38 +1,36 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GitHubProvider } from '../../src/providers/gitHub.js';
+import { gitHubProvider } from '../../src/providers/gitHub.js';
 import { SwiftAuth } from '../../src/index.js';
 import { mockAdapter } from '../utils/mockAdapter.js';
 
 const mockFetch = vi.fn();
-
 global.fetch = mockFetch as any;
 
-describe('GitHubProvider', () => {
-   const config = new SwiftAuth({
-      baseUrl: 'http://localhost',
+describe('gitHubProvider', () => {
+   const auth = new SwiftAuth({
+      baseUrl: 'http://localhost:3000',
       database: mockAdapter,
       socialProviders: {
-         github: GitHubProvider({
+         github: gitHubProvider({
             clientId: 'test-client-id',
             clientSecret: 'test-client-secret',
          }),
       },
    });
 
-   const provider = config.config.socialProviders?.github!;
+   const provider = auth.config?.socialProviders?.github!;
 
    beforeEach(() => {
       vi.clearAllMocks();
    });
 
    it('generates correct auth URL', () => {
-      const url = provider.getAuthUrl('state123', 'http://localhost/callback');
-
+      const url = provider.getAuthUrl('state123', 'http://localhost:3000/callback');
       const parsed = new URL(url);
-
-      expect(parsed.searchParams.get('redirect_uri')).toBe('http://localhost/callback');
-      expect(url).toContain('client_id=test-client-id');
-      expect(url).toContain('state=state123');
+      expect(parsed.searchParams.get('client_id')).toBe('test-client-id');
+      expect(parsed.searchParams.get('redirect_uri')).toBe('http://localhost:3000/callback');
+      expect(parsed.searchParams.get('state')).toBe('state123');
+      expect(parsed.searchParams.get('scope')).toContain('read:user');
    });
 
    it('exchanges code successfully', async () => {
@@ -41,53 +39,72 @@ describe('GitHubProvider', () => {
          json: async () => ({
             access_token: 'token123',
             token_type: 'bearer',
-            scope: 'user',
+            scope: 'read:user user:email',
          }),
       });
 
-      const tokens = await provider.exchangeCode('code123', 'http://localhost/callback');
-
+      const tokens = await provider.exchangeCode('code123', 'http://localhost:3000/callback');
       expect(tokens.accessToken).toBe('token123');
       expect(tokens.tokenType).toBe('bearer');
-      expect(tokens.scope).toBe('user');
+      expect(tokens.scope).toBe('read:user user:email');
+      expect(tokens.refreshToken).toBeNull();
+      expect(tokens.idToken).toBeNull();
+      expect(tokens.expiresIn).toBeNull();
    });
 
-   it('handles token exchange error from GitHub', async () => {
+   it('throws on token exchange http error', async () => {
+      mockFetch.mockResolvedValueOnce({
+         ok: false,
+         statusText: 'Unauthorized',
+      });
+
+      await expect(
+         provider.exchangeCode('bad-code', 'http://localhost:3000/callback'),
+      ).rejects.toThrow('GitHub token exchange failed');
+   });
+
+   it('fetches user info when email is public', async () => {
       mockFetch.mockResolvedValueOnce({
          ok: true,
          json: async () => ({
-            error: 'bad_verification_code',
+            id: 1,
+            name: 'John Doe',
+            email: 'john@example.com',
+            avatar_url: 'https://avatars.githubusercontent.com/u/1',
          }),
       });
 
-      await expect(provider.exchangeCode('bad', 'http://localhost/callback')).rejects.toThrow(
-         'bad_verification_code',
-      );
+      const user = await provider.getUserInfo({
+         accessToken: 'token123',
+         tokenType: 'Bearer',
+         refreshToken: null,
+         idToken: null,
+         expiresIn: null,
+         scope: null,
+      });
+
+      expect(user.id).toBe('1');
+      expect(user.email).toBe('john@example.com');
+      expect(user.name).toBe('John Doe');
+      expect(user.emailVerified).toBe(true);
+      // only 1 fetch call since email was public
+      expect(mockFetch).toHaveBeenCalledTimes(1);
    });
 
-   it('fetches user info successfully', async () => {
+   it('fetches user email from /user/emails when email is private', async () => {
       mockFetch
          .mockResolvedValueOnce({
             ok: true,
             json: async () => ({
                id: 1,
-               name: 'John',
-               login: 'john',
-               avatar_url: 'img',
+               name: 'John Doe',
                email: null,
+               avatar_url: 'https://avatars.githubusercontent.com/u/1',
             }),
          })
-         // emails
          .mockResolvedValueOnce({
             ok: true,
-            json: async () => [
-               {
-                  email: 'john@example.com',
-                  primary: true,
-                  verified: true,
-                  visibility: 'public',
-               },
-            ],
+            json: async () => [{ email: 'private@example.com', primary: true, verified: true }],
          });
 
       const user = await provider.getUserInfo({
@@ -99,33 +116,25 @@ describe('GitHubProvider', () => {
          scope: null,
       });
 
-      expect(user.email).toBe('john@example.com');
-      expect(user.name).toBe('John');
-      expect(user.id).toBe('1');
+      expect(user.email).toBe('private@example.com');
+      // 2 fetch calls — /user then /user/emails
+      expect(mockFetch).toHaveBeenCalledTimes(2);
    });
 
-   it('throws if no verified primary email', async () => {
+   it('throws when no verified primary email found', async () => {
       mockFetch
          .mockResolvedValueOnce({
             ok: true,
             json: async () => ({
                id: 1,
-               name: 'John',
-               login: 'john',
-               avatar_url: 'img',
+               name: 'John Doe',
                email: null,
+               avatar_url: 'https://avatars.githubusercontent.com/u/1',
             }),
          })
          .mockResolvedValueOnce({
             ok: true,
-            json: async () => [
-               {
-                  email: 'john@example.com',
-                  primary: false,
-                  verified: false,
-                  visibility: 'public',
-               },
-            ],
+            json: async () => [{ email: 'john@example.com', primary: false, verified: false }],
          });
 
       await expect(
@@ -137,19 +146,24 @@ describe('GitHubProvider', () => {
             expiresIn: null,
             scope: null,
          }),
-      ).rejects.toThrow('No verified primary email');
+      ).rejects.toThrow('No verified primary email found on this GitHub account');
    });
 
-   it('throws on invalid access token', async () => {
+   it('throws when fetching user profile fails', async () => {
+      mockFetch.mockResolvedValueOnce({
+         ok: false,
+         statusText: 'Unauthorized',
+      });
+
       await expect(
          provider.getUserInfo({
-            accessToken: '',
+            accessToken: 'token123',
             tokenType: 'Bearer',
             refreshToken: null,
             idToken: null,
             expiresIn: null,
             scope: null,
          }),
-      ).rejects.toThrow('Invalid access token');
+      ).rejects.toThrow('Failed to fetch GitHub user');
    });
 });

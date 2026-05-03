@@ -17,9 +17,7 @@
       "dist"
    ],
    "dependencies": {
-      "citty": "^0.1.0",
-      "jiti": "^2.0.0",
-      "swift-auth": "workspace:*"
+      "citty": "^0.1.0"
    },
    "devDependencies": {
       "@types/node": "^25.5.0",

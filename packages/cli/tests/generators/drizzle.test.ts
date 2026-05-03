@@ -1,33 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { SwiftAuth } from 'swift-auth';
 import { generateDrizzleSchema } from '../../src/generators/drizzle.js';
-import { mockAdapter } from '../utils/mockAdapter.js';
+
 describe('generate drizzle schema', () => {
-   it('generate schema without verify table when verify email is false', () => {
-      const auth = new SwiftAuth({
-         baseUrl: 'http://localhost:3000',
-         database: mockAdapter,
-         emailAndPassword: {
-            enabled: true,
-            verificationCallback: async () => {},
-         },
-      });
-      const drizzleSchema = generateDrizzleSchema(auth);
-      expect(drizzleSchema).toMatchSnapshot();
-   });
-
-   it('generate schema with verify table when verify email is true', () => {
-      const auth = new SwiftAuth({
-         baseUrl: 'http://localhost:3000',
-         database: mockAdapter,
-         emailAndPassword: {
-            enabled: true,
-            verifyEmail: true,
-
-            verificationCallback: async () => {},
-         },
-      });
-      const drizzleSchema = generateDrizzleSchema(auth);
+   it('should generate schema with all tables', () => {
+      const drizzleSchema = generateDrizzleSchema();
       expect(drizzleSchema).toMatchSnapshot();
    });
 });
