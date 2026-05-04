@@ -111,6 +111,8 @@ export class SwiftAuth {
          return {
             code: 'VERIFICATION_SENT',
             message: 'User created, verification email sent',
+            session: null,
+            user,
          };
       }
 
@@ -155,6 +157,7 @@ export class SwiftAuth {
       return {
          code: 'SIGNUP_SUCCESS',
          message: 'User created successfully',
+         session: null,
          user,
       };
    }
@@ -280,6 +283,7 @@ export class SwiftAuth {
          code: 'EMAIL_VERIFIED',
          message: 'Email verified successfully',
          user,
+         session: null,
       };
    }
 
@@ -385,7 +389,7 @@ export class SwiftAuth {
          throw new SwiftAuthError('SESSION_EXPIRED', 'Session has expired');
       }
       const user = await this.config.database.findUserById(session.userId);
-      return { session, user };
+      return { code: 'SESSION_FOUND', message: 'User session found', session, user };
    }
 
    async signOut(token: string) {
@@ -510,6 +514,7 @@ export class SwiftAuth {
       };
    }
 }
+
 /* 
 if user did not set any domain in the cookie options then we will take the baseUrl's hostname 
 as the domain to set for cookie and in the parameter if already passed a hostname then the catch will just
