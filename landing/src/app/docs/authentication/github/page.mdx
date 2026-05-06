@@ -1,0 +1,253 @@
+import { CodeBlock } from '@/components/ui/CodeBlock';
+
+# GitHub
+
+<div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
+   Add GitHub sign-in to your app. You will need to create a GitHub OAuth app first, then add the
+   provider to your auth config.
+</div>
+
+---
+
+## 1. Create a GitHub OAuth app
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Go to{' '}
+   <a
+      href="https://github.com/settings/developers"
+      target="_blank"
+      className="text-foreground underline underline-offset-4 hover:text-foreground/80"
+   >
+      GitHub Developer Settings
+   </a>{' '}
+   and follow these steps.
+</div>
+
+<div className="mt-5 max-w-[560px] space-y-4">
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         1
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Click <span className="font-medium text-foreground">New OAuth App</span>.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         2
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Fill in your <span className="font-medium text-foreground">Application name</span> and{' '}
+         <span className="font-medium text-foreground">Homepage URL</span>.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         3
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Set the <span className="font-medium text-foreground">Authorization callback URL</span> to
+         your server callback URL.
+      </div>
+   </div>
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <div className="border-b border-border px-5 py-2.5">
+      <span className="font-mono text-xs text-muted-foreground">Authorization callback URL</span>
+   </div>
+   <CodeBlock lang="bash" code={`http://localhost:8000/api/auth/github/callback`} />
+</div>
+
+<div className="mt-4 max-w-[560px] space-y-3">
+   <div className="text-sm leading-relaxed text-muted-foreground">
+      After creating the app, click{' '}
+      <span className="font-medium text-foreground">Generate a new client secret</span>. Copy both
+      the <span className="font-medium text-foreground">Client ID</span> and the generated secret —
+      the secret is only shown once.
+   </div>
+   <div className="text-sm leading-relaxed text-muted-foreground">
+      In production replace <code>http://localhost:8000</code> with your actual server URL.
+   </div>
+</div>
+
+---
+
+## 2. Add credentials to your env
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <div className="border-b border-border px-5 py-2.5">
+      <span className="font-mono text-xs text-muted-foreground">.env</span>
+   </div>
+   <CodeBlock
+      lang="bash"
+      code={`GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret`}
+   />
+</div>
+
+---
+
+## 3. Add the provider to your auth config
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Import <code>gitHubProvider</code> from <code>swift-auth/providers</code> and add it to{' '}
+   <code>socialProviders</code> in your config.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <div className="border-b border-border px-5 py-2.5">
+    <span className="font-mono text-xs text-muted-foreground">src/lib/auth.ts</span>
+  </div>
+  <CodeBlock
+    lang="ts"
+    code={`import { SwiftAuth } from 'swift-auth';
+import { drizzleAdapter } from '@swift-auth/drizzle';
+import { db } from '../db/index.js';
+import { gitHubProvider } from 'swift-auth/providers';
+
+export const auth = new SwiftAuth({
+  baseUrl: '<http://localhost:8000>',
+  database: drizzleAdapter(db),
+  socialProviders: {
+    github: gitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      redirectUrl: '<http://localhost:3000>',
+    }),
+  },
+});`}
+  />
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   The <code>redirectUrl</code> is your frontend URL — where the user lands after the OAuth flow
+   completes. Swift Auth handles the GitHub callback internally.
+</div>
+
+---
+
+## Configuration options
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   You can customize the scopes your app requests from GitHub.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <CodeBlock
+    lang="ts"
+    code={`gitHubProvider({
+  clientId: process.env.GITHUB_CLIENT_ID!,
+  clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+  redirectUrl: 'http://localhost:3000',
+
+// scopes to request from GitHub (default: ['read:user', 'user:email'])
+scopes: ['read:user', 'user:email'],
+})`}
+/>
+
+</div>
+
+### scopes
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Scopes control what data your app can read from GitHub. The defaults are <code>read:user</code>{' '}
+   and <code>user:email</code> — these are the minimum required for Swift Auth to fetch the user's
+   profile and email address. You should keep both defaults. If your app needs access to other
+   GitHub data like repos or organizations, add those extra scopes here.
+</div>
+
+<div className="mt-4 max-w-[560px] rounded-xl border border-dashed border-border bg-muted/20 p-5">
+   <div className="mb-2 font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-muted-foreground">
+      Why user:email is required
+   </div>
+   <div className="text-sm leading-relaxed text-muted-foreground">
+      GitHub users can set their email address to private. When this happens, the user profile
+      endpoint returns <code>null</code> for the email field. Swift Auth handles this automatically
+      — it makes a second request to the GitHub emails endpoint to fetch the user's verified primary
+      email. The <code>user:email</code> scope is what grants access to that endpoint, so removing
+      it will break sign-in for users with private emails.
+   </div>
+</div>
+
+---
+
+## 4. Trigger sign-in from your frontend
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Call <code>githubSignIn</code> on your auth client. This redirects the user to the GitHub
+   authorization screen.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <CodeBlock lang="ts" code={`authClient.githubSignIn();`} />
+</div>
+
+---
+
+## How Swift Auth handles the flow
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   GitHub's OAuth flow is slightly different from Google — GitHub does not support OIDC, so there is
+   no ID token. Swift Auth handles this difference internally so you don't have to think about it.
+</div>
+
+<div className="mt-5 max-w-[560px] space-y-4">
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         1
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         GitHub redirects back to your server with an authorization code.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         2
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Swift Auth exchanges the code for an access token. GitHub does not return a refresh token
+         or ID token.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         3
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Swift Auth fetches the user's profile from the GitHub API. If the email is private, it
+         makes a second request to the emails endpoint and picks the verified primary email.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         4
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         The user is found or created in your database. If they previously signed up with email and
+         password using the same address, their GitHub account is linked automatically.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         5
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         A session is created, the session cookie is set, and the user is redirected to your{' '}
+         <code>redirectUrl</code>.
+      </div>
+   </div>
+</div>
+
+---
+
+## Defaults
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <CodeBlock
+      lang="ts"
+      code={`{
+  scopes: ['read:user', 'user:email'],
+}`}
+   />
+</div>

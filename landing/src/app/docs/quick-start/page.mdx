@@ -1,0 +1,334 @@
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CodeBlock } from '@/components/ui/CodeBlock';
+
+# Quick Start
+
+<div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
+   Get Swift Auth running in your app in a few minutes.
+</div>
+
+## 1. Install Swift Auth
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <Tabs defaultValue="pnpm" className="w-full">
+      <div className="px-4 pt-3">
+         <TabsList className="h-auto gap-1.5 bg-transparent p-0">
+            <TabsTrigger
+               value="pnpm"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               pnpm
+            </TabsTrigger>
+            <TabsTrigger
+               value="npm"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               npm
+            </TabsTrigger>
+            <TabsTrigger
+               value="yarn"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               yarn
+            </TabsTrigger>
+            <TabsTrigger
+               value="bun"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               bun
+            </TabsTrigger>
+         </TabsList>
+      </div>
+      <TabsContent value="pnpm" className="m-0">
+         <CodeBlock code={`pnpm add swift-auth`} lang="bash" />
+      </TabsContent>
+      <TabsContent value="npm" className="m-0">
+         <CodeBlock code={`npm install swift-auth`} lang="bash" />
+      </TabsContent>
+      <TabsContent value="yarn" className="m-0">
+         <CodeBlock code={`yarn add swift-auth`} lang="bash" />
+      </TabsContent>
+      <TabsContent value="bun" className="m-0">
+         <CodeBlock code={`bun add swift-auth`} lang="bash" />
+      </TabsContent>
+   </Tabs>
+</div>
+
+## 2. Create your auth instance
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Create a file at <code>src/lib/auth.ts</code> and set up your auth config. Start with just the
+   basics — your server URL and email/password auth.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <div className="border-b border-border px-5 py-2.5">
+    <span className="font-mono text-xs text-muted-foreground">src/lib/auth.ts</span>
+  </div>
+  <CodeBlock
+    lang="ts"
+    code={`import { SwiftAuth } from 'swift-auth';
+
+export const auth = new SwiftAuth({
+  baseUrl: '<http://localhost:8000>',
+  emailAndPassword: {
+    enabled: true,
+  },
+});`}
+  />
+</div>
+
+<div className="mt-6 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Swift Auth needs a database adapter to store users, sessions, and accounts. Install the adapter
+   for your ORM first.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <Tabs defaultValue="drizzle" className="w-full">
+      <div className="border-b border-border px-4 pt-3">
+         <TabsList className="h-auto gap-1.5 bg-transparent p-0">
+            <TabsTrigger
+               value="drizzle"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               Drizzle
+            </TabsTrigger>
+            <TabsTrigger
+               value="prisma"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               Prisma
+            </TabsTrigger>
+         </TabsList>
+      </div>
+      <TabsContent value="drizzle" className="m-0">
+         <CodeBlock code={`pnpm add @swift-auth/drizzle`} lang="bash" />
+      </TabsContent>
+      <TabsContent value="prisma" className="m-0">
+         <CodeBlock code={`pnpm add @swift-auth/prisma`} lang="bash" />
+      </TabsContent>
+   </Tabs>
+</div>
+
+<div className="mt-6 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Now add the adapter to your auth config.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <div className="border-b border-border px-5 py-2.5">
+    <span className="font-mono text-xs text-muted-foreground">src/lib/auth.ts</span>
+  </div>
+  <CodeBlock
+    lang="ts"
+    code={`import { SwiftAuth } from 'swift-auth';
+import { drizzleAdapter } from '@swift-auth/drizzle';
+import { db } from '../db/index.js';
+
+export const auth = new SwiftAuth({
+  baseUrl: '<http://localhost:8000>',
+  emailAndPassword: {
+    enabled: true,
+  },
+  database: drizzleAdapter(db),
+});`}
+  />
+</div>
+
+## 3. Generate the database schema
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Run the CLI to generate the required tables. Pass the path where you want the schema file to be
+   created.
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   If a file already exists at that path, clear its contents first or point to a new file — this
+   command overwrites whatever is there.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <CodeBlock lang="bash" code={`npx swift-auth-cli --output ./src/db/schema.ts`} />
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   This writes four tables to your schema file: <code>user</code>, <code>account</code>,{' '}
+   <code>session</code>, and <code>verification</code>. Once generated, push them to your database.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <Tabs defaultValue="drizzle" className="w-full">
+      <div className="border-b border-border px-4 pt-3">
+         <TabsList className="h-auto gap-1.5 bg-transparent p-0">
+            <TabsTrigger
+               value="drizzle"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               Drizzle
+            </TabsTrigger>
+            <TabsTrigger
+               value="prisma"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               Prisma
+            </TabsTrigger>
+         </TabsList>
+      </div>
+      <TabsContent value="drizzle" className="m-0">
+         <CodeBlock code={`npx drizzle-kit push`} lang="bash" />
+      </TabsContent>
+      <TabsContent value="prisma" className="m-0">
+         <CodeBlock code={`npx prisma db push`} lang="bash" />
+      </TabsContent>
+   </Tabs>
+</div>
+
+## 4. Mount the auth handler
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Mount the handler on your server. Swift Auth registers all auth routes automatically — no manual
+   route setup needed.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <Tabs defaultValue="express" className="w-full">
+    <div className="border-b border-border px-4 pt-3">
+      <TabsList className="h-auto gap-1.5 bg-transparent p-0">
+        <TabsTrigger value="express" className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background">Express</TabsTrigger>
+        <TabsTrigger value="hono" disabled className="rounded-md border border-transparent font-mono text-xs opacity-40 cursor-not-allowed">Hono</TabsTrigger>
+        <TabsTrigger value="nextjs" disabled className="rounded-md border border-transparent font-mono text-xs opacity-40 cursor-not-allowed">Next.js</TabsTrigger>
+      </TabsList>
+    </div>
+    <TabsContent value="express" className="m-0">
+      <CodeBlock
+        lang="ts"
+        code={`import express from 'express';
+import cookieParser from 'cookie-parser';
+import { toNodeHandler } from 'swift-auth/node';
+import { auth } from './lib/auth.js';
+
+const app = express();
+
+app.use(cookieParser());
+app.use(express.json());
+app.use(toNodeHandler(auth));
+
+app.listen(8000, () => {
+console.log('Server running on port 8000');
+});`}
+/>
+
+</TabsContent>
+
+  </Tabs>
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Hono and Next.js handlers are coming soon.
+</div>
+
+## 5. Call auth from your frontend
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Install the React client package.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <Tabs defaultValue="pnpm" className="w-full">
+      <div className="px-4 pt-3">
+         <TabsList className="h-auto gap-1.5 bg-transparent p-0">
+            <TabsTrigger
+               value="pnpm"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               pnpm
+            </TabsTrigger>
+            <TabsTrigger
+               value="npm"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               npm
+            </TabsTrigger>
+            <TabsTrigger
+               value="yarn"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               yarn
+            </TabsTrigger>
+            <TabsTrigger
+               value="bun"
+               className="rounded-md border border-transparent font-mono text-xs data-[state=active]:border-border data-[state=active]:bg-background"
+            >
+               bun
+            </TabsTrigger>
+         </TabsList>
+      </div>
+      <TabsContent value="pnpm" className="m-0">
+         <CodeBlock code={`pnpm add @swift-auth/react`} lang="bash" />
+      </TabsContent>
+      <TabsContent value="npm" className="m-0">
+         <CodeBlock code={`npm install @swift-auth/react`} lang="bash" />
+      </TabsContent>
+      <TabsContent value="yarn" className="m-0">
+         <CodeBlock code={`yarn add @swift-auth/react`} lang="bash" />
+      </TabsContent>
+      <TabsContent value="bun" className="m-0">
+         <CodeBlock code={`bun add @swift-auth/react`} lang="bash" />
+      </TabsContent>
+   </Tabs>
+</div>
+
+<div className="mt-6 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Create a client instance and export it so you can use it anywhere in your app.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <div className="border-b border-border px-5 py-2.5">
+    <span className="font-mono text-xs text-muted-foreground">src/lib/auth-client.ts</span>
+  </div>
+  <CodeBlock
+    lang="ts"
+    code={`import { SwiftAuthClient } from '@swift-auth/react';
+
+export const authClient = SwiftAuthClient({
+  baseUrl: '<http://localhost:8000>',
+});`}
+  />
+</div>
+
+<div className="mt-6 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Now use it in your components. Here's a simple sign-in form.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <div className="border-b border-border px-5 py-2.5">
+    <span className="font-mono text-xs text-muted-foreground">SignInForm.tsx</span>
+  </div>
+  <CodeBlock
+    lang="tsx"
+    code={`import { authClient } from '../lib/auth-client';
+
+async function signIn(email: string, password: string) {
+await authClient.emailSignIn({ email, password });
+}
+
+async function signUp(name: string, email: string, password: string) {
+await authClient.emailSignUp({ name, email, password });
+}
+
+async function signOut() {
+await authClient.signOut();
+}`}
+/>
+
+</div>
+
+<div className="mt-6 flex flex-wrap items-center gap-3">
+   <Button asChild size="lg">
+      <Link href="/docs/providers">Add Social Providers</Link>
+   </Button>
+   <Button asChild variant="outline" size="lg">
+      <Link href="/docs">Back to Documentation</Link>
+   </Button>
+</div>

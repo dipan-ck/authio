@@ -1,0 +1,135 @@
+import { CodeBlock } from '@/components/ui/CodeBlock';
+
+# Providers
+
+<div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
+   Social providers in Swift Auth all follow the same setup pattern — import the provider, pass in
+   your credentials, and Swift Auth handles the entire OAuth flow for you.
+</div>
+
+## Google
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Get your <code>clientId</code> and <code>clientSecret</code> from the Google Cloud Console, then
+   add the provider to your auth config.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <div className="border-b border-border px-5 py-2.5">
+    <span className="font-mono text-xs text-muted-foreground">src/lib/auth.ts</span>
+  </div>
+  <CodeBlock
+    lang="ts"
+    code={`import { googleProvider } from 'swift-auth/providers';
+
+export const auth = new SwiftAuth({
+  // ...rest of your config
+  socialProviders: {
+    google: googleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      redirectUrl: '<http://localhost:3000>',
+    }),
+  },
+});`}
+  />
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Add the credentials to your <code>.env</code> file.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <div className="border-b border-border px-5 py-2.5">
+      <span className="font-mono text-xs text-muted-foreground">.env</span>
+   </div>
+   <CodeBlock
+      lang="bash"
+      code={`GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret`}
+   />
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Then trigger sign-in from your frontend with a single call.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <CodeBlock lang="ts" code={`authClient.googleSignIn();`} />
+</div>
+
+## GitHub
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Get your <code>clientId</code> and <code>clientSecret</code> from GitHub Developer Settings, then
+   add the provider to your auth config.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <div className="border-b border-border px-5 py-2.5">
+    <span className="font-mono text-xs text-muted-foreground">src/lib/auth.ts</span>
+  </div>
+  <CodeBlock
+    lang="ts"
+    code={`import { gitHubProvider } from 'swift-auth/providers';
+
+export const auth = new SwiftAuth({
+  // ...rest of your config
+  socialProviders: {
+    github: gitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      redirectUrl: '<http://localhost:3000>',
+    }),
+  },
+});`}
+  />
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Add the credentials to your <code>.env</code> file.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <div className="border-b border-border px-5 py-2.5">
+      <span className="font-mono text-xs text-muted-foreground">.env</span>
+   </div>
+   <CodeBlock
+      lang="bash"
+      code={`GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret`}
+   />
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Then trigger sign-in from your frontend.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <CodeBlock lang="ts" code={`authClient.githubSignIn();`} />
+</div>
+
+## How it works
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Every OAuth provider has its own flow, token format, and user data shape. Swift Auth normalizes
+   all of that internally — you pass in credentials, call one method, and get back a session. You
+   never have to deal with authorization codes, token exchanges, or provider-specific API quirks
+   yourself.
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   The <code>redirectUrl</code> is your frontend URL — where the user lands after they approve
+   access. Swift Auth handles the callback, creates or updates the user record, and sets the session
+   cookie automatically.
+</div>
+
+<div className="mt-8 rounded-xl border border-dashed border-border bg-muted/20 p-5">
+   <div className="mb-2 font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-muted-foreground">
+      More providers coming soon
+   </div>
+   <div className="max-w-[480px] text-sm leading-relaxed text-muted-foreground">
+      New providers follow the same pattern — import, configure, done. Detailed setup guides for
+      each provider will be added as support expands.
+   </div>
+</div>

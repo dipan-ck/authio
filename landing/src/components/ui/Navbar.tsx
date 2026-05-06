@@ -12,22 +12,32 @@ function GitHubIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export default function Navbar() {
    return (
-      <header className="w-full border-b">
+      <header className="w-full border-b border-border/40 sticky top-0 z-50 bg-background/80 backdrop-blur-sm">
          <div className="mx-auto max-w-6xl px-6 h-14 flex items-center justify-between">
-            {/* Left - Logo */}
-            <Link href="/" className="flex items-center">
-               <Image src="/logo.svg" alt="swift-auth logo" width={130} height={130} priority />
-            </Link>
-
-            {/* Right - GitHub Button */}
+            <div className="flex items-center gap-8">
+               <Link href="/" className="flex items-center">
+                  <Image src="/logo.svg" alt="swift-auth" width={110} height={110} priority />
+               </Link>
+               <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+                  <Link href="/docs" className="hover:text-foreground transition-colors">
+                     Docs
+                  </Link>
+                  <Link href="/docs/adapters" className="hover:text-foreground transition-colors">
+                     Adapters
+                  </Link>
+                  <Link href="/docs/providers" className="hover:text-foreground transition-colors">
+                     Providers
+                  </Link>
+               </nav>
+            </div>
             <Button asChild variant="outline">
                <Link
-                  href="https://github.com/dipan-ck/swift-auth"
+                  href="https://github.com/swift-auth/swift-auth"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center"
+                  className="flex items-center gap-2"
                >
-                  <GitHubIcon className="mr-2 h-4 w-4" />
+                  <GitHubIcon className="h-4 w-4" />
                   GitHub
                </Link>
             </Button>

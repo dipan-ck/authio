@@ -1,0 +1,308 @@
+import { CodeBlock } from '@/components/ui/CodeBlock';
+
+# Google
+
+<div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
+   Add Google sign-in to your app in a few steps. You will need to create a Google OAuth app first,
+   then add the provider to your auth config.
+</div>
+
+---
+
+## 1. Create a Google OAuth app
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Go to the{' '}
+   <a
+      href="https://console.cloud.google.com"
+      target="_blank"
+      className="text-foreground underline underline-offset-4 hover:text-foreground/80"
+   >
+      Google Cloud Console
+   </a>{' '}
+   and follow these steps.
+</div>
+
+<div className="mt-5 max-w-[560px] space-y-4">
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         1
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Create a new project or select an existing one from the top navigation bar.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         2
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Go to <span className="font-medium text-foreground">APIs & Services</span> →{' '}
+         <span className="font-medium text-foreground">OAuth consent screen</span>. Choose{' '}
+         <span className="font-medium text-foreground">External</span> and fill in your app name and
+         email.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         3
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Go to <span className="font-medium text-foreground">APIs & Services</span> →{' '}
+         <span className="font-medium text-foreground">Credentials</span>. Click{' '}
+         <span className="font-medium text-foreground">Create Credentials</span> →{' '}
+         <span className="font-medium text-foreground">OAuth client ID</span>.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         4
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Set the application type to{' '}
+         <span className="font-medium text-foreground">Web application</span>.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         5
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Under <span className="font-medium text-foreground">Authorized redirect URIs</span>, add
+         your callback URL.
+      </div>
+   </div>
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <div className="border-b border-border px-5 py-2.5">
+      <span className="font-mono text-xs text-muted-foreground">Authorized redirect URI</span>
+   </div>
+   <CodeBlock lang="bash" code={`http://localhost:8000/api/auth/google/callback`} />
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   In production replace <code>http://localhost:8000</code> with your actual server URL. Once
+   created, Google will give you a <code>Client ID</code> and <code>Client Secret</code> — copy
+   both.
+</div>
+
+---
+
+## 2. Add credentials to your env
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <div className="border-b border-border px-5 py-2.5">
+      <span className="font-mono text-xs text-muted-foreground">.env</span>
+   </div>
+   <CodeBlock
+      lang="bash"
+      code={`GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret`}
+   />
+</div>
+
+---
+
+## 3. Add the provider to your auth config
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Import <code>googleProvider</code> from <code>swift-auth/providers</code> and add it to{' '}
+   <code>socialProviders</code> in your config.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <div className="border-b border-border px-5 py-2.5">
+    <span className="font-mono text-xs text-muted-foreground">src/lib/auth.ts</span>
+  </div>
+  <CodeBlock
+    lang="ts"
+    code={`import { SwiftAuth } from 'swift-auth';
+import { drizzleAdapter } from '@swift-auth/drizzle';
+import { db } from '../db/index.js';
+import { googleProvider } from 'swift-auth/providers';
+
+export const auth = new SwiftAuth({
+  baseUrl: '<http://localhost:8000>',
+  database: drizzleAdapter(db),
+  socialProviders: {
+    google: googleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      redirectUrl: '<http://localhost:3000>',
+    }),
+  },
+});`}
+  />
+</div>
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   The <code>redirectUrl</code> is your frontend URL — where the user lands after the OAuth flow
+   completes. This is not the Google callback URL, Swift Auth handles that internally.
+</div>
+
+---
+
+## Configuration options
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Beyond the required fields, you can customize the consent screen behavior and the scopes you
+   request from Google.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+  <CodeBlock
+    lang="ts"
+    code={`googleProvider({
+  clientId: process.env.GOOGLE_CLIENT_ID!,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+  redirectUrl: 'http://localhost:3000',
+
+// scopes to request from Google (default: ['openid', 'email', 'profile'])
+scopes: ['openid', 'email', 'profile'],
+
+// controls the consent screen behavior (default: 'consent')
+prompt: 'consent',
+
+// 'offline' returns a refresh token, 'online' does not (default: 'offline')
+accessType: 'offline',
+})`}
+/>
+
+</div>
+
+### scopes
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Scopes control what data your app can access from Google. The defaults — <code>openid</code>,{' '}
+   <code>email</code>, and <code>profile</code> — are enough to get the user's name, email, and
+   profile picture. If your app needs access to other Google services like Calendar or Drive, add
+   those scopes here. Any extra scopes will be shown to the user on the consent screen.
+</div>
+
+### prompt
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Controls what Google shows the user when they sign in. The available values are:
+</div>
+
+<div className="mt-4 max-w-[560px] space-y-3">
+   <div className="flex gap-3 text-sm">
+      <code className="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-xs">consent</code>
+      <span className="text-muted-foreground">
+         Always show the consent screen, even if the user has already approved. This is the default
+         and ensures a refresh token is returned.
+      </span>
+   </div>
+   <div className="flex gap-3 text-sm">
+      <code className="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
+         select_account
+      </code>
+      <span className="text-muted-foreground">
+         Show the account picker so the user can choose which Google account to use.
+      </span>
+   </div>
+   <div className="flex gap-3 text-sm">
+      <code className="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-xs">login</code>
+      <span className="text-muted-foreground">
+         Force the user to re-enter their Google credentials even if they are already signed in.
+      </span>
+   </div>
+   <div className="flex gap-3 text-sm">
+      <code className="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-xs">none</code>
+      <span className="text-muted-foreground">
+         Skip the consent screen if the user has already approved. Returns an error if they haven't.
+      </span>
+   </div>
+</div>
+
+### accessType
+
+<div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   When set to <code>offline</code> (the default), Google returns a refresh token along with the
+   access token. This lets your server refresh access without the user signing in again. Set to{' '}
+   <code>online</code> if you only need a short-lived access token and don't need offline access.
+</div>
+
+---
+
+## 4. Trigger sign-in from your frontend
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   Call <code>googleSignIn</code> on your auth client. This redirects the user to the Google consent
+   screen.
+</div>
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <CodeBlock lang="ts" code={`authClient.googleSignIn();`} />
+</div>
+
+---
+
+## How Swift Auth handles the flow
+
+<div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
+   You don't need to write any callback routes or token exchange logic. Here is what Swift Auth does
+   automatically once the user approves access.
+</div>
+
+<div className="mt-5 max-w-[560px] space-y-4">
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         1
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Google redirects back to your server with an authorization code.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         2
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         Swift Auth exchanges the code for access, refresh, and ID tokens.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         3
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         User info is decoded directly from the ID token — no extra API call needed.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         4
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         The user is found or created in your database. If they previously signed up with email and
+         password using the same address, their Google account is linked to the existing user
+         automatically.
+      </div>
+   </div>
+   <div className="flex gap-3">
+      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-xs font-medium text-muted-foreground">
+         5
+      </div>
+      <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
+         A session is created, the session cookie is set, and the user is redirected to your{' '}
+         <code>redirectUrl</code>.
+      </div>
+   </div>
+</div>
+
+---
+
+## Defaults
+
+<div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
+   <CodeBlock
+      lang="ts"
+      code={`{
+  scopes: ['openid', 'email', 'profile'],
+  prompt: 'consent',
+  accessType: 'offline',
+}`}
+   />
+</div>
