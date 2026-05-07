@@ -118,10 +118,16 @@ importers:
       citty:
         specifier: ^0.1.0
         version: 0.1.6
+      jiti:
+        specifier: ^2.7.0
+        version: 2.7.0
     devDependencies:
       '@types/node':
         specifier: ^25.5.0
         version: 25.6.0
+      swift-auth:
+        specifier: workspace:*
+        version: link:../core
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(jiti@2.7.0)(postcss@8.5.14)(tsx@4.21.0)(typescript@6.0.3)

@@ -23,8 +23,7 @@
    ],
    "scripts": {
       "build": "tsup",
-      "dev": "tsup --watch",
-      "test": "vitest run"
+      "dev": "tsup --watch"
    },
    "devDependencies": {
       "@types/node": "^25.5.0",

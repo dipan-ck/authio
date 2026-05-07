@@ -1,4 +1,4 @@
-import type { DatabaseAdapter } from '../../src/types/adapter.js';
+import type { DatabaseAdapter } from 'swift-auth';
 
 export const mockAdapter: DatabaseAdapter = {
    id: 'drizzle-adapter',

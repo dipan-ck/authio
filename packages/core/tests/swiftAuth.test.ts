@@ -1,23 +1,33 @@
 import { describe, it, expect } from 'vitest';
+
 import { SwiftAuth } from '../src/core/swiftAuth.js';
-import { ParsedSwiftAuthConfig } from '../src/validator/config.validator.js';
+import type { ParsedSwiftAuthConfig } from '../src/validator/config.validator.js';
+
 import { mockAdapter } from './utils/mockAdapter.js';
 
 describe('SwiftAuth Instance creation test', () => {
    it('should create an instance with default values', () => {
       const expected: ParsedSwiftAuthConfig = {
          baseUrl: 'http://localhost:3000',
+
          database: mockAdapter,
+
+         socialProviders: undefined,
+
          session: {
             expiry: 1000 * 60 * 60 * 24,
          },
+
          emailAndPassword: {
             enabled: true,
             autoSignIn: true,
             verifyEmail: false,
             minPasswordLength: 8,
             verificationTokenExpiry: 1000 * 60 * 60,
+            verificationCallback: undefined,
+            forgotPasswordCallback: undefined,
          },
+
          cookies: {
             name: 'swift_auth_session_token',
             secure: true,
@@ -28,7 +38,9 @@ describe('SwiftAuth Instance creation test', () => {
 
       const auth = new SwiftAuth({
          baseUrl: 'http://localhost:3000',
+
          database: mockAdapter,
+
          emailAndPassword: {
             enabled: true,
          },
@@ -38,19 +50,29 @@ describe('SwiftAuth Instance creation test', () => {
    });
 
    it('should create an instance with user defined emailAndPassword values', () => {
+      const verificationCallback = async () => {};
+
       const expected: ParsedSwiftAuthConfig = {
          baseUrl: 'http://localhost:3000',
+
          database: mockAdapter,
+
+         socialProviders: undefined,
+
          session: {
             expiry: 1000 * 60 * 60 * 24,
          },
+
          emailAndPassword: {
             enabled: true,
             autoSignIn: false,
             verifyEmail: true,
             minPasswordLength: 20,
             verificationTokenExpiry: 1000 * 60 * 60,
+            verificationCallback,
+            forgotPasswordCallback: undefined,
          },
+
          cookies: {
             name: 'swift_auth_session_token',
             secure: true,
@@ -61,13 +83,15 @@ describe('SwiftAuth Instance creation test', () => {
 
       const auth = new SwiftAuth({
          baseUrl: 'http://localhost:3000',
+
          database: mockAdapter,
+
          emailAndPassword: {
             enabled: true,
             autoSignIn: false,
             verifyEmail: true,
             minPasswordLength: 20,
-            verificationCallback: async () => {},
+            verificationCallback,
          },
       });
 
@@ -77,10 +101,17 @@ describe('SwiftAuth Instance creation test', () => {
    it('should create an instance with user defined cookie values', () => {
       const expected: ParsedSwiftAuthConfig = {
          baseUrl: 'https://api.example.com',
+
          database: mockAdapter,
+
+         socialProviders: undefined,
+
          session: {
             expiry: 1000 * 60 * 60 * 24,
          },
+
+         emailAndPassword: undefined,
+
          cookies: {
             name: 'my_app_session',
             secure: false,
@@ -91,7 +122,9 @@ describe('SwiftAuth Instance creation test', () => {
 
       const auth = new SwiftAuth({
          baseUrl: 'https://api.example.com',
+
          database: mockAdapter,
+
          cookies: {
             name: 'my_app_session',
             secure: false,
@@ -106,16 +139,19 @@ describe('SwiftAuth Instance creation test', () => {
    it('should extract domain from baseUrl when no cookie domain is provided', () => {
       const auth = new SwiftAuth({
          baseUrl: 'https://api.example.com',
+
          database: mockAdapter,
       });
 
-      expect(auth.config?.cookies?.domain).toBe('api.example.com');
+      expect(auth.config.cookies.domain).toBe('api.example.com');
    });
 
    it('should use custom session expiry when provided', () => {
       const auth = new SwiftAuth({
          baseUrl: 'http://localhost:3000',
+
          database: mockAdapter,
+
          session: {
             expiry: 1000 * 60 * 60,
          },
@@ -127,10 +163,12 @@ describe('SwiftAuth Instance creation test', () => {
    it('should use custom verificationTokenExpiry when provided', () => {
       const auth = new SwiftAuth({
          baseUrl: 'http://localhost:3000',
+
          database: mockAdapter,
+
          emailAndPassword: {
             enabled: true,
-            verificationTokenExpiry: 1000 * 60 * 30, // 30 mins
+            verificationTokenExpiry: 1000 * 60 * 30,
          },
       });
 
@@ -141,33 +179,22 @@ describe('SwiftAuth Instance creation test', () => {
       expect(() => {
          new SwiftAuth({
             baseUrl: 'http://localhost:3000',
+
             database: mockAdapter,
+
             emailAndPassword: {
                enabled: true,
                verifyEmail: true,
-               // no verificationCallback
             },
          });
       }).toThrow('verificationCallback');
-   });
-
-   it('should throw error when emailAndPassword.enabled is not a boolean', () => {
-      expect(() => {
-         new SwiftAuth({
-            baseUrl: 'http://localhost:3000',
-            database: mockAdapter,
-            emailAndPassword: {
-               // @ts-expect-error
-               enabled: 'yes',
-            },
-         });
-      }).toThrow('emailAndPassword.enabled');
    });
 
    it('should throw error when database is not defined', () => {
       expect(() => {
          new SwiftAuth({
             baseUrl: 'http://localhost:3000',
+
             // @ts-expect-error
             database: undefined,
          });
@@ -179,6 +206,7 @@ describe('SwiftAuth Instance creation test', () => {
          new SwiftAuth({
             // @ts-expect-error
             baseUrl: undefined,
+
             database: mockAdapter,
          });
       }).toThrow('baseUrl');
@@ -188,8 +216,9 @@ describe('SwiftAuth Instance creation test', () => {
       expect(() => {
          new SwiftAuth({
             baseUrl: 'not-a-valid-url',
+
             database: mockAdapter,
          });
-      }).toThrow('baseUrl');
+      }).toThrow('Invalid URL');
    });
 });

@@ -1,6 +1,8 @@
 import type { Account, Session, User, Verification } from './auth.js';
 
 export interface DatabaseAdapter {
+   id: string;
+   provider: string;
    //user operations interface
    createUser: (user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>) => Promise<User>;
    findUserById: (id: string) => Promise<User | null>;

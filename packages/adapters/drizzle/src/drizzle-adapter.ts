@@ -48,6 +48,8 @@ export function drizzleAdapter(adapterOptions: DrizzleAdapterOptions): DatabaseA
    const isMysql = provider === 'mysql';
 
    return {
+      id: 'drizzle-addapter',
+      provider,
       createUser: async (user) => {
          const values = { id: nanoid(), ...user, createdAt: new Date(), updatedAt: new Date() };
          if (isMysql) {

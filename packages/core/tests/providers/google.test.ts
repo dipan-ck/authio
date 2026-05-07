@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { googleProvider } from '../../src/providers/google.js';
 
 const mockFetch = vi.fn();
+
 global.fetch = mockFetch as any;
 
 function createMockIdToken(payload: object) {
@@ -14,6 +16,7 @@ describe('googleProvider', () => {
    const provider = googleProvider({
       clientId: 'test-client-id',
       clientSecret: 'test-client-secret',
+      redirectUrl: 'http://localhost:3000/dashboard',
    });
 
    beforeEach(() => {
@@ -22,19 +25,28 @@ describe('googleProvider', () => {
 
    it('generates correct auth URL', () => {
       const url = provider.getAuthUrl('state123', 'http://localhost/callback');
+
       const parsed = new URL(url);
 
       expect(parsed.origin + parsed.pathname).toBe('https://accounts.google.com/o/oauth2/v2/auth');
 
       expect(parsed.searchParams.get('client_id')).toBe('test-client-id');
+
       expect(parsed.searchParams.get('state')).toBe('state123');
+
       expect(parsed.searchParams.get('redirect_uri')).toBe('http://localhost/callback');
+
       expect(parsed.searchParams.get('response_type')).toBe('code');
+
+      expect(parsed.searchParams.get('access_type')).toBe('offline');
+
+      expect(parsed.searchParams.get('prompt')).toBe('consent');
    });
 
    it('exchanges code successfully', async () => {
       mockFetch.mockResolvedValueOnce({
          ok: true,
+
          json: async () => ({
             access_token: 'access123',
             refresh_token: 'refresh123',
@@ -48,10 +60,16 @@ describe('googleProvider', () => {
       const tokens = await provider.exchangeCode('code123', 'http://localhost/callback');
 
       expect(tokens.accessToken).toBe('access123');
+
       expect(tokens.refreshToken).toBe('refresh123');
+
       expect(tokens.idToken).toBe('idtoken123');
+
       expect(tokens.expiresIn).toBe(3600);
+
       expect(tokens.tokenType).toBe('Bearer');
+
+      expect(tokens.scope).toBe('openid email profile');
    });
 
    it('throws on token exchange failure', async () => {
@@ -84,10 +102,16 @@ describe('googleProvider', () => {
       });
 
       expect(user.id).toBe('123');
+
       expect(user.email).toBe('test@example.com');
+
       expect(user.name).toBe('Test User');
+
       expect(user.image).toBe('avatar.png');
+
       expect(user.emailVerified).toBe(true);
+
+      expect(user.redirectUrl).toBe('http://localhost:3000/dashboard');
    });
 
    it('throws if id_token is missing', async () => {
@@ -101,5 +125,38 @@ describe('googleProvider', () => {
             scope: 'openid',
          }),
       ).rejects.toThrow('Google id_token is missing');
+   });
+
+   it('uses custom scopes', () => {
+      const customProvider = googleProvider({
+         clientId: 'client-id',
+         clientSecret: 'client-secret',
+         redirectUrl: 'http://localhost:3000/dashboard',
+         scopes: ['openid', 'profile'],
+      });
+
+      const url = customProvider.getAuthUrl('state123', 'http://localhost/callback');
+
+      const parsed = new URL(url);
+
+      expect(parsed.searchParams.get('scope')).toBe('openid profile');
+   });
+
+   it('uses custom prompt and access type', () => {
+      const customProvider = googleProvider({
+         clientId: 'client-id',
+         clientSecret: 'client-secret',
+         redirectUrl: 'http://localhost:3000/dashboard',
+         prompt: 'select_account',
+         accessType: 'online',
+      });
+
+      const url = customProvider.getAuthUrl('state123', 'http://localhost/callback');
+
+      const parsed = new URL(url);
+
+      expect(parsed.searchParams.get('prompt')).toBe('select_account');
+
+      expect(parsed.searchParams.get('access_type')).toBe('online');
    });
 });

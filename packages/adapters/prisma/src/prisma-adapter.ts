@@ -18,6 +18,8 @@ export function prismaAdapter(adapterOptions: PrismaAdapterOptions): DatabaseAda
    const { db } = adapterOptions;
 
    return {
+      id: 'prisma-adapter',
+      provider: adapterOptions.provider,
       createUser: async (user) => {
          return db.user.create({
             data: {
