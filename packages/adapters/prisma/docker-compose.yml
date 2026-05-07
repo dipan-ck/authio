@@ -1,0 +1,10 @@
+services:
+  postgres_test:
+    image: postgres:16-alpine
+    container_name: postgres_prisma_test
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test_db
+    ports:
+      - '5433:5432' # using 5433 to avoid conflict with drizzle tests
