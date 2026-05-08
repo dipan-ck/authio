@@ -21,7 +21,7 @@ export class SwiftAuth {
          database: config.database,
          socialProviders: config.socialProviders,
          session: {
-            expiry: config.session?.expiry ?? 1000 * 60 * 60 * 24, //defaults to 1 hour
+            expiry: config.session?.expiry ?? 1000 * 60 * 60 * 24, //1 day
          },
          cookies: {
             name: config.cookies?.name ?? 'swift_auth_session_token',
@@ -260,7 +260,7 @@ export class SwiftAuth {
       }
 
       // mark email as verified
-      await this.config.database.updateUser(user.id, {
+      const verifiedUser = await this.config.database.updateUser(user.id, {
          emailVerified: true,
       });
 
@@ -281,14 +281,14 @@ export class SwiftAuth {
             code: 'EMAIL_VERIFIED',
             message: 'Email verified and signed in successfully',
             session,
-            user,
+            user: verifiedUser,
          };
       }
 
       return {
          code: 'EMAIL_VERIFIED',
          message: 'Email verified successfully',
-         user,
+         user: verifiedUser,
          session: null,
       };
    }
@@ -524,6 +524,30 @@ export class SwiftAuth {
          session,
          user,
          redirectUrl: oauthUser.redirectUrl,
+      };
+   }
+
+   async deleteUser(userId: string) {
+      const user = await this.config.database.findUserById(userId);
+
+      if (!user) {
+         throw new SwiftAuthError('USER_NOT_FOUND', 'User not found');
+      }
+
+      // delete all sessions first
+      await this.config.database.deleteUserSessions(user.id);
+
+      // if your adapter/database supports cascade delete
+      // accounts will be removed automatically
+
+      // otherwise you should add deleteAccountByUserId
+      // in adapter interface too
+
+      await this.config.database.deleteUser(user.id);
+
+      return {
+         code: 'USER_DELETED',
+         message: 'User deleted successfully',
       };
    }
 }

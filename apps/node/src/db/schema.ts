@@ -1,7 +1,6 @@
-import { pgTable } from 'drizzle-orm/pg-core';
 import * as t from 'drizzle-orm/pg-core';
 
-export const userTable = pgTable('user', {
+export const userTable = t.pgTable('user', {
    id: t.text('id').primaryKey(),
    name: t.text('name').notNull(),
    email: t.text().notNull().unique(),
@@ -11,7 +10,7 @@ export const userTable = pgTable('user', {
    updatedAt: t.timestamp('updated_at', { precision: 6, withTimezone: true }).notNull(),
 });
 
-export const accountTable = pgTable('account', {
+export const accountTable = t.pgTable('account', {
    id: t.text('id').primaryKey(),
    userId: t
       .text('user_id')
@@ -36,7 +35,16 @@ export const accountTable = pgTable('account', {
    updatedAt: t.timestamp('updated_at', { precision: 6, withTimezone: true }).notNull(),
 });
 
-export const sessionTable = pgTable('session', {
+export const verificationTable = t.pgTable('verification', {
+   id: t.text('id').primaryKey(),
+   identifier: t.text('identifier').notNull(),
+   value: t.text('value').notNull(),
+   expiresAt: t.timestamp('expires_at', { precision: 6, withTimezone: true }).notNull(),
+   createdAt: t.timestamp('created_at', { precision: 6, withTimezone: true }).notNull(),
+   updatedAt: t.timestamp('updated_at', { precision: 6, withTimezone: true }).notNull(),
+});
+
+export const sessionTable = t.pgTable('session', {
    id: t.text('id').primaryKey(),
    userId: t
       .text('user_id')
@@ -46,15 +54,6 @@ export const sessionTable = pgTable('session', {
    expiresAt: t.timestamp('expires_at', { precision: 6, withTimezone: true }).notNull(),
    ipAddress: t.text('ip_address'),
    userAgent: t.text('user_agent'),
-   createdAt: t.timestamp('created_at', { precision: 6, withTimezone: true }).notNull(),
-   updatedAt: t.timestamp('updated_at', { precision: 6, withTimezone: true }).notNull(),
-});
-
-export const verificationTable = pgTable('verification', {
-   id: t.text('id').primaryKey(),
-   identifier: t.text('identifier').notNull(),
-   value: t.text('value').notNull(),
-   expiresAt: t.timestamp('expires_at', { precision: 6, withTimezone: true }).notNull(),
    createdAt: t.timestamp('created_at', { precision: 6, withTimezone: true }).notNull(),
    updatedAt: t.timestamp('updated_at', { precision: 6, withTimezone: true }).notNull(),
 });

@@ -8,7 +8,7 @@ export interface DatabaseAdapter {
    findUserById: (id: string) => Promise<User | null>;
    findUserByEmail: (email: string) => Promise<User | null>;
    updateUser: (id: string, data: Partial<Omit<User, 'id'>>) => Promise<User>;
-
+   deleteUser: (id: string) => Promise<void>;
    //session operations interface
    createSession: (session: Omit<Session, 'id' | 'createdAt' | 'updatedAt'>) => Promise<Session>;
    findSessionByToken: (token: string) => Promise<Session | null>;

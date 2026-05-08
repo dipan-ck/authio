@@ -9,6 +9,7 @@ export type {
    ForgotPasswordResponse,
    ResetPasswordResponse,
    SessionResponse,
+   DeleteUserResponse,
    SignOutResponse,
    SwiftAuthClientApi as SwiftAuthClientType,
    User,

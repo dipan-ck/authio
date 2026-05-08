@@ -1,8 +1,8 @@
 import 'dotenv/config.js';
 import express from 'express';
-// import { db } from '../db/index.js';
+import { db } from '../db/index.js';
 import { toNodeHandler } from '@swift-auth/node';
-import { auth } from './lib/auth.js';
+import auth from './lib/auth.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();

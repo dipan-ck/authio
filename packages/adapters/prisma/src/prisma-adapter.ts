@@ -46,6 +46,12 @@ export function prismaAdapter(adapterOptions: PrismaAdapterOptions): DatabaseAda
          });
       },
 
+      deleteUser: async (id: string) => {
+         await db.user.delete({
+            where: { id },
+         });
+      },
+
       createSession: async (session) => {
          return db.session.create({
             data: {

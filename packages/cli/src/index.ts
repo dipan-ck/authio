@@ -4,7 +4,16 @@ import { generate } from './commands/generate.js';
 const main = defineCommand({
    meta: {
       name: 'Swift Auth CLI',
-      description: 'A CLI to make your swift auth integration easier',
+      description: `
+Swift Auth CLI
+
+Generate authentication schemas and setup files for:
+- Drizzle ORM
+- Prisma
+- PostgreSQL
+- MySQL
+- SQLite
+      `.trim(),
    },
    subCommands: {
       generate: generate,

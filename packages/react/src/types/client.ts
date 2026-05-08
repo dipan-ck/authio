@@ -55,6 +55,10 @@ export interface SignOutResponse {
    code: string;
    message: string;
 }
+export interface DeleteUserResponse {
+   code: string;
+   message: string;
+}
 
 export interface User {
    id: string;
@@ -112,4 +116,5 @@ export interface SwiftAuthClientApi {
    signOut(): Promise<SignOutResponse>;
    googleSignIn(): void;
    githubSignIn(): void;
+   deleteUser(): Promise<DeleteUserResponse>;
 }

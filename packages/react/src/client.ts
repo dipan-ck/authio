@@ -142,6 +142,20 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
       githubSignIn() {
          window.location.href = `${config.baseUrl}/github/signin`;
       },
+
+      async deleteUser() {
+         const res = await fetch(`${config.baseUrl}/user`, {
+            method: 'DELETE',
+            credentials: 'include',
+         });
+
+         const result = (await res.json()) as SignOutResponse;
+         if (!res.ok) {
+            throw new SwiftAuthClientError(result.code, result.message);
+         }
+
+         return result;
+      },
    };
 }
 

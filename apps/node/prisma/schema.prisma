@@ -1,35 +1,28 @@
-type PrismaProvider = 'postgres' | 'mysql' | 'sqlite';
-export function generatePrismaSchema(provider: PrismaProvider) {
-   const prismaProvider =
-      provider === 'postgres' ? 'postgresql' : provider === 'mysql' ? 'mysql' : 'sqlite';
-
-   const dt = (col: string) => {
-      if (provider === 'postgres') return `${col} @db.Timestamptz(3)`;
-      if (provider === 'mysql') return `${col} @db.DateTime(3)`;
-      return col;
-   };
-
-   return `// This is your Prisma schema file,
+// This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
 }
+
 datasource db {
-  provider = "${prismaProvider}"
+  provider = "postgresql"
 }
+
 model User {
   id            String    @id
   name          String
   email         String    @unique
   emailVerified Boolean
   image         String?
-  ${dt('createdAt DateTime')}
-  ${dt('updatedAt DateTime')}
+  createdAt     DateTime  @db.Timestamptz(3)
+  updatedAt     DateTime  @db.Timestamptz(3)
   accounts      Account[]
   sessions      Session[]
+
   @@map("user")
 }
+
 model Account {
   id                    String    @id
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -38,34 +31,38 @@ model Account {
   providerId            String
   accessToken           String?
   refreshToken          String?
-  ${dt('accessTokenExpiresAt  DateTime?')}
-  ${dt('refreshTokenExpiresAt DateTime?')}
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(3)
+  refreshTokenExpiresAt DateTime? @db.Timestamptz(3)
   scope                 String?
   idToken               String?
   password              String?
-  ${dt('createdAt DateTime')}
-  ${dt('updatedAt DateTime')}
+  createdAt             DateTime  @db.Timestamptz(3)
+  updatedAt             DateTime  @db.Timestamptz(3)
+
   @@map("account")
 }
+
 model Session {
   id        String   @id
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   token     String   @unique
-  ${dt('expiresAt DateTime')}
+  expiresAt DateTime @db.Timestamptz(3)
   ipAddress String?
   userAgent String?
-  ${dt('createdAt DateTime')}
-  ${dt('updatedAt DateTime')}
+  createdAt DateTime @db.Timestamptz(3)
+  updatedAt DateTime @db.Timestamptz(3)
+
   @@map("session")
 }
+
 model Verification {
   id         String   @id
   identifier String
   value      String
-  ${dt('expiresAt DateTime')}
-  ${dt('createdAt DateTime')}
-  ${dt('updatedAt DateTime')}
+  expiresAt  DateTime @db.Timestamptz(3)
+  createdAt  DateTime @db.Timestamptz(3)
+  updatedAt  DateTime @db.Timestamptz(3)
+
   @@map("verification")
-}`;
 }

@@ -48,7 +48,7 @@ export function drizzleAdapter(adapterOptions: DrizzleAdapterOptions): DatabaseA
    const isMysql = provider === 'mysql';
 
    return {
-      id: 'drizzle-addapter',
+      id: 'drizzle-adapter',
       provider,
       createUser: async (user) => {
          const values = { id: nanoid(), ...user, createdAt: new Date(), updatedAt: new Date() };
@@ -84,6 +84,10 @@ export function drizzleAdapter(adapterOptions: DrizzleAdapterOptions): DatabaseA
             .where(eq(tables.user.id, id))
             .returning();
          return result[0];
+      },
+
+      deleteUser: async (id: string) => {
+         await db.delete(tables.user).where(eq(tables.user.id, id));
       },
 
       createSession: async (session) => {

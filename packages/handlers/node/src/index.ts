@@ -1,5 +1,6 @@
-import { SwiftAuth, SwiftAuthError } from 'swift-auth';
+import { SwiftAuth, SwiftAuthError, User } from 'swift-auth';
 import { NextFunction, Request, Response } from 'express';
+import { Session } from 'node:inspector';
 
 // ── error helper ───────────────────────────────────────────────────────────────
 function sendError(res: Response, err: unknown) {
@@ -210,6 +211,39 @@ export function toNodeHandler(auth: SwiftAuth) {
             const result = await auth.signOut(token);
 
             // clear the session cookie from the browser
+            res.clearCookie(auth.config.cookies.name);
+
+            return res.status(200).json(result);
+         } catch (err) {
+            return sendError(res, err);
+         }
+      }
+
+      // ── DELETE /api/auth/user ────────────────────────────────────────────
+      // deletes the currently authenticated user
+      if (path === '/api/auth/user' && method === 'DELETE') {
+         try {
+            const token = req.cookies?.[auth.config.cookies.name];
+
+            if (!token) {
+               return res.status(401).json({
+                  code: 'NO_SESSION',
+                  error: 'No session cookie found',
+               });
+            }
+
+            const sessionResult = await auth.getSession(token);
+
+            if (!sessionResult || !sessionResult.user) {
+               return res.status(401).json({
+                  code: 'INVALID_SESSION',
+                  error: 'No session stored',
+               });
+            }
+
+            const result = await auth.deleteUser(sessionResult?.user.id);
+
+            // clear session cookie after user deletion
             res.clearCookie(auth.config.cookies.name);
 
             return res.status(200).json(result);

@@ -4,7 +4,7 @@
    "private": false,
    "type": "module",
    "bin": {
-      "swift-auth-cli": "./dist/index.js"
+      "swift-auth": "./dist/index.js"
    },
    "scripts": {
       "build": "tsup",

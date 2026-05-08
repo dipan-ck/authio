@@ -33,5 +33,5 @@ export async function loadConfig(path: string) {
       return null;
    }
 
-   return mod?.default;
+   return mod?.default.config;
 }
