@@ -1,5 +1,6 @@
 import { AnimatedIllustration } from '@/components/AnimatedIllustrator';
 import { CodeBlock } from '@/components/ui/CodeBlock';
+import Navbar from '@/components/ui/Navbar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -29,6 +30,7 @@ const FEATURES = [
 export default function Home() {
    return (
       <main className="min-h-screen w-full">
+         <Navbar />
          {/* Hero */}
          <section>
             <div className="mx-auto max-w-6xl px-6 pt-28 pb-24">

@@ -23,8 +23,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             {...props}
          />
       ),
-      code: (props) => (
-         <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm" {...props} />
+      code: ({ children, ...props }) => (
+         <code
+            className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[0.875em] font-medium text-foreground"
+            {...props}
+         >
+            {children}
+         </code>
       ),
       ...components,
    };

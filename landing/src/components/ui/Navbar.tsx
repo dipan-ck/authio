@@ -18,17 +18,6 @@ export default function Navbar() {
                <Link href="/" className="flex items-center">
                   <Image src="/logo.svg" alt="swift-auth" width={110} height={110} priority />
                </Link>
-               <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-                  <Link href="/docs" className="hover:text-foreground transition-colors">
-                     Docs
-                  </Link>
-                  <Link href="/docs/adapters" className="hover:text-foreground transition-colors">
-                     Adapters
-                  </Link>
-                  <Link href="/docs/providers" className="hover:text-foreground transition-colors">
-                     Providers
-                  </Link>
-               </nav>
             </div>
             <Button asChild variant="outline">
                <Link
