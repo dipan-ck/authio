@@ -1,5 +1,5 @@
 {
-   "name": "@swift-auth/prisma",
+   "name": "@authio/prisma",
    "version": "0.1.0",
    "description": "",
    "keywords": [],
@@ -40,13 +40,13 @@
       "@types/pg": "^8.20.0",
       "pg": "^8.20.0",
       "prisma": "^7.8.0",
-      "swift-auth": "workspace:*",
+      "authio": "workspace:*",
       "tsup": "^8.5.1",
       "typescript": "^6.0.2",
       "vitest": "^4.1.2"
    },
    "peerDependencies": {
-      "swift-auth": "workspace:*"
+      "authio": "workspace:*"
    },
    "license": "ISC",
    "packageManager": "pnpm@10.33.0"

@@ -3,7 +3,7 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 # Email & Password
 
 <div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
-   Swift Auth has built-in email and password authentication with support for email verification,
+   Authio has built-in email and password authentication with support for email verification,
    auto sign-in, password reset, and configurable password rules.
 </div>
 
@@ -20,11 +20,11 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
    </div>
 <CodeBlock
    lang="ts"
-   code={`import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+   code={`import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import { db } from '../db/index.js';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   emailAndPassword: {
     enabled: true,
@@ -78,14 +78,14 @@ forgotPasswordCallback: async ({ name, email, resetToken }) => {},
 ## Email verification
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-   When <code>verifyEmail</code> is <code>true</code>, Swift Auth creates the user but does not sign
+   When <code>verifyEmail</code> is <code>true</code>, Authio creates the user but does not sign
    them in. Instead it calls your <code>verificationCallback</code> with a token. You decide how to
    deliver it — email, SMS, anything.
 </div>
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
    The <code>verificationCallback</code> is required when <code>verifyEmail</code> is enabled —
-   Swift Auth will throw at startup if it is missing.
+   Authio will throw at startup if it is missing.
 </div>
 
 <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
@@ -124,12 +124,12 @@ forgotPasswordCallback: async ({ name, email, resetToken }) => {},
 ## Password reset
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-   To enable password reset, provide a <code>forgotPasswordCallback</code>. Swift Auth generates a
+   To enable password reset, provide a <code>forgotPasswordCallback</code>. Authio generates a
    reset token and passes it to your callback — you deliver it however you want.
 </div>
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-   If no account exists for the given email, Swift Auth returns a success response anyway. This
+   If no account exists for the given email, Authio returns a success response anyway. This
    prevents leaking which emails are registered.
 </div>
 
@@ -216,6 +216,6 @@ await authClient.getSession();`}
 </div>
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-   Passwords are always hashed with bcrypt before being stored. Swift Auth never stores plain text
+   Passwords are always hashed with bcrypt before being stored. Authio never stores plain text
    passwords.
 </div>

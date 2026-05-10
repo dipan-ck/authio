@@ -107,7 +107,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret`}
 ## 3. Add the provider to your auth config
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-   Import <code>googleProvider</code> from <code>swift-auth/providers</code> and add it to{' '}
+   Import <code>googleProvider</code> from <code>authio/providers</code> and add it to{' '}
    <code>socialProviders</code> in your config.
 </div>
 
@@ -117,12 +117,12 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret`}
   </div>
   <CodeBlock
     lang="ts"
-    code={`import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+    code={`import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import { db } from '../db/index.js';
-import { googleProvider } from 'swift-auth/providers';
+import { googleProvider } from 'authio/providers';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   database: drizzleAdapter({
     db,
@@ -141,7 +141,7 @@ export const auth = new SwiftAuth({
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
    The <code>redirectUrl</code> is your frontend URL — where the user lands after the OAuth flow
-   completes. This is not the Google callback URL, Swift Auth handles that internally.
+   completes. This is not the Google callback URL, Authio handles that internally.
 </div>
 
 ---
@@ -242,10 +242,10 @@ accessType: 'offline',
 
 ---
 
-## How Swift Auth handles the flow
+## How Authio handles the flow
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-   You don't need to write any callback routes or token exchange logic. Here is what Swift Auth does
+   You don't need to write any callback routes or token exchange logic. Here is what Authio does
    automatically once the user approves access.
 </div>
 
@@ -263,7 +263,7 @@ accessType: 'offline',
          2
       </div>
       <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
-         Swift Auth exchanges the code for access, refresh, and ID tokens.
+         Authio exchanges the code for access, refresh, and ID tokens.
       </div>
    </div>
    <div className="flex gap-3">

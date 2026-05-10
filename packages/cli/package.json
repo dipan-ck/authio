@@ -1,10 +1,10 @@
 {
-   "name": "@swift-auth/cli",
+   "name": "@authio/cli",
    "version": "0.1.0",
    "private": false,
    "type": "module",
    "bin": {
-      "swift-auth": "./dist/index.js"
+      "authio": "./dist/index.js"
    },
    "scripts": {
       "build": "tsup",
@@ -22,7 +22,7 @@
    },
    "devDependencies": {
       "@types/node": "^25.5.0",
-      "swift-auth": "workspace:*",
+      "authio": "workspace:*",
       "tsup": "^8.5.1",
       "typescript": "^6.0.2",
       "vitest": "^4.1.2"

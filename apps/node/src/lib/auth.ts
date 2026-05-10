@@ -1,11 +1,11 @@
 import 'dotenv/config.js';
-import { SwiftAuth } from 'swift-auth';
-import { gitHubProvider, googleProvider } from 'swift-auth/providers';
-// import { prismaAdapter } from '@swift-auth/prisma';
+import { Authio } from 'authio';
+import { gitHubProvider, googleProvider } from 'authio/providers';
+// import { prismaAdapter } from '@authio/prisma';
 // import { PrismaPg } from '@prisma/adapter-pg';
 // import { PrismaClient } from '../generated/prisma/client.js';
 import { db } from '../db/index.js';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+import { drizzleAdapter } from '@authio/drizzle';
 
 // Use an object so mutations are visible to anyone who imports this
 export const testTokens = {
@@ -17,7 +17,7 @@ export const testTokens = {
 // const adapter = new PrismaPg({ connectionString });
 // const prisma = new PrismaClient({ adapter });
 //
-const auth = new SwiftAuth({
+const auth = new Authio({
    baseUrl: 'http://localhost:8000',
    emailAndPassword: {
       enabled: true,
@@ -34,7 +34,7 @@ const auth = new SwiftAuth({
       expiry: 1000 * 60 * 60 * 48,
    },
    cookies: {
-      name: 'swift',
+      name: 'authio',
       secure: true,
       sameSite: 'lax',
       domain: 'localhost',

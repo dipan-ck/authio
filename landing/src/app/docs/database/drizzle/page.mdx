@@ -14,7 +14,7 @@ import {
 # Drizzle Adapter
 
 <div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
-   Connect Swift Auth to your database using Drizzle ORM. Supports PostgreSQL, MySQL, and SQLite.
+   Connect Authio to your database using Drizzle ORM. Supports PostgreSQL, MySQL, and SQLite.
 </div>
 
 ## Installation
@@ -50,16 +50,16 @@ import {
          </TabsList>
       </div>
       <TabsContent value="pnpm" className="m-0">
-         <CodeBlock code={`pnpm add @swift-auth/drizzle`} lang="bash" />
+         <CodeBlock code={`pnpm add @authio/drizzle`} lang="bash" />
       </TabsContent>
       <TabsContent value="npm" className="m-0">
-         <CodeBlock code={`npm install @swift-auth/drizzle`} lang="bash" />
+         <CodeBlock code={`npm install @authio/drizzle`} lang="bash" />
       </TabsContent>
       <TabsContent value="yarn" className="m-0">
-         <CodeBlock code={`yarn add @swift-auth/drizzle`} lang="bash" />
+         <CodeBlock code={`yarn add @authio/drizzle`} lang="bash" />
       </TabsContent>
       <TabsContent value="bun" className="m-0">
-         <CodeBlock code={`bun add @swift-auth/drizzle`} lang="bash" />
+         <CodeBlock code={`bun add @authio/drizzle`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -86,11 +86,11 @@ import {
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+            code={`import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import { db } from '../db/index.js';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   database: drizzleAdapter({
     db,
@@ -105,11 +105,11 @@ export const auth = new SwiftAuth({
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+            code={`import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import { db } from '../db/index.js';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   database: drizzleAdapter({
     db,
@@ -124,11 +124,11 @@ export const auth = new SwiftAuth({
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+            code={`import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import { db } from '../db/index.js';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   database: drizzleAdapter({
     db,
@@ -150,7 +150,7 @@ export const auth = new SwiftAuth({
 </div>
 
 <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
-   <CodeBlock lang="bash" code={`npx @swift-auth/cli generate --output ./src/db/auth-schema.ts`} />
+   <CodeBlock lang="bash" code={`npx @authio/cli generate --output ./src/db/auth-schema.ts`} />
 </div>
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">

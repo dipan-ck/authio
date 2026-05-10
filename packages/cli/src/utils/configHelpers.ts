@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import type { SwiftAuth, SwiftAuthConfig } from 'swift-auth';
+import type { Authio, AuthioConfig } from 'authio';
 
 import { createJiti } from 'jiti';
 
@@ -28,9 +28,9 @@ export function validateInputConfigPath(relativePath: string) {
 }
 // user should do default export of the config otherwise throw error from the cli
 export async function loadConfig(configPath: string) {
-   const mod = (await jiti.import(configPath)) as { default?: SwiftAuth };
+   const mod = (await jiti.import(configPath)) as { default?: Authio };
    if (!mod?.default) {
       return null;
    }
-   return mod.default.config as SwiftAuthConfig;
+   return mod.default.config as AuthioConfig;
 }

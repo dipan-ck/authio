@@ -1,9 +1,9 @@
-import { SwiftAuth, SwiftAuthError } from 'swift-auth';
+import { Authio, AuthioError } from 'authio';
 import { NextFunction, Request, Response } from 'express';
 
 // ── error helper ───────────────────────────────────────────────────────────────
 function sendError(res: Response, err: unknown) {
-   if (err instanceof SwiftAuthError) {
+   if (err instanceof AuthioError) {
       return res.status(400).json({
          code: err.code,
          error: err.message,
@@ -18,18 +18,15 @@ function sendError(res: Response, err: unknown) {
 // ── supported providers ────────────────────────────────────────────────
 type SocialProvider = 'google' | 'github';
 const SUPPORTED_PROVIDERS: SocialProvider[] = ['google', 'github'];
-const OAUTH_STATE_COOKIE = 'swift_oauth_state';
+const OAUTH_STATE_COOKIE = 'authio_oauth_state';
 
 function isSupportedProvider(p: string): p is SocialProvider {
    return SUPPORTED_PROVIDERS.includes(p as SocialProvider);
 }
 
-export function toNodeHandler(auth: SwiftAuth) {
+export function toNodeHandler(auth: Authio) {
    if (!auth) {
-      throw new SwiftAuthError(
-         'INVALID_SWIFT_AUTH_CONFIG',
-         'Please provide a valid SwiftAuth instance',
-      );
+      throw new AuthioError('INVALID_AUTHIO_CONFIG', 'Please provide a valid Authio instance');
    }
 
    return async function (req: Request, res: Response, next: NextFunction) {

@@ -1,18 +1,19 @@
 {
-   "name": "swift-auth",
+   "name": "authio",
    "version": "0.1.0",
-   "description": "A lightweight authentication library",
+   "description": "Type-safe authentication built for developers who want simplicity, flexibility, and control without hidden abstractions or framework lock-in.",
    "author": "Dipan Chakraborty",
    "license": "MIT",
    "repository": {
       "type": "git",
-      "url": "https://github.com/dipan-ck/swift-auth"
+      "url": "https://github.com/authio/authio"
    },
    "keywords": [
       "auth",
       "authentication",
       "jwt",
-      "oauth"
+      "oauth",
+      "authio"
    ],
    "private": false,
    "type": "module",

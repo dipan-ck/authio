@@ -36,7 +36,7 @@ export interface CookieConfig {
    domain?: string;
 }
 
-export interface SwiftAuthConfig {
+export interface AuthioConfig {
    baseUrl: string;
    session?: SessionConfig;
    emailAndPassword?: EmailAndPasswordConfig;

@@ -6,11 +6,11 @@ import type {
    ResetPasswordResponse,
    SessionResponse,
    SignOutResponse,
-   SwiftAuthClientApi,
+   AuthioClientApi,
    VerifyEmailResponse,
 } from './types/client.js';
 
-export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
+export function AuthioClient(config: Config): AuthioClientApi {
    //base url should not have not have the default auth api path so, we will be adding it
    config.baseUrl = config.baseUrl.endsWith('/')
       ? `${config.baseUrl}api/auth`
@@ -30,7 +30,7 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
          const result = (await res.json()) as EmailSignUpResponse;
 
          if (!res.ok) {
-            throw new SwiftAuthClientError(result.code, result.message);
+            throw new AuthioClientError(result.code, result.message);
          }
 
          return result;
@@ -49,7 +49,7 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
          const result = (await res.json()) as EmailSignInResponse;
 
          if (!res.ok) {
-            throw new SwiftAuthClientError(result.code, result.message);
+            throw new AuthioClientError(result.code, result.message);
          }
 
          return result;
@@ -63,7 +63,7 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
 
          const result = (await res.json()) as VerifyEmailResponse;
          if (!res.ok) {
-            throw new SwiftAuthClientError(result.code, result.message);
+            throw new AuthioClientError(result.code, result.message);
          }
 
          return result;
@@ -82,7 +82,7 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
          const result = (await res.json()) as ForgotPasswordResponse;
 
          if (!res.ok) {
-            throw new SwiftAuthClientError(result.code, result.message);
+            throw new AuthioClientError(result.code, result.message);
          }
 
          return result;
@@ -101,7 +101,7 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
          const result = (await res.json()) as ResetPasswordResponse;
 
          if (!res.ok) {
-            throw new SwiftAuthClientError(result.code, result.message);
+            throw new AuthioClientError(result.code, result.message);
          }
 
          return result;
@@ -116,7 +116,7 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
          const result = (await res.json()) as SessionResponse;
 
          if (!res.ok) {
-            throw new SwiftAuthClientError(result.code, result.message);
+            throw new AuthioClientError(result.code, result.message);
          }
 
          return result;
@@ -130,7 +130,7 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
 
          const result = (await res.json()) as SignOutResponse;
          if (!res.ok) {
-            throw new SwiftAuthClientError(result.code, result.message);
+            throw new AuthioClientError(result.code, result.message);
          }
 
          return result;
@@ -151,7 +151,7 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
 
          const result = (await res.json()) as SignOutResponse;
          if (!res.ok) {
-            throw new SwiftAuthClientError(result.code, result.message);
+            throw new AuthioClientError(result.code, result.message);
          }
 
          return result;
@@ -159,7 +159,7 @@ export function SwiftAuthClient(config: Config): SwiftAuthClientApi {
    };
 }
 
-class SwiftAuthClientError extends Error {
+class AuthioClientError extends Error {
    code: string;
    constructor(code: string, message: string) {
       super(message);

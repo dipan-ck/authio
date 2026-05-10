@@ -1,7 +1,7 @@
-export { SwiftAuthError } from './core/SwiftError.js';
+export { AuthioError } from './core/authioError.js';
 
-export { SwiftAuthConfig } from './types/config.js';
-export { SwiftAuth } from './core/swiftAuth.js';
-export { ParsedSwiftAuthConfig } from './validator/config.validator.js';
+export { AuthioConfig } from './types/config.js';
+export { Authio } from './core/authio.js';
+export { ParsedAuthioConfig } from './validator/config.validator.js';
 export type { DatabaseAdapter } from './types/adapter.js';
 export type { User, Session, Account, Verification } from './types/auth.js';

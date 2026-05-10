@@ -1,6 +1,6 @@
 import { CodeBlock } from '@/components/ui/CodeBlock';
 
-const fullConfig = `export const auth = new SwiftAuth({
+const fullConfig = `export const auth = new Authio({
   // your server's base URL — required
   baseUrl: 'http://localhost:8000',
 
@@ -28,7 +28,7 @@ const fullConfig = `export const auth = new SwiftAuth({
 
   // cookie settings
   cookies: {
-    name: 'swift_auth_session_token',
+    name: 'authio_auth_session_token',
     secure: true,
     sameSite: 'lax',
     domain: 'localhost',
@@ -53,8 +53,8 @@ const sessionConfig = `session: {
 }`;
 
 const cookiesConfig = `cookies: {
-  // cookie name (default: 'swift_auth_session_token')
-  name: 'swift_auth_session_token',
+  // cookie name (default: 'authio_auth_session_token')
+  name: 'authio_auth_session_token',
 
   // only send over HTTPS (default: true)
   secure: true,
@@ -97,7 +97,7 @@ const defaults = `{
     expiry: 86_400_000,               // 24 hours
   },
   cookies: {
-    name: 'swift_auth_session_token',
+    name: 'authio_auth_session_token',
     secure: true,
     sameSite: 'lax',
     domain: 'hostname from baseUrl',
@@ -116,7 +116,7 @@ export default function ConfigurationPage() {
          <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">Configuration</h1>
 
          <p className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
-            A full reference for every option you can pass to <code>new SwiftAuth()</code>.
+            A full reference for every option you can pass to <code>new Authio()</code>.
          </p>
 
          <hr className="my-8 border-border" />
@@ -142,8 +142,8 @@ export default function ConfigurationPage() {
             baseUrl
          </h2>
          <p className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-            Your server&apos;s base URL. Swift Auth uses this to build the OAuth callback URLs
-            internally. It must match the URL your server is running on. Required — Swift Auth will
+            Your server&apos;s base URL. Authio uses this to build the OAuth callback URLs
+            internally. It must match the URL your server is running on. Required — Authio will
             throw at startup if this is missing.
          </p>
          <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
@@ -164,7 +164,7 @@ export default function ConfigurationPage() {
          </div>
          <p className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
             The expiry value is added to <code>Date.now()</code> when the session is created. Once
-            expired, Swift Auth deletes the session automatically the next time it is accessed and
+            expired, Authio deletes the session automatically the next time it is accessed and
             returns a <code>SESSION_EXPIRED</code> error.
          </p>
 
@@ -175,14 +175,14 @@ export default function ConfigurationPage() {
             cookies
          </h2>
          <p className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-            Controls the session cookie that Swift Auth sets after sign-in. The cookie is always{' '}
+            Controls the session cookie that Authio sets after sign-in. The cookie is always{' '}
             <code>httpOnly</code> — this cannot be changed for security reasons.
          </p>
          <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
             <CodeBlock lang="ts" code={cookiesConfig} />
          </div>
          <p className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-            If you don&apos;t set <code>domain</code>, Swift Auth derives it automatically from your{' '}
+            If you don&apos;t set <code>domain</code>, Authio derives it automatically from your{' '}
             <code>baseUrl</code>. In most cases you don&apos;t need to set this manually.
          </p>
          <p className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">

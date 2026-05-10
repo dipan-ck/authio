@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-   title: 'swift-auth',
+   title: 'Authio',
    description: 'A lightweight, type-safe authentication library',
 };
 

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { gitHubProvider } from '../../src/providers/gitHub.js';
-import { SwiftAuth } from '../../src/index.js';
+import { Authio } from '../../src/index.js';
 
 import { mockAdapter } from '../utils/mockAdapter.js';
 
@@ -10,7 +10,7 @@ const mockFetch = vi.fn();
 global.fetch = mockFetch as any;
 
 describe('gitHubProvider', () => {
-   const auth = new SwiftAuth({
+   const auth = new Authio({
       baseUrl: 'http://localhost:3000',
 
       database: mockAdapter,

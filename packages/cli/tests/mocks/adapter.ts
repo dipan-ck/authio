@@ -1,4 +1,4 @@
-import type { DatabaseAdapter } from 'swift-auth';
+import type { DatabaseAdapter } from 'authio';
 
 export const mockAdapter: DatabaseAdapter = {
    id: 'drizzle-adapter',

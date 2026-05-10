@@ -1,5 +1,5 @@
 {
-   "name": "@swift-auth/node",
+   "name": "@authio/node",
    "version": "0.1.0",
    "description": "",
    "private": false,
@@ -33,7 +33,7 @@
    "packageManager": "pnpm@10.33.0",
    "dependencies": {},
    "devDependencies": {
-      "swift-auth": "workspace:*",
+      "authio": "workspace:*",
       "@types/express": "^5.0.6",
       "@types/node": "^25.5.0",
       "express": "^5.2.1",
@@ -42,7 +42,7 @@
       "vitest": "^4.1.2"
    },
    "peerDependencies": {
-      "swift-auth": "workspace:*",
+      "authio": "workspace:*",
       "express": "^5.0.0"
    }
 }

@@ -63,7 +63,7 @@ export const generate = defineCommand({
                      '',
                      'You can also explicitly provide one:',
                      '',
-                     '  swift-auth generate --config ./path/to/auth.ts',
+                     '  @authio/cli generate --config ./path/to/auth.ts',
                   ].join('\n'),
                );
             }

@@ -4,7 +4,7 @@ import path from 'path';
 import { loadConfig } from '../../src/utils/configHelpers.js';
 
 describe('loadConfig', () => {
-   it('loads a real SwiftAuth config instance', async () => {
+   it('loads a real Authio config instance', async () => {
       const filePath = path.resolve(process.cwd(), 'tests/fixtures/auth.ts');
 
       const config = await loadConfig(filePath);

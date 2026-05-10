@@ -7,7 +7,7 @@ user have attached to their GitHub account that's why we have 2 enpoints and 2 s
 */
 import type { OAuthProvider, OAuthTokens, OAuthUser } from './types.js';
 import * as z from 'zod';
-import { SwiftAuthError } from '../core/SwiftError.js';
+import { AuthioError } from '../core/authioError.js';
 
 const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
 const GITHUB_TOKEN_URL = 'https://github.com/login/oauth/access_token';
@@ -75,7 +75,7 @@ export function gitHubProvider(config: GitHubConfig): OAuthProvider {
             }),
          });
          if (!response.ok) {
-            throw new SwiftAuthError(
+            throw new AuthioError(
                'TOKEN_EXCHANGE_FAILED',
                `GitHub token exchange failed: ${response.statusText}`,
             );
@@ -99,7 +99,7 @@ export function gitHubProvider(config: GitHubConfig): OAuthProvider {
             },
          });
          if (!userResponse.ok) {
-            throw new SwiftAuthError(
+            throw new AuthioError(
                'FAILED_TO_FETCH_USER',
                `Failed to fetch GitHub user: ${userResponse.statusText}`,
             );
@@ -117,7 +117,7 @@ export function gitHubProvider(config: GitHubConfig): OAuthProvider {
                },
             });
             if (!emailsResponse.ok) {
-               throw new SwiftAuthError(
+               throw new AuthioError(
                   'FAILED_TO_FETCH_USER',
                   `Failed to fetch GitHub user emails: ${emailsResponse.statusText}`,
                );
@@ -125,7 +125,7 @@ export function gitHubProvider(config: GitHubConfig): OAuthProvider {
             const emails = (await emailsResponse.json()) as GitHubEmail[];
             const primaryEmail = emails.find((e) => e.primary && e.verified);
             if (!primaryEmail) {
-               throw new SwiftAuthError(
+               throw new AuthioError(
                   'EMAIL_NOT_FOUND',
                   'No verified primary email found on this GitHub account',
                );

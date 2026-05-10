@@ -6,12 +6,12 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 # Quick Start
 
 <div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
-   Get Swift Auth running in your app in a few minutes.
+   Get Authio running in your app in a few minutes.
 </div>
 
 ---
 
-## 1. Install Swift Auth
+## 1. Install Authio
 
 <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
    <Tabs defaultValue="pnpm" className="w-full">
@@ -44,16 +44,16 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
          </TabsList>
       </div>
       <TabsContent value="pnpm" className="m-0">
-         <CodeBlock code={`pnpm add swift-auth`} lang="bash" />
+         <CodeBlock code={`pnpm add authio`} lang="bash" />
       </TabsContent>
       <TabsContent value="npm" className="m-0">
-         <CodeBlock code={`npm install swift-auth`} lang="bash" />
+         <CodeBlock code={`npm install authio`} lang="bash" />
       </TabsContent>
       <TabsContent value="yarn" className="m-0">
-         <CodeBlock code={`yarn add swift-auth`} lang="bash" />
+         <CodeBlock code={`yarn add authio`} lang="bash" />
       </TabsContent>
       <TabsContent value="bun" className="m-0">
-         <CodeBlock code={`bun add swift-auth`} lang="bash" />
+         <CodeBlock code={`bun add authio`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -61,7 +61,7 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 ## 2. Install a Database Adapter
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-   Swift Auth needs a database adapter to store users, sessions, and accounts. Pick the adapter for
+   Authio needs a database adapter to store users, sessions, and accounts. Pick the adapter for
    your ORM.
 </div>
 
@@ -84,10 +84,10 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
          </TabsList>
       </div>
       <TabsContent value="drizzle" className="m-0">
-         <CodeBlock code={`npm install @swift-auth/drizzle`} lang="bash" />
+         <CodeBlock code={`npm install @authio/drizzle`} lang="bash" />
       </TabsContent>
       <TabsContent value="prisma" className="m-0">
-         <CodeBlock code={`npm install @swift-auth/prisma`} lang="bash" />
+         <CodeBlock code={`npm install @authio/prisma`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -96,7 +96,7 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
    Create a file at <code>src/lib/auth.ts</code>. Import your adapter along with your database
-   connection and pass both into <code>SwiftAuth</code>. Set <code>provider</code> to match your
+   connection and pass both into <code>Authio</code>. Set <code>provider</code> to match your
    database — <code>postgres</code>, <code>mysql</code>, or <code>sqlite</code>.
 </div>
 
@@ -114,11 +114,11 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+            code={`import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import { db } from '../db/index.js';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   emailAndPassword: {
     enabled: true,
@@ -136,15 +136,15 @@ export const auth = new SwiftAuth({
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { SwiftAuth } from 'swift-auth';
-import { prismaAdapter } from '@swift-auth/prisma';
+            code={`import { Authio } from 'authio';
+import { prismaAdapter } from '@authio/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../generated/prisma/client.js';
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   emailAndPassword: {
     enabled: true,
@@ -169,7 +169,7 @@ export const auth = new SwiftAuth({
 </div>
 
 <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
-   <CodeBlock lang="bash" code={`npx @swift-auth/cli generate`} />
+   <CodeBlock lang="bash" code={`npx @authio/cli generate`} />
 </div>
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
@@ -237,7 +237,7 @@ export const auth = new SwiftAuth({
          </TabsList>
       </div>
       <TabsContent value="express" className="m-0">
-         <CodeBlock code={`npm install @swift-auth/node`} lang="bash" />
+         <CodeBlock code={`npm install @authio/node`} lang="bash" />
       </TabsContent>
       <TabsContent value="hono" className="m-0">
          <div className="p-6 text-sm text-muted-foreground">Hono support is coming soon.</div>
@@ -265,7 +265,7 @@ export const auth = new SwiftAuth({
             lang="ts"
             code={`import express from 'express';
 import cookieParser from 'cookie-parser';
-import { toNodeHandler } from '@swift-auth/node';
+import { toNodeHandler } from '@authio/node';
 import { auth } from './lib/auth.js';
 
 const app = express();
@@ -329,16 +329,16 @@ console.log('Server running on port 8000');
          </TabsList>
       </div>
       <TabsContent value="pnpm" className="m-0">
-         <CodeBlock code={`pnpm add @swift-auth/react`} lang="bash" />
+         <CodeBlock code={`pnpm add @authio/react`} lang="bash" />
       </TabsContent>
       <TabsContent value="npm" className="m-0">
-         <CodeBlock code={`npm install @swift-auth/react`} lang="bash" />
+         <CodeBlock code={`npm install @authio/react`} lang="bash" />
       </TabsContent>
       <TabsContent value="yarn" className="m-0">
-         <CodeBlock code={`yarn add @swift-auth/react`} lang="bash" />
+         <CodeBlock code={`yarn add @authio/react`} lang="bash" />
       </TabsContent>
       <TabsContent value="bun" className="m-0">
-         <CodeBlock code={`bun add @swift-auth/react`} lang="bash" />
+         <CodeBlock code={`bun add @authio/react`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -353,9 +353,9 @@ console.log('Server running on port 8000');
    </div>
    <CodeBlock
       lang="ts"
-      code={`import { SwiftAuthClient } from '@swift-auth/react';
+      code={`import { AuthioClient } from '@authio/react';
 
-export const authClient = SwiftAuthClient({
+export const authClient = AuthioClient({
   baseUrl: '<http://localhost:8000>',
 });`}
    />

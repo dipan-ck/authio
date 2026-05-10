@@ -11,13 +11,13 @@ const emailAndPasswordSchema = z.object({
 });
 
 const cookieSchema = z.object({
-   name: z.string().default('swift_auth_session_token'),
+   name: z.string().default('authio_session_token'),
    secure: z.boolean().default(true),
    domain: z.string().optional(),
    sameSite: z.enum(['lax', 'strict', 'none']).default('lax'),
 });
 
-export const SwiftAuthConfigSchema = z.object({
+export const AuthioConfigSchema = z.object({
    session: z
       .object({
          expiry: z.number().positive(),
@@ -30,7 +30,7 @@ export const SwiftAuthConfigSchema = z.object({
    cookies: cookieSchema.optional(),
 });
 
-export type ParsedSwiftAuthConfig = Omit<z.infer<typeof SwiftAuthConfigSchema>, 'cookies'> & {
+export type ParsedAuthioConfig = Omit<z.infer<typeof AuthioConfigSchema>, 'cookies'> & {
    database: DatabaseAdapter;
    socialProviders?: SocialProvidersConfig;
    // override cookies as required — constructor always sets all fields

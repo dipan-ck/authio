@@ -108,9 +108,6 @@ export function AnimatedIllustration() {
             </text>
          </g>
 
-         {/* ═══════════════════════════════════════════
-             ARROWS  app ↔ swift-auth
-         ═══════════════════════════════════════════ */}
          <line
             className="dash"
             x1="135"
@@ -173,11 +170,6 @@ export function AnimatedIllustration() {
             />
          </circle>
 
-         {/* ═══════════════════════════════════════════
-             SWIFT-AUTH CORE
-             Represents the library running on the user's server.
-             Only the logo.svg is shown — no extra text or pills.
-         ═══════════════════════════════════════════ */}
          <g className="float2">
             {/* outer card */}
             <rect
@@ -202,9 +194,6 @@ export function AnimatedIllustration() {
             />
          </g>
 
-         {/* ═══════════════════════════════════════════
-             ARROW  swift-auth → DB
-         ═══════════════════════════════════════════ */}
          <line
             x1="260"
             y1="214"
@@ -267,9 +256,6 @@ export function AnimatedIllustration() {
             </text>
          </g>
 
-         {/* ═══════════════════════════════════════════
-             ARROWS  swift-auth → providers
-         ═══════════════════════════════════════════ */}
          <line
             x1="326"
             y1="144"

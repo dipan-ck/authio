@@ -1,10 +1,10 @@
 // src/errors.ts
-export class SwiftAuthError extends Error {
+export class AuthioError extends Error {
    constructor(
       public code: string,
       message: string,
    ) {
       super(message);
-      this.name = 'SwiftAuthError';
+      this.name = 'AuthioError';
    }
 }

@@ -81,7 +81,7 @@ export default function Home() {
                   {/* Left */}
                   <div className="space-y-4">
                      <p className="text-xs font-mono tracking-[0.24em] text-muted-foreground uppercase">
-                        Why Swift Auth
+                        Why Authio
                      </p>
 
                      <h2 className="text-3xl md:text-4xl font-semibold tracking-tight leading-tight">
@@ -99,8 +99,8 @@ export default function Home() {
                      </p>
 
                      <p>
-                        Swift Auth was built to stay predictable. A small, type-safe core with
-                        adapters and handlers that fit naturally into tools developers already use.
+                        Authio was built to stay predictable. A small, type-safe core with adapters
+                        and handlers that fit naturally into tools developers already use.
                      </p>
 
                      <p>
@@ -129,23 +129,23 @@ export default function Home() {
                      </h2>
 
                      <p className="text-sm leading-relaxed text-muted-foreground">
-                        Swift Auth is currently under active development. The initial release
-                        focuses on a small, stable foundation with support for Node.js, Express,
-                        Prisma, Drizzle, and a dedicated React client library for client-side
-                        session handling.
+                        Authio is currently under active development. The initial release focuses on
+                        a small, stable foundation with support for Node.js, Express, Prisma,
+                        Drizzle, and a dedicated React client library for client-side session
+                        handling.
                      </p>
                   </div>
 
                   {/* GitHub CTA */}
                   <div className="flex flex-wrap items-center gap-3">
                      <Button asChild size="lg">
-                        <Link href="https://github.com/swift-auth/swift-auth" target="_blank">
+                        <Link href="" target="_blank">
                            Star on GitHub
                         </Link>
                      </Button>
 
                      <Button asChild variant="outline" size="lg">
-                        <Link href="https://github.com/swift-auth/swift-auth" target="_blank">
+                        <Link href="" target="_blank">
                            Contribute
                         </Link>
                      </Button>
@@ -181,9 +181,8 @@ export default function Home() {
                {/* Bottom note */}
                <div className="mt-14 rounded-2xl border border-dashed border-border bg-muted/20 px-6 py-5">
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                     Swift Auth is being built in the open with a focus on simplicity, explicit
-                     APIs, and long-term maintainability. Feedback, issues, and contributions are
-                     welcome.
+                     Authio is being built in the open with a focus on simplicity, explicit APIs,
+                     and long-term maintainability. Feedback, issues, and contributions are welcome.
                   </p>
                </div>
             </div>
@@ -206,7 +205,7 @@ export default function Home() {
                      </h2>
 
                      <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-                        Swift Auth keeps configuration explicit and readable while staying fully
+                        Authio keeps configuration explicit and readable while staying fully
                         type-safe and composable.
                      </p>
                   </div>
@@ -228,15 +227,15 @@ export default function Home() {
 
                      {/* Code */}
                      <CodeBlock
-                        code={`import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+                        code={`import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import {drizzleDb} from "../db/drizzle.ts"
 import {
    googleProvider,
    gitHubProvider,
-} from 'swift-auth/providers';
+} from 'authio/providers';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
    database: drizzleAdapter({
    db: drizzleDb,
   provider: "postgres"

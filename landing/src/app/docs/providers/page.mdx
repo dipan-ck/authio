@@ -3,8 +3,8 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 # Providers
 
 <div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
-   Social providers in Swift Auth all follow the same setup pattern — import the provider, pass in
-   your credentials, and Swift Auth handles the entire OAuth flow for you.
+   Social providers in Authio all follow the same setup pattern — import the provider, pass in
+   your credentials, and Authio handles the entire OAuth flow for you.
 </div>
 
 ## Google
@@ -20,9 +20,9 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
   </div>
   <CodeBlock
     lang="ts"
-    code={`import { googleProvider } from 'swift-auth/providers';
+    code={`import { googleProvider } from 'authio/providers';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   // ...rest of your config
   socialProviders: {
     google: googleProvider({
@@ -71,9 +71,9 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret`}
   </div>
   <CodeBlock
     lang="ts"
-    code={`import { gitHubProvider } from 'swift-auth/providers';
+    code={`import { gitHubProvider } from 'authio/providers';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   // ...rest of your config
   socialProviders: {
     github: gitHubProvider({
@@ -112,7 +112,7 @@ GITHUB_CLIENT_SECRET=your_github_client_secret`}
 ## How it works
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-   Every OAuth provider has its own flow, token format, and user data shape. Swift Auth normalizes
+   Every OAuth provider has its own flow, token format, and user data shape. Authio normalizes
    all of that internally — you pass in credentials, call one method, and get back a session. You
    never have to deal with authorization codes, token exchanges, or provider-specific API quirks
    yourself.
@@ -120,7 +120,7 @@ GITHUB_CLIENT_SECRET=your_github_client_secret`}
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
    The <code>redirectUrl</code> is your frontend URL — where the user lands after they approve
-   access. Swift Auth handles the callback, creates or updates the user record, and sets the session
+   access. Authio handles the callback, creates or updates the user record, and sets the session
    cookie automatically.
 </div>
 

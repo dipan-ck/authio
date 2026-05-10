@@ -1,4 +1,4 @@
-export { SwiftAuthClient } from './client.js';
+export { AuthioClient } from './client.js';
 export type {
    Config,
    EmailSignUp,
@@ -11,7 +11,7 @@ export type {
    SessionResponse,
    DeleteUserResponse,
    SignOutResponse,
-   SwiftAuthClientApi as SwiftAuthClientType,
+   AuthioClientApi as AuthioClientType,
    User,
    Session,
    Account,

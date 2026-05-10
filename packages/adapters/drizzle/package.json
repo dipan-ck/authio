@@ -1,5 +1,5 @@
 {
-   "name": "@swift-auth/drizzle",
+   "name": "@authio/drizzle",
    "version": "0.1.0",
    "description": "",
    "keywords": [],
@@ -42,14 +42,14 @@
       "drizzle-orm": "latest",
       "mysql2": "^3.22.3",
       "pg": "^8.20.0",
-      "swift-auth": "workspace:*",
+      "authio": "workspace:*",
       "tsup": "^8.5.1",
       "typescript": "^6.0.2",
       "vitest": "^4.1.2"
    },
    "peerDependencies": {
       "drizzle-orm": ">=0.30.0",
-      "swift-auth": "workspace:*"
+      "authio": "workspace:*"
    },
    "license": "ISC",
    "packageManager": "pnpm@10.33.0"

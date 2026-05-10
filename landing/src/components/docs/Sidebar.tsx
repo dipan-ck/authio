@@ -43,7 +43,7 @@ export function DocsSidebar() {
       <Sidebar>
          <SidebarHeader className="border-b border-border px-6 py-4">
             <Link href="/">
-               <Image src="/logo.svg" alt="Swift Auth" width={124} height={124} />
+               <Image src="/logo.svg" alt="Authio" width={124} height={124} />
             </Link>
          </SidebarHeader>
          <SidebarContent>
@@ -121,11 +121,7 @@ export function DocsSidebar() {
          </SidebarContent>
          <SidebarFooter className="border-t border-border p-4">
             <Button className="w-full rounded-none" asChild>
-               <a
-                  href="https://github.com/your-org/swift-auth"
-                  target="_blank"
-                  rel="noopener noreferrer"
-               >
+               <a href="" target="_blank" rel="noopener noreferrer">
                   <Image src="/github.svg" alt="GitHub" width={16} height={16} />
                   View on GitHub
                </a>

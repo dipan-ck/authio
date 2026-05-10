@@ -91,7 +91,7 @@ GITHUB_CLIENT_SECRET=your_github_client_secret`}
 ## 3. Add the provider to your auth config
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
-   Import <code>gitHubProvider</code> from <code>swift-auth/providers</code> and add it to{' '}
+   Import <code>gitHubProvider</code> from <code>authio/providers</code> and add it to{' '}
    <code>socialProviders</code> in your config.
 </div>
 
@@ -101,12 +101,12 @@ GITHUB_CLIENT_SECRET=your_github_client_secret`}
   </div>
   <CodeBlock
     lang="ts"
-    code={`import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+    code={`import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import { db } from '../db/index.js';
-import { gitHubProvider } from 'swift-auth/providers';
+import { gitHubProvider } from 'authio/providers';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   database: drizzleAdapter({
     db,
@@ -125,7 +125,7 @@ export const auth = new SwiftAuth({
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
    The <code>redirectUrl</code> is your frontend URL — where the user lands after the OAuth flow
-   completes. Swift Auth handles the GitHub callback internally.
+   completes. Authio handles the GitHub callback internally.
 </div>
 
 ---
@@ -155,7 +155,7 @@ scopes: ['read:user', 'user:email'],
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
    Scopes control what data your app can read from GitHub. The defaults are <code>read:user</code>{' '}
-   and <code>user:email</code> — these are the minimum required for Swift Auth to fetch the user's
+   and <code>user:email</code> — these are the minimum required for Authio to fetch the user's
    profile and email address. You should keep both defaults. If your app needs access to other
    GitHub data like repos or organizations, add those extra scopes here.
 </div>
@@ -166,7 +166,7 @@ scopes: ['read:user', 'user:email'],
    </div>
    <div className="text-sm leading-relaxed text-muted-foreground">
       GitHub users can set their email address to private. When this happens, the user profile
-      endpoint returns <code>null</code> for the email field. Swift Auth handles this automatically
+      endpoint returns <code>null</code> for the email field. Authio handles this automatically
       — it makes a second request to the GitHub emails endpoint to fetch the user's verified primary
       email. The <code>user:email</code> scope is what grants access to that endpoint, so removing
       it will break sign-in for users with private emails.
@@ -188,11 +188,11 @@ scopes: ['read:user', 'user:email'],
 
 ---
 
-## How Swift Auth handles the flow
+## How Authio handles the flow
 
 <div className="mt-3 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
    GitHub's OAuth flow is slightly different from Google — GitHub does not support OIDC, so there is
-   no ID token. Swift Auth handles this difference internally so you don't have to think about it.
+   no ID token. Authio handles this difference internally so you don't have to think about it.
 </div>
 
 <div className="mt-5 max-w-[560px] space-y-4">
@@ -209,7 +209,7 @@ scopes: ['read:user', 'user:email'],
          2
       </div>
       <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
-         Swift Auth exchanges the code for an access token. GitHub does not return a refresh token
+         Authio exchanges the code for an access token. GitHub does not return a refresh token
          or ID token.
       </div>
    </div>
@@ -218,7 +218,7 @@ scopes: ['read:user', 'user:email'],
          3
       </div>
       <div className="text-sm leading-relaxed text-muted-foreground pt-0.5">
-         Swift Auth fetches the user's profile from the GitHub API. If the email is private, it
+         Authio fetches the user's profile from the GitHub API. If the email is private, it
          makes a second request to the emails endpoint and picks the verified primary email.
       </div>
    </div>

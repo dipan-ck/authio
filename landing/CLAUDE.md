@@ -1,10 +1,10 @@
 # CLAUDE.md
 
-This file gives Claude context about the Swift Auth repository.
+This file gives Claude context about the Authio repository.
 
 ## What this project is
 
-Swift Auth is a modular, type-safe authentication library for Node.js. It is not a hosted service — it is a set of packages developers install and configure themselves.
+Authio is a modular, type-safe authentication library for Node.js. It is not a hosted service — it is a set of packages developers install and configure themselves.
 
 ## Monorepo structure
 
@@ -13,14 +13,14 @@ Swift Auth is a modular, type-safe authentication library for Node.js. It is not
 │ └── node # Express test/demo app using both Drizzle and Prisma
 ├── landing # Next.js documentation and marketing site
 ├── packages
-│ ├── core # swift-auth — core engine, SwiftAuth class, providers, types
+│ ├── core # authio — core engine, Authio class, providers, types
 │ ├── adapters
-│ │ ├── drizzle # @swift-auth/drizzle
-│ │ └── prisma # @swift-auth/prisma
+│ │ ├── drizzle # @authio/drizzle
+│ │ └── prisma # @authio/prisma
 │ ├── handlers
-│ │ └── node # @swift-auth/node — Express handler via toNodeHandler()
-│ ├── react # @swift-auth/react — client library
-│ └── cli # @swift-auth/cli — schema generation CLI
+│ │ └── node # @authio/node — Express handler via toNodeHandler()
+│ ├── react # @authio/react — client library
+│ └── cli # @authio/cli — schema generation CLI
 └── pnpm-workspace.yaml
 
 ## Documentation site
@@ -69,9 +69,9 @@ Located in `landing/`. Built with Next.js and MDX. Docs live in `landing/src/app
 
 ### Core (`packages/core`)
 
-- Main class: `SwiftAuth` exported from `packages/core/src/core/swiftAuth.ts`
-- Providers exported from `swift-auth/providers` — `googleProvider`, `gitHubProvider`
-- Error class: `SwiftError` at `packages/core/src/core/SwiftError.ts`
+- Main class: `Authio` exported from `packages/core/src/core/authio.ts`
+- Providers exported from `authio/providers` — `googleProvider`, `gitHubProvider`
+- Error class: `AuthioError` at `packages/core/src/core/AuthioError.ts`
 - Uses `zod` for config validation and `bcryptjs` for password hashing
 
 ### Drizzle adapter (`packages/adapters/drizzle`)
@@ -89,18 +89,18 @@ Located in `landing/`. Built with Next.js and MDX. Docs live in `landing/src/app
 
 ### Node handler (`packages/handlers/node`)
 
-- Exports `toNodeHandler(auth)` — wraps the SwiftAuth instance as Express middleware
+- Exports `toNodeHandler(auth)` — wraps the Authio instance as Express middleware
 - Registers all auth routes automatically
 
 ### React client (`packages/react`)
 
-- Client: `SwiftAuthClient` exported from `@swift-auth/react`
+- Client: `AuthioClient` exported from `@authio/react`
 - Methods: `emailSignIn`, `emailSignUp`, `signOut`
 - Source: `packages/react/src/client.ts`
 
 ### CLI (`packages/cli`)
 
-- Binary name: `swift-auth`
+- Binary name: `authio`
 - One subcommand: `generate`
 - Options: `--config` (path to auth config), `--output` (path to write schema)
 - Auto-detects config at: `./src/lib/auth.ts`, `./src/lib/auth.js`, `./lib/auth.ts`, `./lib/auth.js`

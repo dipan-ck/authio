@@ -1,6 +1,6 @@
 import 'dotenv/config.js';
 import express from 'express';
-import { toNodeHandler } from '@swift-auth/node';
+import { toNodeHandler } from '@authio/node';
 import auth from './lib/auth.js';
 import cookieParser from 'cookie-parser';
 
@@ -11,7 +11,7 @@ app.use(toNodeHandler(auth));
 
 app.get('/', (_req, res) => {
    console.log('received req');
-   res.send('Testing node server for swift auth');
+   res.send('Testing node server for  authio');
 });
 
 app.listen(8000, '0.0.0.0', () => {

@@ -1,7 +1,7 @@
-import { SwiftAuth } from 'swift-auth';
+import { Authio } from 'authio';
 import { mockAdapter } from '../mocks/adapter.js';
 
-const auth = new SwiftAuth({
+const auth = new Authio({
    baseUrl: 'http://test.com',
    database: mockAdapter,
 });

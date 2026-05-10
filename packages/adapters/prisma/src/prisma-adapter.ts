@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import type { PrismaAdapterOptions } from './types.js';
-import type { DatabaseAdapter } from 'swift-auth';
+import type { DatabaseAdapter } from 'authio';
 
 /*
 In Prisma unlike Drizzle we don't need separate schemas per provider.

@@ -1,4 +1,4 @@
-# swift-auth
+# authio
 
 Type-safe authentication built for developers who want simplicity, flexibility, and control without hidden abstractions or framework lock-in.
 
@@ -6,34 +6,34 @@ Type-safe authentication built for developers who want simplicity, flexibility, 
 
 ## What it is
 
-Swift Auth gives you a clean, composable API to add authentication to any Node.js application. No magic, no generated code you can't read, no framework lock-in. You configure it, you own your schema, you control your database.
+Authio gives you a clean, composable API to add authentication to any Node.js application. No magic, no generated code you can't read, no framework lock-in. You configure it, you own your schema, you control your database.
 
 ## Packages
 
-| Package               | Description                |
-| --------------------- | -------------------------- |
-| `swift-auth`          | Core authentication engine |
-| `@swift-auth/drizzle` | Drizzle ORM adapter        |
-| `@swift-auth/prisma`  | Prisma adapter             |
-| `@swift-auth/node`    | Express / Node.js handler  |
-| `@swift-auth/react`   | React client library       |
-| `@swift-auth/cli`     | CLI for schema generation  |
+| Package           | Description                |
+| ----------------- | -------------------------- |
+| `authio`          | Core authentication engine |
+| `@authio/drizzle` | Drizzle ORM adapter        |
+| `@authio/prisma`  | Prisma adapter             |
+| `@authio/node`    | Express / Node.js handler  |
+| `@authio/react`   | React client library       |
+| `@authio/cli`     | CLI for schema generation  |
 
 ## Quick Start
 
 ```bash
-pnpm add swift-auth @swift-auth/drizzle @swift-auth/node
+pnpm add authio @authio/drizzle @authio/node
 ```
 
 **1. Create your auth instance**
 
 ```ts
 // src/lib/auth.ts
-import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import { db } from '../db/index.js';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
    baseUrl: 'http://localhost:8000',
    emailAndPassword: {
       enabled: true,
@@ -48,7 +48,7 @@ export const auth = new SwiftAuth({
 **2. Generate your database schema**
 
 ```bash
-npx @swift-auth/cli generate --output ./src/db/auth-schema.ts
+npx @authio/cli generate --output ./src/db/auth-schema.ts
 npx drizzle-kit push
 ```
 
@@ -58,7 +58,7 @@ npx drizzle-kit push
 // server.ts
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import { toNodeHandler } from '@swift-auth/node';
+import { toNodeHandler } from '@authio/node';
 import { auth } from './lib/auth.js';
 
 const app = express();
@@ -72,9 +72,9 @@ app.listen(8000);
 
 ```ts
 // src/lib/auth-client.ts
-import { SwiftAuthClient } from '@swift-auth/react';
+import { AuthioClient } from '@authio/react';
 
-export const authClient = SwiftAuthClient({
+export const authClient = AuthioClient({
    baseUrl: 'http://localhost:8000',
 });
 ```
@@ -105,16 +105,16 @@ await authClient.signOut();
 
 ## Documentation
 
-Full documentation at **[swift-auth.dev/docs](https://swift-auth.dev/docs)**
+Full documentation at **[authio.dev/docs](https://authio.dev/docs)**
 
-- [Installation](https://swift-auth.dev/docs/installation)
-- [Quick Start](https://swift-auth.dev/docs/quick-start)
-- [Database — Drizzle](https://swift-auth.dev/docs/database/drizzle)
-- [Database — Prisma](https://swift-auth.dev/docs/database/prisma)
-- [Email & Password](https://swift-auth.dev/docs/authentication/email-password)
-- [Social Providers](https://swift-auth.dev/docs/providers)
-- [CLI](https://swift-auth.dev/docs/cli)
-- [Configuration Reference](https://swift-auth.dev/docs/configuration)
+- [Installation](https://authio.dev/docs/installation)
+- [Quick Start](https://authio.dev/docs/quick-start)
+- [Database — Drizzle](https://authio.dev/docs/database/drizzle)
+- [Database — Prisma](https://authio.dev/docs/database/prisma)
+- [Email & Password](https://authio.dev/docs/authentication/email-password)
+- [Social Providers](https://authio.dev/docs/providers)
+- [CLI](https://authio.dev/docs/cli)
+- [Configuration Reference](https://authio.dev/docs/configuration)
 
 ## Contributing
 

@@ -26,7 +26,7 @@ Read `CLAUDE.md` for full project context, package locations, and conventions.
 
 ### CLI
 
-- The CLI reads the user's auth config via its default export — any change to how `SwiftAuth` is exported from `packages/core` must be reflected in `packages/cli/src/utils/configHelpers.ts`
+- The CLI reads the user's auth config via its default export — any change to how `Authio` is exported from `packages/core` must be reflected in `packages/cli/src/utils/configHelpers.ts`
 - Schema output must be deterministic for the same adapter and provider combination
 - Generator logic lives in `packages/cli/src/generators/` — one file per adapter
 

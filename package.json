@@ -1,10 +1,9 @@
 {
-   "name": "swift-auth-monorepo",
+   "name": "authio",
    "type": "module",
    "private": true,
    "scripts": {
       "build": "pnpm -r build",
-      "test:e2e": "pnpm --filter swift-auth-cli test:e2e",
       "test": "pnpm -r --sequential test",
       "clean": "pnpm -r exec rimraf dist",
       "lint": "eslint .",

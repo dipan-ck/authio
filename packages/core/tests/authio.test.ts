@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest';
 
-import { SwiftAuth } from '../src/core/swiftAuth.js';
-import type { ParsedSwiftAuthConfig } from '../src/validator/config.validator.js';
+import { Authio } from '../src/core/authio.js';
+import type { ParsedAuthioConfig } from '../src/validator/config.validator.js';
 
 import { mockAdapter } from './utils/mockAdapter.js';
 
-describe('SwiftAuth Instance creation test', () => {
+describe('Authio Instance creation test', () => {
    it('should create an instance with default values', () => {
-      const expected: ParsedSwiftAuthConfig = {
+      const expected: ParsedAuthioConfig = {
          baseUrl: 'http://localhost:3000',
 
          database: mockAdapter,
@@ -29,14 +29,14 @@ describe('SwiftAuth Instance creation test', () => {
          },
 
          cookies: {
-            name: 'swift_auth_session_token',
+            name: 'authio_session_token',
             secure: true,
             domain: 'localhost',
             sameSite: 'lax',
          },
       };
 
-      const auth = new SwiftAuth({
+      const auth = new Authio({
          baseUrl: 'http://localhost:3000',
 
          database: mockAdapter,
@@ -52,7 +52,7 @@ describe('SwiftAuth Instance creation test', () => {
    it('should create an instance with user defined emailAndPassword values', () => {
       const verificationCallback = async () => {};
 
-      const expected: ParsedSwiftAuthConfig = {
+      const expected: ParsedAuthioConfig = {
          baseUrl: 'http://localhost:3000',
 
          database: mockAdapter,
@@ -74,14 +74,14 @@ describe('SwiftAuth Instance creation test', () => {
          },
 
          cookies: {
-            name: 'swift_auth_session_token',
+            name: 'authio_session_token',
             secure: true,
             domain: 'localhost',
             sameSite: 'lax',
          },
       };
 
-      const auth = new SwiftAuth({
+      const auth = new Authio({
          baseUrl: 'http://localhost:3000',
 
          database: mockAdapter,
@@ -99,7 +99,7 @@ describe('SwiftAuth Instance creation test', () => {
    });
 
    it('should create an instance with user defined cookie values', () => {
-      const expected: ParsedSwiftAuthConfig = {
+      const expected: ParsedAuthioConfig = {
          baseUrl: 'https://api.example.com',
 
          database: mockAdapter,
@@ -120,7 +120,7 @@ describe('SwiftAuth Instance creation test', () => {
          },
       };
 
-      const auth = new SwiftAuth({
+      const auth = new Authio({
          baseUrl: 'https://api.example.com',
 
          database: mockAdapter,
@@ -137,7 +137,7 @@ describe('SwiftAuth Instance creation test', () => {
    });
 
    it('should extract domain from baseUrl when no cookie domain is provided', () => {
-      const auth = new SwiftAuth({
+      const auth = new Authio({
          baseUrl: 'https://api.example.com',
 
          database: mockAdapter,
@@ -147,7 +147,7 @@ describe('SwiftAuth Instance creation test', () => {
    });
 
    it('should use custom session expiry when provided', () => {
-      const auth = new SwiftAuth({
+      const auth = new Authio({
          baseUrl: 'http://localhost:3000',
 
          database: mockAdapter,
@@ -161,7 +161,7 @@ describe('SwiftAuth Instance creation test', () => {
    });
 
    it('should use custom verificationTokenExpiry when provided', () => {
-      const auth = new SwiftAuth({
+      const auth = new Authio({
          baseUrl: 'http://localhost:3000',
 
          database: mockAdapter,
@@ -177,7 +177,7 @@ describe('SwiftAuth Instance creation test', () => {
 
    it('should throw error when verifyEmail is true but verificationCallback is not provided', () => {
       expect(() => {
-         new SwiftAuth({
+         new Authio({
             baseUrl: 'http://localhost:3000',
 
             database: mockAdapter,
@@ -192,7 +192,7 @@ describe('SwiftAuth Instance creation test', () => {
 
    it('should throw error when database is not defined', () => {
       expect(() => {
-         new SwiftAuth({
+         new Authio({
             baseUrl: 'http://localhost:3000',
 
             // @ts-expect-error
@@ -203,7 +203,7 @@ describe('SwiftAuth Instance creation test', () => {
 
    it('should throw error when baseUrl is missing', () => {
       expect(() => {
-         new SwiftAuth({
+         new Authio({
             // @ts-expect-error
             baseUrl: undefined,
 
@@ -214,7 +214,7 @@ describe('SwiftAuth Instance creation test', () => {
 
    it('should throw error when baseUrl is not a valid url', () => {
       expect(() => {
-         new SwiftAuth({
+         new Authio({
             baseUrl: 'not-a-valid-url',
 
             database: mockAdapter,

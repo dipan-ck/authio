@@ -14,7 +14,7 @@ import {
 # Prisma Adapter
 
 <div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
-   Connect Swift Auth to your database using Prisma. Supports PostgreSQL, MySQL, and SQLite with a
+   Connect Authio to your database using Prisma. Supports PostgreSQL, MySQL, and SQLite with a
    single schema file.
 </div>
 
@@ -53,16 +53,16 @@ import {
          </TabsList>
       </div>
       <TabsContent value="pnpm" className="m-0">
-         <CodeBlock code={`pnpm add @swift-auth/prisma`} lang="bash" />
+         <CodeBlock code={`pnpm add @authio/prisma`} lang="bash" />
       </TabsContent>
       <TabsContent value="npm" className="m-0">
-         <CodeBlock code={`npm install @swift-auth/prisma`} lang="bash" />
+         <CodeBlock code={`npm install @authio/prisma`} lang="bash" />
       </TabsContent>
       <TabsContent value="yarn" className="m-0">
-         <CodeBlock code={`yarn add @swift-auth/prisma`} lang="bash" />
+         <CodeBlock code={`yarn add @authio/prisma`} lang="bash" />
       </TabsContent>
       <TabsContent value="bun" className="m-0">
-         <CodeBlock code={`bun add @swift-auth/prisma`} lang="bash" />
+         <CodeBlock code={`bun add @authio/prisma`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -130,15 +130,15 @@ import {
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { SwiftAuth } from 'swift-auth';
-import { prismaAdapter } from '@swift-auth/prisma';
+            code={`import { Authio } from 'authio';
+import { prismaAdapter } from '@authio/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../generated/prisma/client.js';
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   database: prismaAdapter({
     db: prisma,
@@ -153,15 +153,15 @@ export const auth = new SwiftAuth({
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { SwiftAuth } from 'swift-auth';
-import { prismaAdapter } from '@swift-auth/prisma';
+            code={`import { Authio } from 'authio';
+import { prismaAdapter } from '@authio/prisma';
 import { PrismaMySQL } from '@prisma/adapter-mysql';
 import { PrismaClient } from '../generated/prisma/client.js';
 
 const adapter = new PrismaMySQL({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   database: prismaAdapter({
     db: prisma,
@@ -176,15 +176,15 @@ export const auth = new SwiftAuth({
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { SwiftAuth } from 'swift-auth';
-import { prismaAdapter } from '@swift-auth/prisma';
+            code={`import { Authio } from 'authio';
+import { prismaAdapter } from '@authio/prisma';
 import { PrismaLibSQL } from '@prisma/adapter-better-sqlite3';
 import { PrismaClient } from '../generated/prisma/client.js';
 
 const adapter = new PrismaLibSQL({ url: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
   baseUrl: '<http://localhost:8000>',
   database: prismaAdapter({
     db: prisma,
@@ -207,7 +207,7 @@ export const auth = new SwiftAuth({
 </div>
 
 <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
-   <CodeBlock lang="bash" code={`npx @swift-auth/cli generate --output ./prisma/schema.prisma`} />
+   <CodeBlock lang="bash" code={`npx @authio/cli generate --output ./prisma/schema.prisma`} />
 </div>
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">

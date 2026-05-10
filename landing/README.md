@@ -1,4 +1,4 @@
-# Swift Auth
+# Authio
 
 Type-safe authentication for Node.js applications. Modular by design — works with the ORMs, databases, and frameworks you already use.
 
@@ -15,27 +15,27 @@ Type-safe authentication for Node.js applications. Modular by design — works w
 
 ## Packages
 
-| Package               | Description                                          |
-| --------------------- | ---------------------------------------------------- |
-| `swift-auth`          | Core authentication engine (`packages/core`)         |
-| `@swift-auth/drizzle` | Drizzle ORM adapter (`packages/adapters/drizzle`)    |
-| `@swift-auth/prisma`  | Prisma adapter (`packages/adapters/prisma`)          |
-| `@swift-auth/node`    | Node.js / Express handler (`packages/handlers/node`) |
-| `@swift-auth/react`   | React client library (`packages/react`)              |
-| `@swift-auth/cli`     | CLI for schema generation (`packages/cli`)           |
+| Package           | Description                                          |
+| ----------------- | ---------------------------------------------------- |
+| `authio`          | Core authentication engine (`packages/core`)         |
+| `@authio/drizzle` | Drizzle ORM adapter (`packages/adapters/drizzle`)    |
+| `@authio/prisma`  | Prisma adapter (`packages/adapters/prisma`)          |
+| `@authio/node`    | Node.js / Express handler (`packages/handlers/node`) |
+| `@authio/react`   | React client library (`packages/react`)              |
+| `@authio/cli`     | CLI for schema generation (`packages/cli`)           |
 
 ## Quick Start
 
 ```bash
-pnpm add swift-auth @swift-auth/drizzle @swift-auth/node
+pnpm add authio @authio/drizzle @authio/node
 ```
 
 ```ts
-import { SwiftAuth } from 'swift-auth';
-import { drizzleAdapter } from '@swift-auth/drizzle';
+import { Authio } from 'authio';
+import { drizzleAdapter } from '@authio/drizzle';
 import { db } from './db/index.js';
 
-export const auth = new SwiftAuth({
+export const auth = new Authio({
    baseUrl: 'http://localhost:8000',
    emailAndPassword: { enabled: true },
    database: drizzleAdapter({ db, provider: 'postgres' }),
@@ -45,7 +45,7 @@ export const auth = new SwiftAuth({
 ```ts
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import { toNodeHandler } from '@swift-auth/node';
+import { toNodeHandler } from '@authio/node';
 import { auth } from './lib/auth.js';
 
 const app = express();
@@ -55,7 +55,7 @@ app.use(toNodeHandler(auth));
 app.listen(8000);
 ```
 
-Full documentation at [swift-auth.dev/docs](https://swift-auth.dev/docs).
+Full documentation at [authio.dev/docs](https://authio.dev/docs).
 
 ## Repository Structure
 
@@ -64,14 +64,14 @@ Full documentation at [swift-auth.dev/docs](https://swift-auth.dev/docs).
 │ └── node # Express test app
 ├── landing # Next.js documentation site
 ├── packages
-│ ├── core # swift-auth core
+│ ├── core # authio core
 │ ├── adapters
-│ │ ├── drizzle # @swift-auth/drizzle
-│ │ └── prisma # @swift-auth/prisma
+│ │ ├── drizzle # @authio/drizzle
+│ │ └── prisma # @authio/prisma
 │ ├── handlers
-│ │ └── node # @swift-auth/node
-│ ├── react # @swift-auth/react
-│ └── cli # @swift-auth/cli
+│ │ └── node # @authio/node
+│ ├── react # @authio/react
+│ └── cli # @authio/cli
 └── pnpm-workspace.yaml
 
 ## Documentation

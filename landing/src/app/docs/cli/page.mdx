@@ -4,7 +4,7 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 # CLI
 
 <div className="mt-4 max-w-[560px] text-lg leading-relaxed text-muted-foreground">
-   The Swift Auth CLI generates the database schema your app needs — straight from your auth config.
+   The Authio CLI generates the database schema your app needs — straight from your auth config.
 </div>
 
 ---
@@ -46,16 +46,16 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
          </TabsList>
       </div>
       <TabsContent value="pnpm" className="m-0">
-         <CodeBlock code={`pnpm dlx @swift-auth/cli`} lang="bash" />
+         <CodeBlock code={`pnpm dlx @authio/cli`} lang="bash" />
       </TabsContent>
       <TabsContent value="npm" className="m-0">
-         <CodeBlock code={`npx @swift-auth/cli`} lang="bash" />
+         <CodeBlock code={`npx @authio/cli`} lang="bash" />
       </TabsContent>
       <TabsContent value="yarn" className="m-0">
-         <CodeBlock code={`yarn dlx @swift-auth/cli`} lang="bash" />
+         <CodeBlock code={`yarn dlx @authio/cli`} lang="bash" />
       </TabsContent>
       <TabsContent value="bun" className="m-0">
-         <CodeBlock code={`bunx @swift-auth/cli`} lang="bash" />
+         <CodeBlock code={`bunx @authio/cli`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -101,16 +101,16 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
          </TabsList>
       </div>
       <TabsContent value="pnpm" className="m-0">
-         <CodeBlock code={`pnpm dlx @swift-auth/cli generate`} lang="bash" />
+         <CodeBlock code={`pnpm dlx @authio/cli generate`} lang="bash" />
       </TabsContent>
       <TabsContent value="npm" className="m-0">
-         <CodeBlock code={`npx @swift-auth/cli generate`} lang="bash" />
+         <CodeBlock code={`npx @authio/cli generate`} lang="bash" />
       </TabsContent>
       <TabsContent value="yarn" className="m-0">
-         <CodeBlock code={`yarn dlx @swift-auth/cli generate`} lang="bash" />
+         <CodeBlock code={`yarn dlx @authio/cli generate`} lang="bash" />
       </TabsContent>
       <TabsContent value="bun" className="m-0">
-         <CodeBlock code={`bunx @swift-auth/cli generate`} lang="bash" />
+         <CodeBlock code={`bunx @authio/cli generate`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -127,7 +127,7 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 </div>
 
 <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
-   <CodeBlock lang="bash" code={`npx @swift-auth/cli generate --config ./src/lib/auth.ts`} />
+   <CodeBlock lang="bash" code={`npx @authio/cli generate --config ./src/lib/auth.ts`} />
 </div>
 
 ### `--output`
@@ -138,7 +138,7 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 </div>
 
 <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
-   <CodeBlock lang="bash" code={`npx @swift-auth/cli generate --output ./src/db/auth-schema.ts`} />
+   <CodeBlock lang="bash" code={`npx @authio/cli generate --output ./src/db/auth-schema.ts`} />
 </div>
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
@@ -148,7 +148,7 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
 <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
    <CodeBlock
       lang="bash"
-      code={`npx @swift-auth/cli generate --config ./src/lib/auth.ts --output ./src/db/auth-schema.ts`}
+      code={`npx @authio/cli generate --config ./src/lib/auth.ts --output ./src/db/auth-schema.ts`}
    />
 </div>
 

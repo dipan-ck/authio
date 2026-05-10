@@ -1,6 +1,6 @@
 import type { OAuthProvider, OAuthTokens, OAuthUser } from './types.js';
 import * as z from 'zod';
-import { SwiftAuthError } from '../core/SwiftError.js';
+import { AuthioError } from '../core/authioError.js';
 
 const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
@@ -71,7 +71,7 @@ export function googleProvider(config: GoogleConfig): OAuthProvider {
             }),
          });
          if (!response.ok) {
-            throw new SwiftAuthError(
+            throw new AuthioError(
                'TOKEN_EXCHANGE_FAILED',
                `Google token exchange failed: ${response.statusText}`,
             );
@@ -88,7 +88,7 @@ export function googleProvider(config: GoogleConfig): OAuthProvider {
       },
       async getUserInfo(tokens: OAuthTokens): Promise<OAuthUser> {
          if (!tokens.idToken) {
-            throw new SwiftAuthError('INVALID_ID_TOKEN', 'Google id_token is missing');
+            throw new AuthioError('INVALID_ID_TOKEN', 'Google id_token is missing');
          }
          const payload = JSON.parse(
             Buffer.from(tokens.idToken.split('.')[1], 'base64url').toString(),

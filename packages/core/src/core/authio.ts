@@ -1,13 +1,13 @@
 import bcrypt from 'bcryptjs';
-import { SwiftAuthConfig } from '../types/config.js';
-import { ParsedSwiftAuthConfig } from '../validator/config.validator.js';
-import { SwiftAuthError } from './SwiftError.js';
+import { AuthioConfig } from '../types/config.js';
+import { ParsedAuthioConfig } from '../validator/config.validator.js';
+import { AuthioError } from './authioError.js';
 import { Session, User } from '../types/auth.js';
 
-export class SwiftAuth {
-   readonly config: ParsedSwiftAuthConfig;
+export class Authio {
+   readonly config: ParsedAuthioConfig;
 
-   constructor(config: SwiftAuthConfig) {
+   constructor(config: AuthioConfig) {
       if (!config.database) throw new Error('Database adapter is not defined');
 
       if (!config.baseUrl) throw new Error('baseUrl is required');
@@ -24,7 +24,7 @@ export class SwiftAuth {
             expiry: config.session?.expiry ?? 1000 * 60 * 60 * 24, //1 day
          },
          cookies: {
-            name: config.cookies?.name ?? 'swift_auth_session_token',
+            name: config.cookies?.name ?? 'authio_session_token',
             secure: config.cookies?.secure ?? true,
             domain: config.cookies?.domain ?? new URL(config.baseUrl).hostname,
             sameSite: config.cookies?.sameSite ?? 'lax',
@@ -51,18 +51,18 @@ export class SwiftAuth {
       meta?: { userAgent?: string; ipAddress?: string },
    ) {
       if (!name || !email || !password) {
-         throw new SwiftAuthError('MISSING_FIELDS', 'plesse fill all the missing fields');
+         throw new AuthioError('MISSING_FIELDS', 'plesse fill all the missing fields');
       }
 
       if (!this.config.emailAndPassword?.enabled) {
-         throw new SwiftAuthError(
+         throw new AuthioError(
             'EMAIL_PASSWORD_DISABLED',
             'Enable emailAndPassword in your config to use email signup',
          );
       }
 
       if (password.length < this.config.emailAndPassword.minPasswordLength) {
-         throw new SwiftAuthError(
+         throw new AuthioError(
             'PASSWORD_TOO_SHORT',
             `Password must be at least ${this.config.emailAndPassword.minPasswordLength} characters`,
          );
@@ -70,7 +70,7 @@ export class SwiftAuth {
 
       const existingUser = await this.config.database.findUserByEmail(email);
       if (existingUser) {
-         throw new SwiftAuthError('USER_ALREADY_EXISTS', 'A user with this email already exists');
+         throw new AuthioError('USER_ALREADY_EXISTS', 'A user with this email already exists');
       }
 
       const hashedPassword = await hashPassword(password);
@@ -171,10 +171,10 @@ export class SwiftAuth {
       meta?: { userAgent?: string; ipAddress?: string },
    ) {
       if (!email || !password) {
-         throw new SwiftAuthError('MISSING_FIELDS', 'plesse fill all the missing fields');
+         throw new AuthioError('MISSING_FIELDS', 'plesse fill all the missing fields');
       }
       if (!this.config.emailAndPassword?.enabled) {
-         throw new SwiftAuthError(
+         throw new AuthioError(
             'EMAIL_PASSWORD_DISABLED',
             'Enable emailAndPassword in your config to use email signin',
          );
@@ -183,27 +183,24 @@ export class SwiftAuth {
       // find user
       const user = await this.config.database.findUserByEmail(email);
       if (!user) {
-         throw new SwiftAuthError('INVALID_CREDENTIALS', 'Invalid email or password');
+         throw new AuthioError('INVALID_CREDENTIALS', 'Invalid email or password');
       }
 
       // find account to get the password hash
       const account = await this.config.database.findAccountByUserId(user.id, 'email');
       if (!account || !account.password) {
-         throw new SwiftAuthError('INVALID_CREDENTIALS', 'Invalid email or password');
+         throw new AuthioError('INVALID_CREDENTIALS', 'Invalid email or password');
       }
 
       // verify password
       const isValid = await comparePassword(password, account.password);
       if (!isValid) {
-         throw new SwiftAuthError('INVALID_CREDENTIALS', 'Invalid email or password');
+         throw new AuthioError('INVALID_CREDENTIALS', 'Invalid email or password');
       }
 
       // check email verified
       if (this.config.emailAndPassword.verifyEmail && !user.emailVerified) {
-         throw new SwiftAuthError(
-            'EMAIL_NOT_VERIFIED',
-            'Please verify your email before signing in',
-         );
+         throw new AuthioError('EMAIL_NOT_VERIFIED', 'Please verify your email before signing in');
       }
 
       // create session
@@ -225,14 +222,14 @@ export class SwiftAuth {
 
    async verifyEmail(token: string) {
       if (!this.config.emailAndPassword?.enabled) {
-         throw new SwiftAuthError(
+         throw new AuthioError(
             'EMAIL_PASSWORD_DISABLED',
             'Enable emailAndPassword in your config to use email verification',
          );
       }
 
       if (!this.config.emailAndPassword.verifyEmail) {
-         throw new SwiftAuthError(
+         throw new AuthioError(
             'VERIFICATION_NOT_ENABLED',
             'Email verification is not enabled in your config',
          );
@@ -241,22 +238,19 @@ export class SwiftAuth {
       // find the verification token
       const verification = await this.config.database.findVerificationByToken(token);
       if (!verification) {
-         throw new SwiftAuthError('INVALID_TOKEN', 'Verification token is invalid or already used');
+         throw new AuthioError('INVALID_TOKEN', 'Verification token is invalid or already used');
       }
 
       // check if token is expired
       if (verification.expiresAt < new Date()) {
          await this.config.database.deleteVerification(verification.id);
-         throw new SwiftAuthError('TOKEN_EXPIRED', 'Verification token has expired');
+         throw new AuthioError('TOKEN_EXPIRED', 'Verification token has expired');
       }
 
       // find user
       const user = await this.config.database.findUserByEmail(verification.identifier);
       if (!user) {
-         throw new SwiftAuthError(
-            'USER_NOT_FOUND',
-            'User associated with this token was not found',
-         );
+         throw new AuthioError('USER_NOT_FOUND', 'User associated with this token was not found');
       }
 
       // mark email as verified
@@ -295,14 +289,14 @@ export class SwiftAuth {
 
    async forgotPassword(email: string) {
       if (!this.config.emailAndPassword?.enabled) {
-         throw new SwiftAuthError(
+         throw new AuthioError(
             'EMAIL_PASSWORD_DISABLED',
             'Enable emailAndPassword in your config to use forgot password',
          );
       }
 
       if (!this.config.emailAndPassword.forgotPasswordCallback) {
-         throw new SwiftAuthError(
+         throw new AuthioError(
             'MISSING_FORGOT_PASSWORD_CALLBACK',
             'forgotPasswordCallback is required to use forgot password',
          );
@@ -340,24 +334,24 @@ export class SwiftAuth {
       // find verification token
       const verification = await this.config.database.findVerificationByToken(token);
       if (!verification) {
-         throw new SwiftAuthError('INVALID_TOKEN', 'Reset token is invalid or already used');
+         throw new AuthioError('INVALID_TOKEN', 'Reset token is invalid or already used');
       }
 
       // check expiry
       if (verification.expiresAt < new Date()) {
          await this.config.database.deleteVerification(verification.id);
-         throw new SwiftAuthError('TOKEN_EXPIRED', 'Reset token has expired');
+         throw new AuthioError('TOKEN_EXPIRED', 'Reset token has expired');
       }
 
       // find user
       const user = await this.config.database.findUserByEmail(verification.identifier);
       if (!user) {
-         throw new SwiftAuthError('USER_NOT_FOUND', 'User not found');
+         throw new AuthioError('USER_NOT_FOUND', 'User not found');
       }
 
       // check new password length
       if (newPassword.length < this.config.emailAndPassword!.minPasswordLength) {
-         throw new SwiftAuthError(
+         throw new AuthioError(
             'PASSWORD_TOO_SHORT',
             `Password must be at least ${this.config.emailAndPassword!.minPasswordLength} characters`,
          );
@@ -366,7 +360,7 @@ export class SwiftAuth {
       // find account and update password
       const account = await this.config.database.findAccountByUserId(user.id, 'email');
       if (!account) {
-         throw new SwiftAuthError('ACCOUNT_NOT_FOUND', 'No email account found for this user');
+         throw new AuthioError('ACCOUNT_NOT_FOUND', 'No email account found for this user');
       }
 
       await this.config.database.updateAccount(account.id, {
@@ -388,11 +382,11 @@ export class SwiftAuth {
    async getSession(token: string) {
       const session = await this.config.database.findSessionByToken(token);
       if (!session) {
-         throw new SwiftAuthError('SESSION_NOT_FOUND', 'Session not found');
+         throw new AuthioError('SESSION_NOT_FOUND', 'Session not found');
       }
       if (session.expiresAt < new Date()) {
          await this.config.database.deleteSession(token);
-         throw new SwiftAuthError('SESSION_EXPIRED', 'Session has expired');
+         throw new AuthioError('SESSION_EXPIRED', 'Session has expired');
       }
       const user = await this.config.database.findUserById(session.userId);
       return { code: 'SESSION_FOUND', message: 'User session found', session, user };
@@ -401,7 +395,7 @@ export class SwiftAuth {
    async signOut(token: string) {
       const session = await this.config.database.findSessionByToken(token);
       if (!session) {
-         throw new SwiftAuthError('SESSION_NOT_FOUND', 'Session not found');
+         throw new AuthioError('SESSION_NOT_FOUND', 'Session not found');
       }
       await this.config.database.deleteSession(token);
       return {
@@ -414,10 +408,7 @@ export class SwiftAuth {
    async getSocialAuthRedirectUrl(provider: 'google' | 'github') {
       const oauthProvider = this.config?.socialProviders?.[provider];
       if (!oauthProvider) {
-         throw new SwiftAuthError(
-            'PROVIDER_NOT_CONFIGURED',
-            `${provider} provider is not configured`,
-         );
+         throw new AuthioError('PROVIDER_NOT_CONFIGURED', `${provider} provider is not configured`);
       }
       const state = crypto.randomUUID();
       const redirectUrl = `${this.config.baseUrl}/api/auth/${provider}/callback`;
@@ -438,10 +429,7 @@ export class SwiftAuth {
    }> {
       const oauthProvider = this.config?.socialProviders?.[provider];
       if (!oauthProvider) {
-         throw new SwiftAuthError(
-            'PROVIDER_NOT_CONFIGURED',
-            `${provider} provider is not configured`,
-         );
+         throw new AuthioError('PROVIDER_NOT_CONFIGURED', `${provider} provider is not configured`);
       }
 
       const redirectUrl = `${this.config.baseUrl}/api/auth/${provider}/callback`;
@@ -531,7 +519,7 @@ export class SwiftAuth {
       const user = await this.config.database.findUserById(userId);
 
       if (!user) {
-         throw new SwiftAuthError('USER_NOT_FOUND', 'User not found');
+         throw new AuthioError('USER_NOT_FOUND', 'User not found');
       }
 
       // delete all sessions first

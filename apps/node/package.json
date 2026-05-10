@@ -15,18 +15,18 @@
    "dependencies": {
       "@prisma/adapter-pg": "^7.8.0",
       "@prisma/client": "^7.8.0",
-      "@swift-auth/drizzle": "workspace:*",
-      "@swift-auth/node": "workspace:*",
-      "@swift-auth/prisma": "workspace:*",
+      "@authio/drizzle": "workspace:*",
+      "@authio/node": "workspace:*",
+      "@authio/prisma": "workspace:*",
       "cookie-parser": "^1.4.7",
       "dotenv": "^17.4.2",
       "drizzle-orm": "^0.45.2",
       "express": "^5.2.1",
       "pg": "^8.20.0",
-      "swift-auth": "workspace:*"
+      "authio": "workspace:*"
    },
    "devDependencies": {
-      "@swift-auth/cli": "workspace:*",
+      "@authio/cli": "workspace:*",
       "@types/cookie-parser": "^1.4.10",
       "@types/express": "^5.0.6",
       "@types/node": "^25.5.0",
