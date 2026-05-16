@@ -1,3 +1,5 @@
+export type SupportedSocialProvidersType = 'google' | 'github';
+
 export interface OAuthTokens {
    accessToken: string;
    refreshToken: string | null;

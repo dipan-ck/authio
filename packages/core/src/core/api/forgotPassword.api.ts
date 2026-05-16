@@ -45,5 +45,6 @@ export async function forgotPassword(
    return {
       code: 'RESET_EMAIL_SENT',
       message: 'If an account exists with this email, a reset link has been sent',
+      forgotPasswordToken: payload.returnForgotPasswordToken ? verification.value : undefined,
    };
 }

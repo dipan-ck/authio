@@ -1,4 +1,4 @@
-import type { OAuthProvider } from '../providers/types.js';
+import type { OAuthProvider } from '../types/provider.types.ts';
 import type { DatabaseAdapter } from './adapter.js';
 
 interface EmailAndPasswordConfig {
@@ -74,5 +74,14 @@ export type ParsedAuthioConfig = {
          email: string;
          resetToken: string;
       }) => Promise<void>;
+   };
+
+   internal: {
+      oauth: {
+         supportedOauthProviders: string[];
+         oauthStateCookie: {
+            name: string;
+         };
+      };
    };
 };

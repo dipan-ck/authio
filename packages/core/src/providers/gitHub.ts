@@ -5,7 +5,8 @@ resource server endpoint and the user endpoint may or may not have the user emai
 user have attached to their GitHub account that's why we have 2 enpoints and 2 seperate request
 
 */
-import type { OAuthProvider, OAuthTokens, OAuthUser } from './types.js';
+
+import type { OAuthProvider, OAuthTokens, OAuthUser } from '../types/provider.types.js';
 import { AuthioError } from '../core/authioError.js';
 
 const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';

@@ -1,28 +1,7 @@
-import { Authio, AuthioError } from '@authio/core';
+import { Authio, AuthioError, SupportedSocialProvidersType } from '@authio/core';
 import { NextFunction, Request, Response } from 'express';
-
-// ── error helper ───────────────────────────────────────────────────────────────
-function sendError(res: Response, err: unknown) {
-   if (err instanceof AuthioError) {
-      return res.status(400).json({
-         code: err.code,
-         error: err.message,
-      });
-   }
-   return res.status(500).json({
-      code: 'INTERNAL_SERVER_ERROR',
-      error: 'Something went wrong',
-   });
-}
-
-// ── supported providers ────────────────────────────────────────────────
-type SocialProvider = 'google' | 'github';
-const SUPPORTED_PROVIDERS: SocialProvider[] = ['google', 'github'];
-const OAUTH_STATE_COOKIE = 'authio_oauth_state';
-
-function isSupportedProvider(p: string): p is SocialProvider {
-   return SUPPORTED_PROVIDERS.includes(p as SocialProvider);
-}
+import { sendError } from './utils/error.js';
+import { isSupportedProvider } from './utils/supportedProvider.js';
 
 export function toNodeHandler(auth: Authio) {
    if (!auth) {
@@ -41,9 +20,14 @@ export function toNodeHandler(auth: Authio) {
          try {
             const { name, email, password } = req.body;
 
-            const result = await auth.emailSignUp(name, email, password, {
-               userAgent: req.headers['user-agent'],
-               ipAddress: req.ip,
+            const result = await auth.api.emailSignUp({
+               name,
+               email,
+               password,
+               meta: {
+                  userAgent: req.headers['user-agent'],
+                  ipAddress: req.ip,
+               },
             });
 
             //result will be VERIFICATION__SENT when in config user has emailVerification to true. the verification callback has been called and then the result got returned
@@ -73,9 +57,13 @@ export function toNodeHandler(auth: Authio) {
       if (path === '/api/auth/signin' && method === 'POST') {
          try {
             const { email, password } = req.body;
-            const result = await auth.emailSignIn(email, password, {
-               userAgent: req.headers['user-agent'],
-               ipAddress: req.ip,
+            const result = await auth.api.emailSignIn({
+               email,
+               password,
+               meta: {
+                  ipAddress: req.ip,
+                  userAgent: req.headers['user-agent'],
+               },
             });
 
             // signin always returns a session — set the cookie
@@ -104,7 +92,7 @@ export function toNodeHandler(auth: Authio) {
                });
             }
 
-            const result = await auth.verifyEmail(token);
+            const result = await auth.api.verifyEmail({ token });
 
             // EMAIL_VERIFIED with autoSignIn — session created, set the cookie
             if (result.code === 'EMAIL_VERIFIED' && 'session' in result) {
@@ -137,7 +125,7 @@ export function toNodeHandler(auth: Authio) {
                });
             }
 
-            const result = await auth.forgotPassword(email);
+            const result = await auth.api.forgotPassword({ email });
 
             // always return 200 with the same message regardless of whether the user exists
             // this prevents user enumeration — attacker cannot tell if email is registered
@@ -161,7 +149,7 @@ export function toNodeHandler(auth: Authio) {
                });
             }
 
-            const result = await auth.resetPassword(token, newPassword);
+            const result = await auth.api.resetPassword({ token, newPassword });
 
             // all sessions were invalidated — clear the session cookie too
             // in case the user who reset the password was logged in on this device
@@ -185,7 +173,7 @@ export function toNodeHandler(auth: Authio) {
                });
             }
 
-            const result = await auth.getSession(token);
+            const result = await auth.api.getSession({ token });
             return res.status(200).json(result);
          } catch (err) {
             return sendError(res, err);
@@ -204,7 +192,7 @@ export function toNodeHandler(auth: Authio) {
                });
             }
             // session will be revoked
-            const result = await auth.signOut(token);
+            const result = await auth.api.signout({ token });
 
             // clear the session cookie from the browser
             res.clearCookie(auth.config.cookies.name);
@@ -228,16 +216,16 @@ export function toNodeHandler(auth: Authio) {
                });
             }
 
-            const sessionResult = await auth.getSession(token);
+            const sessionResult = await auth.api.getSession({ token });
 
-            if (!sessionResult || !sessionResult.user) {
+            if (!sessionResult || !sessionResult?.user) {
                return res.status(401).json({
                   code: 'INVALID_SESSION',
                   error: 'No session stored',
                });
             }
 
-            const result = await auth.deleteUser(sessionResult?.user.id);
+            const result = await auth.api.deleteUser({ userId: sessionResult?.user.id });
 
             // clear session cookie after user deletion
             res.clearCookie(auth.config.cookies.name);
@@ -252,9 +240,9 @@ export function toNodeHandler(auth: Authio) {
       // initiates OAuth flow — redirects user to Google or GitHub
       const signinMatch = path.match(/^\/api\/auth\/([\w-]+)\/signin$/);
       if (signinMatch && method === 'GET') {
-         const provider = signinMatch[1];
+         const provider = signinMatch[1] as SupportedSocialProvidersType;
 
-         if (!isSupportedProvider(provider)) {
+         if (!isSupportedProvider(provider, auth.config)) {
             return res.status(400).json({
                code: 'UNSUPPORTED_PROVIDER',
                error: `Unsupported provider: ${provider}`,
@@ -262,12 +250,12 @@ export function toNodeHandler(auth: Authio) {
          }
 
          try {
-            const { authUrl, state } = await auth.getSocialAuthRedirectUrl(provider);
+            const { authUrl, state } = await auth.api.oauthRedirectUrl({ id: provider });
 
             // store state in a short-lived httpOnly cookie for CSRF protection
             // when google redirects back to /callback the browser sends this cookie
             // we compare it against the state in the URL to verify the request is legitimate
-            res.cookie(OAUTH_STATE_COOKIE, state, {
+            res.cookie(auth.config.internal.oauth.oauthStateCookie.name, state, {
                httpOnly: true,
                secure: auth.config.cookies.secure,
                sameSite: 'lax', // must be lax — strict blocks the cookie on the redirect back from google
@@ -285,9 +273,9 @@ export function toNodeHandler(auth: Authio) {
       // google/github sends ?code=xxx&state=xxx here
       const callbackMatch = path.match(/^\/api\/auth\/([\w-]+)\/callback$/);
       if (callbackMatch && method === 'GET') {
-         const provider = callbackMatch[1];
+         const provider = callbackMatch[1] as SupportedSocialProvidersType;
 
-         if (!isSupportedProvider(provider)) {
+         if (!isSupportedProvider(provider, auth.config)) {
             return res.status(400).json({
                code: 'UNSUPPORTED_PROVIDER',
                error: `Unsupported provider: ${provider}`,
@@ -300,7 +288,7 @@ export function toNodeHandler(auth: Authio) {
          // state in the URL came from google — untrusted
          // state in the cookie was set by us in /signin — trusted
          // if they don't match someone is trying to forge a callback
-         const storedState = req.cookies?.[OAUTH_STATE_COOKIE];
+         const storedState = req.cookies?.[auth.config.internal.oauth.oauthStateCookie.name];
          if (!state || !storedState || state !== storedState) {
             return res.status(400).json({
                code: 'INVALID_STATE',
@@ -316,13 +304,17 @@ export function toNodeHandler(auth: Authio) {
          }
 
          try {
-            const result = await auth.oauthCallback(provider, code, {
-               userAgent: req.headers['user-agent'],
-               ipAddress: req.ip,
+            const result = await auth.api.oauthCallback({
+               id: provider,
+               code,
+               meta: {
+                  ipAddress: req.ip,
+                  userAgent: req.headers['user-agent'],
+               },
             });
 
             // state cookie served its purpose — clear it
-            res.clearCookie(OAUTH_STATE_COOKIE);
+            res.clearCookie(auth.config.internal.oauth.oauthStateCookie.name);
 
             // set the real session cookie
             res.cookie(auth.config.cookies.name, result.session.token, {

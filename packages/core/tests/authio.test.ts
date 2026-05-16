@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { Authio } from '../src/core/authio.js';
-import type { ParsedAuthioConfig } from '../src/validator/config.validator.js';
-
+import { ParsedAuthioConfig } from '../src/index.js';
 import { mockAdapter } from './utils/mockAdapter.js';
 
 describe('Authio Instance creation test', () => {
@@ -33,6 +32,14 @@ describe('Authio Instance creation test', () => {
             secure: true,
             domain: 'localhost',
             sameSite: 'lax',
+         },
+         internal: {
+            oauth: {
+               supportedOauthProviders: ['google', 'github'],
+               oauthStateCookie: {
+                  name: 'oauth_state_cookie',
+               },
+            },
          },
       };
 
@@ -79,6 +86,14 @@ describe('Authio Instance creation test', () => {
             domain: 'localhost',
             sameSite: 'lax',
          },
+         internal: {
+            oauth: {
+               supportedOauthProviders: ['google', 'github'],
+               oauthStateCookie: {
+                  name: 'oauth_state_cookie',
+               },
+            },
+         },
       };
 
       const auth = new Authio({
@@ -111,6 +126,14 @@ describe('Authio Instance creation test', () => {
          },
 
          emailAndPassword: undefined,
+         internal: {
+            oauth: {
+               supportedOauthProviders: ['google', 'github'],
+               oauthStateCookie: {
+                  name: 'oauth_state_cookie',
+               },
+            },
+         },
 
          cookies: {
             name: 'my_app_session',

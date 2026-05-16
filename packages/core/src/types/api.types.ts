@@ -1,11 +1,12 @@
-import { ApiErrorResponse } from './authioError.types.js';
 import { User, Session } from './auth.js';
+import { SupportedSocialProvidersType } from './provider.types.js';
 
 export interface EmailSignUpPayload {
    name: string;
    email: string;
    password: string;
    meta?: { userAgent?: string; ipAddress?: string };
+   returnVerificationToken?: boolean;
 }
 
 export interface EmailSignInPayload {
@@ -20,6 +21,7 @@ export interface VerifyEmailPayload {
 
 export interface ForgetPasswordPayload {
    email: string;
+   returnForgotPasswordToken?: boolean;
 }
 
 export interface ResetPasswordPayload {
@@ -36,11 +38,11 @@ export interface SignoutPayload {
 }
 
 export interface OauthRedirectUrlPayload {
-   id: 'google' | 'github';
+   id: SupportedSocialProvidersType;
 }
 
 export interface OauthCallbackPayload {
-   id: 'google' | 'github';
+   id: SupportedSocialProvidersType;
    code: string;
    meta?: { userAgent?: string; ipAddress?: string };
 }
@@ -50,48 +52,56 @@ export interface DeleteUserPayload {
 }
 
 //api return types
-export type EmailSignInApiResponse = Promise<
-   ApiErrorResponse | { user: User; code: string; message: string; session: Session }
->;
+export type EmailSignInApiResponse = Promise<{
+   user: User;
+   code: string;
+   message: string;
+   session: Session;
+}>;
 
-export type EmailSignUpApiResponse = Promise<
-   ApiErrorResponse | { code: string; message: string; session: Session | null; user: User }
->;
+export type EmailSignUpApiResponse = Promise<{
+   code: string;
+   message: string;
+   session: Session | null;
+   user: User;
+   verificationToken?: string;
+}>;
 
-export type VerifyEmailApiResponse = Promise<
-   ApiErrorResponse | { code: string; message: string; session: Session | null; user: User }
->;
+export type VerifyEmailApiResponse = Promise<{
+   code: string;
+   message: string;
+   session: Session | null;
+   user: User;
+}>;
 
-export type ForgetPasswordApiResponse = Promise<
-   ApiErrorResponse | { code: string; message: string }
->;
+export type ForgetPasswordApiResponse = Promise<{
+   code: string;
+   message: string;
+   forgotPasswordToken?: string;
+}>;
 
-export type ResetPasswordApiResponse = Promise<
-   ApiErrorResponse | { code: string; message: string }
->;
+export type ResetPasswordApiResponse = Promise<{ code: string; message: string }>;
 
-export type GetSessionApiResponse = Promise<
-   ApiErrorResponse | { user: User; session: Session; code: string; message: string }
->;
+export type GetSessionApiResponse = Promise<{
+   user: User;
+   session: Session;
+   code: string;
+   message: string;
+}>;
 
-export type SignoutApiResponse = Promise<ApiErrorResponse | { code: string; message: string }>;
+export type SignoutApiResponse = Promise<{ code: string; message: string }>;
 
-export type OauthRedirectUrlApiResponse = Promise<
-   ApiErrorResponse | { authUrl: string; state: string }
->;
+export type OauthRedirectUrlApiResponse = Promise<{ authUrl: string; state: string }>;
 
-export type OauthCallbackApiResponse = Promise<
-   | ApiErrorResponse
-   | {
-        code: string;
-        message: string;
-        user: User;
-        session: Session;
-        redirectUrl: string;
-     }
->;
+export type OauthCallbackApiResponse = Promise<{
+   code: string;
+   message: string;
+   user: User;
+   session: Session;
+   redirectUrl: string;
+}>;
 
-export type DeleteUserApiResponse = Promise<ApiErrorResponse | { code: string; message: string }>;
+export type DeleteUserApiResponse = Promise<{ code: string; message: string }>;
 
 export interface ApiInterface {
    emailSignUp: (payload: EmailSignUpPayload) => EmailSignUpApiResponse;
@@ -103,4 +113,5 @@ export interface ApiInterface {
    oauthRedirectUrl: (payload: OauthRedirectUrlPayload) => OauthRedirectUrlApiResponse;
    oauthCallback: (payload: OauthCallbackPayload) => OauthCallbackApiResponse;
    deleteUser: (payload: DeleteUserPayload) => DeleteUserApiResponse;
+   signout: (payload: SignoutPayload) => SignoutApiResponse;
 }

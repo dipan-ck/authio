@@ -2,7 +2,7 @@ import { SignoutApiResponse, SignoutPayload } from '../../types/api.types.js';
 import { ParsedAuthioConfig } from '../../types/config.js';
 import { AuthioError } from '../authioError.js';
 
-export async function signOut(
+export async function signout(
    payload: SignoutPayload,
    ctx: ParsedAuthioConfig,
 ): SignoutApiResponse {

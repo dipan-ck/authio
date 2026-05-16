@@ -26,8 +26,13 @@ export async function emailSignUp(
    }
 
    const existingUser = await ctx.database.findUserByEmail(payload.email);
+   // check if user exists and only block user to create account when the email exists and already verified
+   // If user exists but not verified emaail then just delete the stale user row from db
    if (existingUser) {
-      throw new AuthioError('USER_ALREADY_EXISTS', 'A user with this email already exists');
+      if (existingUser.emailVerified) {
+         throw new AuthioError('USER_ALREADY_EXISTS', 'A user with this email already exists');
+      }
+      await ctx.database.deleteUser(existingUser.id);
    }
 
    const hashedPassword = await hashPassword(payload.password);
@@ -70,6 +75,7 @@ export async function emailSignUp(
          message: 'User created, verification email sent',
          session: null,
          user,
+         verificationToken: payload.returnVerificationToken ? verification.value : undefined,
       };
    }
 

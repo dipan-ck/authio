@@ -1,4 +1,4 @@
-import type { OAuthProvider, OAuthTokens, OAuthUser } from './types.js';
+import type { OAuthProvider, OAuthTokens, OAuthUser } from '../types/provider.types.js';
 
 import { AuthioError } from '../core/authioError.js';
 
