@@ -3,6 +3,7 @@ import path from 'node:path';
 import { writeFileSync } from 'node:fs';
 import { drizzleTemplatesGenerator } from './utils/drizzleTemplates.js';
 import { execSync } from 'node:child_process';
+import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
 import { db } from './db/index.js';
 
 interface SetupServerConfigType {
@@ -19,7 +20,7 @@ export function setupNodeServer(config: SetupServerConfigType) {
 
    return {
       startDockerContainer: () => {
-         execSync('docker compose up -d', {
+         execSync('docker compose up -d --wait', {
             cwd: repoRoot,
             stdio: 'pipe',
          });
@@ -68,41 +69,49 @@ export function setupNodeServer(config: SetupServerConfigType) {
       },
 
       genarateSchema: () => {
-         if (config.database == 'drizzle') {
-            execSync('npx @authio/cli generate', {
-               cwd: projectRoot,
+         execSync('npx @authio/cli generate', {
+            cwd: projectRoot,
 
-               stdio: 'pipe',
-            });
-         }
+            stdio: 'pipe',
+         });
       },
 
-      migrateDb: () => {
-         if (config.database == 'drizzle') {
-            execSync('npx drizzle-kit push --force', {
-               cwd: projectRoot,
-               stdio: 'pipe',
+      async migrateDb() {
+         if (config.provider === 'sqlite') {
+            const { db } = await import('./db/index.js');
+            const { migrate } = await import('drizzle-orm/better-sqlite3/migrator');
+
+            migrate(db, {
+               migrationsFolder: './drizzle',
             });
+
+            return;
          }
+
+         execSync('npx drizzle-kit push --force', {
+            cwd: projectRoot,
+            stdio: 'pipe',
+         });
       },
 
       async tearDown() {
-         if (config.database === 'drizzle') {
-            execSync('pnpm drizzle-kit drop', {
-               cwd: projectRoot,
-            });
-         }
+         execSync('pnpm drizzle-kit drop', {
+            cwd: projectRoot,
+         });
 
-         await db.$client.end();
+         if (config.provider === 'sqlite') return;
+
          this.stopDockerContainer();
          console.log('Teardown went Successfull');
-         process.exit(0);
       },
 
-      spinUp() {
-         this.startDockerContainer();
-         this.waitForDb();
-         // console.log('Docker containers for postgres and mysql has started');
+      async spinUp() {
+         if (config.provider !== 'sqlite') {
+            this.startDockerContainer();
+            this.waitForDb();
+
+            // console.log('Docker containers for postgres and mysql has started');
+         }
 
          this.drizzleSetup();
          // console.log('Generating necessary templates');
@@ -110,7 +119,7 @@ export function setupNodeServer(config: SetupServerConfigType) {
          this.genarateSchema();
          // console.log('generating schema');
 
-         this.migrateDb();
+         await this.migrateDb();
          // console.log('Database schema Migration is successfull');
 
          this.startServer();

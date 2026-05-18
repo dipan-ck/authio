@@ -4,9 +4,8 @@ import { db } from '../db/index.js';
 const auth = new Authio({
    database: drizzleAdapter({
       db,
-      provider: 'postgres',
+      provider: 'sqlite',
    }),
-
    baseUrl: `http://localhost:${process.env.PORT!}`,
    emailAndPassword: {
       enabled: true,
@@ -19,6 +18,8 @@ const auth = new Authio({
     
       },
    },
+   internal: {
+    logError: true
+}
 });
-
 export default auth;

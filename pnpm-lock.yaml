@@ -36,6 +36,67 @@ importers:
         specifier: ^8.58.0
         version: 8.59.2(eslint@10.3.0(jiti@2.7.0))(typescript@6.0.3)
 
+  e2e/node-drizzle:
+    dependencies:
+      '@authio/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@authio/drizzle':
+        specifier: workspace:*
+        version: link:../../packages/adapters/drizzle
+      '@authio/node':
+        specifier: workspace:*
+        version: link:../../packages/handlers/node
+      better-sqlite3:
+        specifier: ^12.9.0
+        version: 12.9.0
+      cookie-parser:
+        specifier: ^1.4.7
+        version: 1.4.7
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
+      drizzle-orm:
+        specifier: ^0.45.2
+        version: 0.45.2(@electric-sql/pglite@0.4.1)(@prisma/client@7.8.0(prisma@7.8.0(@types/react@19.2.14)(better-sqlite3@12.9.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3))(typescript@6.0.3))(@types/better-sqlite3@7.6.13)(@types/pg@8.20.0)(better-sqlite3@12.9.0)(mysql2@3.22.3(@types/node@25.6.2))(pg@8.20.0)(postgres@3.4.7)(prisma@7.8.0(@types/react@19.2.14)(better-sqlite3@12.9.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3))
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
+      mysql2:
+        specifier: ^3.22.3
+        version: 3.22.3(@types/node@25.6.2)
+      pg:
+        specifier: ^8.20.0
+        version: 8.20.0
+    devDependencies:
+      '@authio/cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
+      '@types/cookie-parser':
+        specifier: ^1.4.10
+        version: 1.4.10(@types/express@5.0.6)
+      '@types/express':
+        specifier: ^5.0.6
+        version: 5.0.6
+      '@types/node':
+        specifier: ^25.6.2
+        version: 25.6.2
+      '@types/pg':
+        specifier: ^8.20.0
+        version: 8.20.0
+      drizzle-kit:
+        specifier: ^0.31.10
+        version: 0.31.10
+      tsx:
+        specifier: ^4.22.0
+        version: 4.22.0
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      vitest:
+        specifier: ^4.1.5
+        version: 4.1.5(@types/node@25.6.2)(vite@8.0.11(@types/node@25.6.2)(esbuild@0.28.0)(jiti@2.7.0)(tsx@4.22.0))
+
   e2e/node-drizzle-postgres:
     dependencies:
       '@authio/core':
