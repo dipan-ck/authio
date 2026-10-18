@@ -4,7 +4,7 @@
    "private": true,
    "scripts": {
       "build": "pnpm -r build",
-      "test": "pnpm -r --sequential test",
+      "test": "pnpm -r --workspace-concurrency=1 test",
       "clean": "pnpm -r exec rimraf dist",
       "lint": "eslint .",
       "lint:fix": "eslint . --fix",
