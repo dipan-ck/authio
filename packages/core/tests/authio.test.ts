@@ -34,6 +34,7 @@ describe('Authio Instance creation test', () => {
             sameSite: 'lax',
          },
          internal: {
+            logError: false,
             oauth: {
                supportedOauthProviders: ['google', 'github'],
                oauthStateCookie: {
@@ -87,6 +88,7 @@ describe('Authio Instance creation test', () => {
             sameSite: 'lax',
          },
          internal: {
+            logError: false,
             oauth: {
                supportedOauthProviders: ['google', 'github'],
                oauthStateCookie: {
@@ -127,6 +129,7 @@ describe('Authio Instance creation test', () => {
 
          emailAndPassword: undefined,
          internal: {
+            logError: false,
             oauth: {
                supportedOauthProviders: ['google', 'github'],
                oauthStateCookie: {
