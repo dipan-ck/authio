@@ -40,7 +40,10 @@
    "scripts": {
       "build": "tsup",
       "dev": "tsup --watch",
+      "generate": "prisma generate",
+      "pretest": "prisma generate",
       "test": "vitest run",
+      "pretypecheck": "prisma generate",
       "typecheck": "tsc --noEmit"
    },
    "files": [
