@@ -12,27 +12,27 @@ Authio gives you a clean, composable API to add authentication to any Node.js ap
 
 ## Packages
 
-| Package           | Description                |
-| ----------------- | -------------------------- |
-| `@authio/core`    | Core authentication engine |
-| `@authio/drizzle` | Drizzle ORM adapter        |
-| `@authio/prisma`  | Prisma adapter             |
-| `@authio/node`    | Express / Node.js handler  |
-| `@authio/react`   | React client library       |
-| `@authio/cli`     | CLI for schema generation  |
+| Package                    | Description                |
+| -------------------------- | -------------------------- |
+| `@dipan-ck/authio-core`    | Core authentication engine |
+| `@dipan-ck/authio-drizzle` | Drizzle ORM adapter        |
+| `@dipan-ck/authio-prisma`  | Prisma adapter             |
+| `@dipan-ck/authio-node`    | Express / Node.js handler  |
+| `@dipan-ck/authio-react`   | React client library       |
+| `@dipan-ck/authio-cli`     | CLI for schema generation  |
 
 ## Quick Start
 
 ```bash
-pnpm add @authio/core @authio/drizzle @authio/node
+pnpm add @dipan-ck/authio-core @dipan-ck/authio-drizzle @dipan-ck/authio-node
 ```
 
 **1. Create your auth instance**
 
 ```ts
 // src/lib/auth.ts
-import { Authio } from '@authio/core';
-import { drizzleAdapter } from '@authio/drizzle';
+import { Authio } from '@dipan-ck/authio-core';
+import { drizzleAdapter } from '@dipan-ck/authio-drizzle';
 import { db } from '../db/index.js';
 
 export const auth = new Authio({
@@ -50,7 +50,7 @@ export const auth = new Authio({
 **2. Generate your database schema**
 
 ```bash
-npx @authio/cli generate --output ./src/db/auth-schema.ts
+npx @dipan-ck/authio-cli generate --output ./src/db/auth-schema.ts
 npx drizzle-kit push
 ```
 
@@ -60,7 +60,7 @@ npx drizzle-kit push
 // server.ts
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import { toNodeHandler } from '@authio/node';
+import { toNodeHandler } from '@dipan-ck/authio-node';
 import { auth } from './lib/auth.js';
 
 const app = express();
@@ -74,7 +74,7 @@ app.listen(8000);
 
 ```ts
 // src/lib/auth-client.ts
-import { AuthioClient } from '@authio/react';
+import { AuthioClient } from '@dipan-ck/authio-react';
 
 export const authClient = AuthioClient({
    baseUrl: 'http://localhost:8000',

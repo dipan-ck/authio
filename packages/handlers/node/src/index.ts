@@ -1,4 +1,4 @@
-import { Authio, AuthioError, SupportedSocialProvidersType } from '@authio/core';
+import { Authio, AuthioError, SupportedSocialProvidersType } from '@dipan-ck/authio-core';
 import { NextFunction, Request, Response } from 'express';
 import { isSupportedProvider } from './utils/supportedProvider.js';
 import { handlerTable } from './handlers/handlerTable.js';

@@ -22,8 +22,8 @@ export function drizzleTemplatesGenerator(provider: string, database: string) {
 }
 
 // ─── postgres ──────────────────────────────────────────────────────────────
-const DRIZZLE_POSTGRES_AUTH_CONFIG = `import { Authio } from '@authio/core';
-import { drizzleAdapter } from '@authio/drizzle';
+const DRIZZLE_POSTGRES_AUTH_CONFIG = `import { Authio } from '@dipan-ck/authio-core';
+import { drizzleAdapter } from '@dipan-ck/authio-drizzle';
 import { db } from '../db/index.js';
 const auth = new Authio({
    database: drizzleAdapter({
@@ -62,8 +62,8 @@ export default defineConfig({
 });`;
 
 // ─── mysql ─────────────────────────────────────────────────────────────────
-const DRIZZLE_MYSQL_AUTH_CONFIG = `import { Authio } from '@authio/core';
-import { drizzleAdapter } from '@authio/drizzle';
+const DRIZZLE_MYSQL_AUTH_CONFIG = `import { Authio } from '@dipan-ck/authio-core';
+import { drizzleAdapter } from '@dipan-ck/authio-drizzle';
 import { db } from '../db/index.js';
 const auth = new Authio({
    database: drizzleAdapter({
@@ -102,8 +102,8 @@ export default defineConfig({
 });`;
 
 // ─── sqlite ────────────────────────────────────────────────────────────────
-const DRIZZLE_SQLITE_AUTH_CONFIG = `import { Authio } from '@authio/core';
-import { drizzleAdapter } from '@authio/drizzle';
+const DRIZZLE_SQLITE_AUTH_CONFIG = `import { Authio } from '@dipan-ck/authio-core';
+import { drizzleAdapter } from '@dipan-ck/authio-drizzle';
 import { db } from '../db/index.js';
 const auth = new Authio({
    database: drizzleAdapter({

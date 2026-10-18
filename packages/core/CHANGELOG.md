@@ -1,4 +1,4 @@
-# @authio/core
+# @dipan-ck/authio-core
 
 ## 0.1.1
 

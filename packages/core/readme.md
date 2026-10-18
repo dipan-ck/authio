@@ -1,24 +1,24 @@
-# @authio/core
+# @dipan-ck/authio-core
 
 The core authentication engine for Authio. Handles email/password auth, social OAuth, session management, and email verification. Framework and database agnostic — works with any adapter.
 
 ## Installation
 
 ```bash
-pnpm add @authio/core
+pnpm add @dipan-ck/authio-core
 ```
 
 You'll also need a database adapter and a framework handler:
 
 ```bash
-pnpm add @authio/drizzle @authio/node
+pnpm add @dipan-ck/authio-drizzle @dipan-ck/authio-node
 ```
 
 ## Basic Setup
 
 ```ts
-import { Authio } from '@authio/core';
-import { drizzleAdapter } from '@authio/drizzle';
+import { Authio } from '@dipan-ck/authio-core';
+import { drizzleAdapter } from '@dipan-ck/authio-drizzle';
 import { db } from './db/index.js';
 
 export const auth = new Authio({
@@ -151,7 +151,7 @@ await auth.deleteUser(userId);
 All methods throw `AuthioError` on failure. Each error has a `code` and a `message`:
 
 ```ts
-import { AuthioError } from '@authio/core';
+import { AuthioError } from '@dipan-ck/authio-core';
 
 try {
    await auth.emailSignIn(email, password);
@@ -170,7 +170,7 @@ Common error codes: `MISSING_FIELDS`, `USER_ALREADY_EXISTS`, `INVALID_CREDENTIAL
 If you want to use a database not covered by the official adapters, implement the `DatabaseAdapter` interface:
 
 ```ts
-import type { DatabaseAdapter } from '@authio/core';
+import type { DatabaseAdapter } from '@dipan-ck/authio-core';
 
 const myAdapter: DatabaseAdapter = {
   id: 'my-adapter',

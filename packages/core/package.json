@@ -1,12 +1,13 @@
 {
-   "name": "@authio/core",
+   "name": "@dipan-ck/authio-core",
    "version": "0.1.1",
    "description": "Type-safe authentication built for developers who want simplicity, flexibility, and control without hidden abstractions or framework lock-in.",
    "author": "Dipan Chakraborty",
    "license": "MIT",
    "repository": {
       "type": "git",
-      "url": "https://github.com/dipan-ck/authio.git"
+      "url": "git+https://github.com/dipan-ck/authio.git",
+      "directory": "packages/core"
    },
    "keywords": [
       "auth",
@@ -17,6 +18,7 @@
    ],
    "private": false,
    "publishConfig": {
+      "registry": "https://npm.pkg.github.com",
       "access": "public"
    },
    "type": "module",

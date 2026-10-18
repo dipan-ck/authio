@@ -17,8 +17,8 @@ export function prismaTemplatesGenerator(provider: string, database: string) {
 }
 
 // ─── postgres ──────────────────────────────────────────────────────────────
-const PRISMA_POSTGRES_AUTH_CONFIG = `import { Authio } from '@authio/core';
-import { prismaAdapter } from '@authio/prisma';
+const PRISMA_POSTGRES_AUTH_CONFIG = `import { Authio } from '@dipan-ck/authio-core';
+import { prismaAdapter } from '@dipan-ck/authio-prisma';
 
 import { prisma } from '../lib/prisma.js';
 
@@ -65,8 +65,8 @@ export default defineConfig({
 });`;
 
 // ─── mysql ──────────────────────────────────────────────────────────────
-const PRISMA_MYSQL_AUTH_CONFIG = `import { Authio } from '@authio/core';
-import { prismaAdapter } from '@authio/prisma';
+const PRISMA_MYSQL_AUTH_CONFIG = `import { Authio } from '@dipan-ck/authio-core';
+import { prismaAdapter } from '@dipan-ck/authio-prisma';
 
 import { prisma } from '../lib/prisma.js';
 

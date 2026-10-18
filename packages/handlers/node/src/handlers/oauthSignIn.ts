@@ -1,5 +1,5 @@
 // handlers/oauthSignin.ts
-import { Authio, SupportedSocialProvidersType } from '@authio/core';
+import { Authio, SupportedSocialProvidersType } from '@dipan-ck/authio-core';
 import { Request, Response } from 'express';
 import { sendError } from '../utils/error.js';
 import { isSupportedProvider } from '../utils/supportedProvider.js';

@@ -1,10 +1,11 @@
 {
-   "name": "@authio/node",
+   "name": "@dipan-ck/authio-node",
    "version": "0.1.1",
    "author": "Dipan Chakraborty",
    "repository": {
       "type": "git",
-      "url": "https://github.com/dipan-ck/authio.git"
+      "url": "git+https://github.com/dipan-ck/authio.git",
+      "directory": "packages/handlers/node"
    },
    "keywords": [
       "auth",
@@ -16,6 +17,7 @@
    "description": "",
    "private": false,
    "publishConfig": {
+      "registry": "https://npm.pkg.github.com",
       "access": "public"
    },
    "type": "module",
@@ -45,7 +47,7 @@
    "license": "MIT",
    "packageManager": "pnpm@10.33.0",
    "devDependencies": {
-      "@authio/core": "workspace:*",
+      "@dipan-ck/authio-core": "workspace:*",
       "@types/express": "^5.0.6",
       "@types/node": "^25.5.0",
       "express": "^5.2.1",
@@ -53,7 +55,7 @@
       "typescript": "^6.0.2"
    },
    "peerDependencies": {
-      "@authio/core": ">=0.1.0",
+      "@dipan-ck/authio-core": ">=0.1.0",
       "express": "^5.0.0"
    }
 }

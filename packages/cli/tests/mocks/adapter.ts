@@ -1,4 +1,4 @@
-import type { DatabaseAdapter } from '@authio/core';
+import type { DatabaseAdapter } from '@dipan-ck/authio-core';
 
 export const mockAdapter: DatabaseAdapter = {
    id: 'drizzle-adapter',

@@ -1,4 +1,4 @@
-# @authio/drizzle
+# @dipan-ck/authio-drizzle
 
 ## 0.1.1
 

@@ -14,7 +14,7 @@
    "license": "ISC",
    "packageManager": "pnpm@10.33.2",
    "devDependencies": {
-      "@authio/cli": "workspace:*",
+      "@dipan-ck/authio-cli": "workspace:*",
       "@types/cookie-parser": "^1.4.10",
       "@types/express": "^5.0.6",
       "@types/node": "^25.6.2",
@@ -26,10 +26,10 @@
       "vitest": "^4.1.5"
    },
    "dependencies": {
-      "@authio/core": "workspace:*",
-      "@authio/drizzle": "workspace:*",
-      "@authio/node": "workspace:*",
-      "@authio/prisma": "workspace:*",
+      "@dipan-ck/authio-core": "workspace:*",
+      "@dipan-ck/authio-drizzle": "workspace:*",
+      "@dipan-ck/authio-node": "workspace:*",
+      "@dipan-ck/authio-prisma": "workspace:*",
       "@prisma/adapter-mariadb": "^7.8.0",
       "@prisma/adapter-pg": "^7.8.0",
       "@prisma/client": "^7.8.0",

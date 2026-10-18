@@ -15,12 +15,12 @@ Authio is a modular, type-safe authentication library for Node.js. It is not a h
 ├── packages
 │ ├── core # authio — core engine, Authio class, providers, types
 │ ├── adapters
-│ │ ├── drizzle # @authio/drizzle
-│ │ └── prisma # @authio/prisma
+│ │ ├── drizzle # @dipan-ck/authio-drizzle
+│ │ └── prisma # @dipan-ck/authio-prisma
 │ ├── handlers
-│ │ └── node # @authio/node — Express handler via toNodeHandler()
-│ ├── react # @authio/react — client library
-│ └── cli # @authio/cli — schema generation CLI
+│ │ └── node # @dipan-ck/authio-node — Express handler via toNodeHandler()
+│ ├── react # @dipan-ck/authio-react — client library
+│ └── cli # @dipan-ck/authio-cli — schema generation CLI
 └── pnpm-workspace.yaml
 
 ## Documentation site
@@ -94,7 +94,7 @@ Located in `landing/`. Built with Next.js and MDX. Docs live in `landing/src/app
 
 ### React client (`packages/react`)
 
-- Client: `AuthioClient` exported from `@authio/react`
+- Client: `AuthioClient` exported from `@dipan-ck/authio-react`
 - Methods: `emailSignIn`, `emailSignUp`, `signOut`
 - Source: `packages/react/src/client.ts`
 

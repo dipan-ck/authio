@@ -1,4 +1,4 @@
-import { Authio } from '@authio/core';
+import { Authio } from '@dipan-ck/authio-core';
 import { mockAdapter } from '../mocks/adapter.js';
 
 const auth = new Authio({

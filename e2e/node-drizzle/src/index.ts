@@ -1,6 +1,6 @@
 import 'dotenv/config.js';
 import express from 'express';
-import { toNodeHandler } from '@authio/node';
+import { toNodeHandler } from '@dipan-ck/authio-node';
 import cookieParser from 'cookie-parser';
 import auth from './lib/auth.js';
 

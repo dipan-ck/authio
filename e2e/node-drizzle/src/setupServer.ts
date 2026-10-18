@@ -92,7 +92,7 @@ export function setupNodeServer(config: SetupServerConfigType) {
       },
 
       async generateSchema() {
-         await execAsync('npx @authio/cli generate', {
+         await execAsync('npx @dipan-ck/authio-cli generate', {
             cwd: projectRoot,
          });
       },

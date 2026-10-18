@@ -1,4 +1,4 @@
-import { AuthioError } from '@authio/core';
+import { AuthioError } from '@dipan-ck/authio-core';
 import { Response } from 'express';
 
 export function sendError(res: Response, err: unknown, logError: boolean) {

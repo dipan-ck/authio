@@ -1,5 +1,5 @@
 // handlers/deleteUser.ts
-import { Authio } from '@authio/core';
+import { Authio } from '@dipan-ck/authio-core';
 import { Request, Response } from 'express';
 import { sendError } from '../utils/error.js';
 

@@ -1,4 +1,4 @@
-# @authio/node
+# @dipan-ck/authio-node
 
 ## 0.1.1
 

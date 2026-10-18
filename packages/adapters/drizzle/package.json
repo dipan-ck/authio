@@ -1,10 +1,11 @@
 {
-   "name": "@authio/drizzle",
+   "name": "@dipan-ck/authio-drizzle",
    "version": "0.1.1",
    "author": "Dipan Chakraborty",
    "repository": {
       "type": "git",
-      "url": "https://github.com/dipan-ck/authio.git"
+      "url": "git+https://github.com/dipan-ck/authio.git",
+      "directory": "packages/adapters/drizzle"
    },
    "license": "MIT",
    "keywords": [
@@ -15,6 +16,7 @@
       "authio"
    ],
    "publishConfig": {
+      "registry": "https://npm.pkg.github.com",
       "access": "public"
    },
    "description": "A Drizzle adapter for authio",
@@ -56,14 +58,14 @@
       "drizzle-orm": "latest",
       "mysql2": "^3.22.3",
       "pg": "^8.20.0",
-      "@authio/core": "workspace:*",
+      "@dipan-ck/authio-core": "workspace:*",
       "tsup": "^8.5.1",
       "typescript": "^6.0.2",
       "vitest": "^4.1.2"
    },
    "peerDependencies": {
       "drizzle-orm": ">=0.30.0",
-      "@authio/core": ">=0.1.0"
+      "@dipan-ck/authio-core": ">=0.1.0"
    },
    "packageManager": "pnpm@10.33.0"
 }

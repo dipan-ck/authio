@@ -1,4 +1,4 @@
-import { HandlerTable } from '@authio/core';
+import { HandlerTable } from '@dipan-ck/authio-core';
 import { deleteUser } from './deleteUser.js';
 import { emailSignIn } from './emailSignIn.js';
 import { emailSignUp } from './emailSignUp.js';

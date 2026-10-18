@@ -1,11 +1,11 @@
-# @authio/cli
+# @dipan-ck/authio-cli
 
 CLI for generating database schemas for Authio. Reads your auth config and outputs the correct schema for your adapter and provider.
 
 ## Usage
 
 ```bash
-npx @authio/cli generate
+npx @dipan-ck/authio-cli generate
 ```
 
 No installation required.
@@ -17,7 +17,7 @@ No installation required.
 Reads your auth config and generates the database schema. Outputs four tables: `user`, `account`, `session`, and `verification`.
 
 ```bash
-npx @authio/cli generate
+npx @dipan-ck/authio-cli generate
 ```
 
 **Options:**
@@ -25,19 +25,19 @@ npx @authio/cli generate
 `--config` — path to your auth config file, relative to project root:
 
 ```bash
-npx @authio/cli generate --config ./src/lib/auth.ts
+npx @dipan-ck/authio-cli generate --config ./src/lib/auth.ts
 ```
 
 `--output` — path where the schema file should be written:
 
 ```bash
-npx @authio/cli generate --output ./src/db/auth-schema.ts
+npx @dipan-ck/authio-cli generate --output ./src/db/auth-schema.ts
 ```
 
 Both can be combined:
 
 ```bash
-npx @authio/cli generate --config ./src/lib/auth.ts --output ./src/db/auth-schema.ts
+npx @dipan-ck/authio-cli generate --config ./src/lib/auth.ts --output ./src/db/auth-schema.ts
 ```
 
 **Default config locations** (checked in order when `--config` is not provided):
@@ -95,7 +95,7 @@ The CLI expects the user's config file to have a default export where `.config` 
 
 ```ts
 // user's auth.ts
-import { Authio } from '@authio/core';
+import { Authio } from '@dipan-ck/authio-core';
 
 const auth = new Authio({ ... });
 

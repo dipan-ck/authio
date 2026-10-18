@@ -1,5 +1,5 @@
-import { Authio } from '@authio/core';
-import { drizzleAdapter } from '@authio/drizzle';
+import { Authio } from '@dipan-ck/authio-core';
+import { drizzleAdapter } from '@dipan-ck/authio-drizzle';
 import { db } from '../db/index.js';
 const auth = new Authio({
    database: drizzleAdapter({

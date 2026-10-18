@@ -44,16 +44,16 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
          </TabsList>
       </div>
       <TabsContent value="pnpm" className="m-0">
-         <CodeBlock code={`pnpm add @authio/core`} lang="bash" />
+         <CodeBlock code={`pnpm add @dipan-ck/authio-core`} lang="bash" />
       </TabsContent>
       <TabsContent value="npm" className="m-0">
-         <CodeBlock code={`npm install @authio/core`} lang="bash" />
+         <CodeBlock code={`npm install @dipan-ck/authio-core`} lang="bash" />
       </TabsContent>
       <TabsContent value="yarn" className="m-0">
-         <CodeBlock code={`yarn add @authio/core`} lang="bash" />
+         <CodeBlock code={`yarn add @dipan-ck/authio-core`} lang="bash" />
       </TabsContent>
       <TabsContent value="bun" className="m-0">
-         <CodeBlock code={`bun add @authio/core`} lang="bash" />
+         <CodeBlock code={`bun add @dipan-ck/authio-core`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -84,10 +84,10 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
          </TabsList>
       </div>
       <TabsContent value="drizzle" className="m-0">
-         <CodeBlock code={`npm install @authio/drizzle`} lang="bash" />
+         <CodeBlock code={`npm install @dipan-ck/authio-drizzle`} lang="bash" />
       </TabsContent>
       <TabsContent value="prisma" className="m-0">
-         <CodeBlock code={`npm install @authio/prisma`} lang="bash" />
+         <CodeBlock code={`npm install @dipan-ck/authio-prisma`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -114,8 +114,8 @@ import { CodeBlock } from '@/components/ui/CodeBlock';
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { Authio } from '@authio/core';
-import { drizzleAdapter } from '@authio/drizzle';
+            code={`import { Authio } from '@dipan-ck/authio-core';
+import { drizzleAdapter } from '@dipan-ck/authio-drizzle';
 import { db } from '../db/index.js';
 
 export const auth = new Authio({
@@ -136,8 +136,8 @@ export const auth = new Authio({
          </div>
          <CodeBlock
             lang="ts"
-            code={`import { Authio } from '@authio/core';
-import { prismaAdapter } from '@authio/prisma';
+            code={`import { Authio } from '@dipan-ck/authio-core';
+import { prismaAdapter } from '@dipan-ck/authio-prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../generated/prisma/client.js';
 
@@ -169,7 +169,7 @@ export const auth = new Authio({
 </div>
 
 <div className="mt-5 rounded-xl border border-border bg-card overflow-hidden">
-   <CodeBlock lang="bash" code={`npx @authio/cli generate`} />
+   <CodeBlock lang="bash" code={`npx @dipan-ck/authio-cli generate`} />
 </div>
 
 <div className="mt-4 max-w-[560px] text-sm leading-relaxed text-muted-foreground">
@@ -237,7 +237,7 @@ export const auth = new Authio({
          </TabsList>
       </div>
       <TabsContent value="express" className="m-0">
-         <CodeBlock code={`npm install @authio/node`} lang="bash" />
+         <CodeBlock code={`npm install @dipan-ck/authio-node`} lang="bash" />
       </TabsContent>
       <TabsContent value="hono" className="m-0">
          <div className="p-6 text-sm text-muted-foreground">Hono support is coming soon.</div>
@@ -265,7 +265,7 @@ export const auth = new Authio({
             lang="ts"
             code={`import express from 'express';
 import cookieParser from 'cookie-parser';
-import { toNodeHandler } from '@authio/node';
+import { toNodeHandler } from '@dipan-ck/authio-node';
 import { auth } from './lib/auth.js';
 
 const app = express();
@@ -329,16 +329,16 @@ console.log('Server running on port 8000');
          </TabsList>
       </div>
       <TabsContent value="pnpm" className="m-0">
-         <CodeBlock code={`pnpm add @authio/react`} lang="bash" />
+         <CodeBlock code={`pnpm add @dipan-ck/authio-react`} lang="bash" />
       </TabsContent>
       <TabsContent value="npm" className="m-0">
-         <CodeBlock code={`npm install @authio/react`} lang="bash" />
+         <CodeBlock code={`npm install @dipan-ck/authio-react`} lang="bash" />
       </TabsContent>
       <TabsContent value="yarn" className="m-0">
-         <CodeBlock code={`yarn add @authio/react`} lang="bash" />
+         <CodeBlock code={`yarn add @dipan-ck/authio-react`} lang="bash" />
       </TabsContent>
       <TabsContent value="bun" className="m-0">
-         <CodeBlock code={`bun add @authio/react`} lang="bash" />
+         <CodeBlock code={`bun add @dipan-ck/authio-react`} lang="bash" />
       </TabsContent>
    </Tabs>
 </div>
@@ -353,7 +353,7 @@ console.log('Server running on port 8000');
    </div>
    <CodeBlock
       lang="ts"
-      code={`import { AuthioClient } from '@authio/react';
+      code={`import { AuthioClient } from '@dipan-ck/authio-react';
 
 export const authClient = AuthioClient({
   baseUrl: '<http://localhost:8000>',

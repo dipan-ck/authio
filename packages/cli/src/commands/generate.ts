@@ -63,7 +63,7 @@ export const generate = defineCommand({
                      '',
                      'You can also explicitly provide one:',
                      '',
-                     '  @authio/cli generate --config ./path/to/auth.ts',
+                     '  @dipan-ck/authio-cli generate --config ./path/to/auth.ts',
                   ].join('\n'),
                );
             }

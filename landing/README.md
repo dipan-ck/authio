@@ -15,24 +15,24 @@ Type-safe authentication for Node.js applications. Modular by design — works w
 
 ## Packages
 
-| Package           | Description                                          |
-| ----------------- | ---------------------------------------------------- |
-| `@authio/core`    | Core authentication engine (`packages/core`)         |
-| `@authio/drizzle` | Drizzle ORM adapter (`packages/adapters/drizzle`)    |
-| `@authio/prisma`  | Prisma adapter (`packages/adapters/prisma`)          |
-| `@authio/node`    | Node.js / Express handler (`packages/handlers/node`) |
-| `@authio/react`   | React client library (`packages/react`)              |
-| `@authio/cli`     | CLI for schema generation (`packages/cli`)           |
+| Package                    | Description                                          |
+| -------------------------- | ---------------------------------------------------- |
+| `@dipan-ck/authio-core`    | Core authentication engine (`packages/core`)         |
+| `@dipan-ck/authio-drizzle` | Drizzle ORM adapter (`packages/adapters/drizzle`)    |
+| `@dipan-ck/authio-prisma`  | Prisma adapter (`packages/adapters/prisma`)          |
+| `@dipan-ck/authio-node`    | Node.js / Express handler (`packages/handlers/node`) |
+| `@dipan-ck/authio-react`   | React client library (`packages/react`)              |
+| `@dipan-ck/authio-cli`     | CLI for schema generation (`packages/cli`)           |
 
 ## Quick Start
 
 ```bash
-pnpm add @authio/core @authio/drizzle @authio/node
+pnpm add @dipan-ck/authio-core @dipan-ck/authio-drizzle @dipan-ck/authio-node
 ```
 
 ```ts
-import { Authio } from '@authio/core';
-import { drizzleAdapter } from '@authio/drizzle';
+import { Authio } from '@dipan-ck/authio-core';
+import { drizzleAdapter } from '@dipan-ck/authio-drizzle';
 import { db } from './db/index.js';
 
 export const auth = new Authio({
@@ -45,7 +45,7 @@ export const auth = new Authio({
 ```ts
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import { toNodeHandler } from '@authio/node';
+import { toNodeHandler } from '@dipan-ck/authio-node';
 import { auth } from './lib/auth.js';
 
 const app = express();
@@ -66,12 +66,12 @@ Full documentation at [authio.dev/docs](https://authio.dev/docs).
 ├── packages
 │ ├── core # authio core
 │ ├── adapters
-│ │ ├── drizzle # @authio/drizzle
-│ │ └── prisma # @authio/prisma
+│ │ ├── drizzle # @dipan-ck/authio-drizzle
+│ │ └── prisma # @dipan-ck/authio-prisma
 │ ├── handlers
-│ │ └── node # @authio/node
-│ ├── react # @authio/react
-│ └── cli # @authio/cli
+│ │ └── node # @dipan-ck/authio-node
+│ ├── react # @dipan-ck/authio-react
+│ └── cli # @dipan-ck/authio-cli
 └── pnpm-workspace.yaml
 
 ## Documentation

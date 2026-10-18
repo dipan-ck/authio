@@ -1,4 +1,4 @@
-# @authio/cli
+# @dipan-ck/authio-cli
 
 ## 0.1.1
 

@@ -1,11 +1,12 @@
 {
-   "name": "@authio/react",
+   "name": "@dipan-ck/authio-react",
    "private": false,
    "description": "A react library for authio",
    "author": "Dipan Chakraborty",
    "repository": {
       "type": "git",
-      "url": "https://github.com/dipan-ck/authio.git"
+      "url": "git+https://github.com/dipan-ck/authio.git",
+      "directory": "packages/react"
    },
    "keywords": [
       "auth",
@@ -15,6 +16,7 @@
       "authio"
    ],
    "publishConfig": {
+      "registry": "https://npm.pkg.github.com",
       "access": "public"
    },
    "version": "0.1.1",

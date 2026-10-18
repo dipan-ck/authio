@@ -1,4 +1,4 @@
-# @authio/prisma
+# @dipan-ck/authio-prisma
 
 ## 0.1.1
 

@@ -1,4 +1,4 @@
-# @authio/react
+# @dipan-ck/authio-react
 
 ## 0.1.1
 
